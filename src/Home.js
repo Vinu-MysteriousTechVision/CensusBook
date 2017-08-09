@@ -8,13 +8,23 @@ import {
   Button
 } from 'react-native';
 import { NavigationActions, StackNavigator } from 'react-navigation';
-import Login from './Login';
-import Home from './Home';
 
-class Root extends Component {
+const resetAction = NavigationActions.reset({
+  index: 0,
+  actions: [
+    NavigationActions.navigate({ routeName: 'Root'})
+  ]
+})
+
+
+class Home extends Component {
   constructor(props) {
     super(props);
   }
+
+  static navigationOptions = {
+    title: 'Home',
+  };
 
   componentDidMount(){
 
@@ -26,25 +36,21 @@ class Root extends Component {
 
   render() {
     const { navigate } = this.props.navigation;
+
     return (
       <View style={styles.container}>
         <Text style={styles.welcome}>
-          Welcome to React Native!
+          Welcome to Home!
         </Text>
         <Button
-          onPress={() => navigate('Login')}
-          title="Login"
+          onPress={() =>this.props.navigation.dispatch(resetAction)}
+          title="Log out"
         />
+
       </View>
     );
   }
 }
-
-const navigationScreens = StackNavigator({
-  Root: { screen: Root },
-  Login: { screen: Login },
-  Home: { screen: Home }
-});
 
 
 const styles = StyleSheet.create({
@@ -66,4 +72,4 @@ const styles = StyleSheet.create({
   },
 });
 
-module.exports = navigationScreens;
+module.exports = Home;
