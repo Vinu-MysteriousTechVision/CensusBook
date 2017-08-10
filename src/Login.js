@@ -10,7 +10,8 @@ import {
   TextInput,
   Image,
   NetInfo,
-  Keyboard
+  Keyboard,
+  StatusBar
 } from 'react-native';
 import { NavigationActions, StackNavigator } from 'react-navigation';
 import LoginController from './LoginController'
@@ -33,16 +34,14 @@ const styles = StyleSheet.create({
   },
   btnSignIn: {
     flex: 0.25,
-    // height: 75,
     backgroundColor: '#37B4F0'
   },
   signUpContainer: {
     flex: 0.25,
-    // height: 75,
     backgroundColor: '#32E182'
   },
   seperator: {
-    height: 1,
+    height: 0.5,
     backgroundColor: '#37AADC'
   },
   userName: {
@@ -81,9 +80,16 @@ class Login extends React.Component {
     this._handleConnectivityChange = this._handleConnectivityChange.bind(this);
   }
 
-  static navigationOptions = {
-    title: 'Login',
-  };
+  static navigationOptions = ({ navigation }) => {
+    const { params = {} } = navigation.state
+
+    return {
+      headerStyle: {backgroundColor: '#37CDBE', height: 0},
+      headerLeft: <Button title="back" onPress={() => params.onBack()}/>
+    }
+  }
+
+
   _handleConnectivityChange = (isConnected) => {
     this.setState({ isConnected });
   };
@@ -96,9 +102,15 @@ class Login extends React.Component {
 
   }
 
+  tapOnBack() {
+    this.props.navigation.goBack();
+  }
+
   componentDidMount() {
     NetInfo.isConnected.addEventListener('change', this._handleConnectivityChange );
     NetInfo.isConnected.fetch().done( (isConnected) => { this.setState({ isConnected }); } );
+
+    this.props.navigation.setParams({ onBack: this.tapOnBack.bind(this) })
   }
 
   componentWillMount() {
@@ -111,7 +123,6 @@ class Login extends React.Component {
     this.keyboardDidShowListener.remove();
     this.keyboardDidHideListener.remove();
   }
-
 
   loginSuccessCallback() {
     this.props.navigation.dispatch(resetAction)
@@ -130,6 +141,7 @@ class Login extends React.Component {
 
     return (
       <View style={styles.container}>
+        <StatusBar translucent={true} backgroundColor="rgba(0, 0, 0, 0)" barStyle="light-content" />
         <View style={styles.topContainer}>
         </View>
         <View style={styles.bottomContainer}>
@@ -195,9 +207,9 @@ class Login extends React.Component {
             </View>
           </View>
         </View>
-
       </View>
     );
   }
 }
+
 module.exports = Login;

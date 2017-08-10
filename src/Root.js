@@ -5,7 +5,9 @@ import {
   StyleSheet,
   View,
   Text,
-  Button
+  Button,
+  TouchableHighlight,
+  StatusBar
 } from 'react-native';
 import { NavigationActions, StackNavigator } from 'react-navigation';
 import Login from './Login';
@@ -16,6 +18,11 @@ class Root extends Component {
     super(props);
   }
 
+  static navigationOptions = {
+    headerStyle: {backgroundColor: '#37CDBE', height: 0}
+  };
+
+
   componentDidMount(){
 
   }
@@ -24,17 +31,31 @@ class Root extends Component {
 
   }
 
+  tapOnSignIn() {
+    this.props.navigation.navigate('Login');
+  }
+
   render() {
     const { navigate } = this.props.navigation;
     return (
       <View style={styles.container}>
-        <Text style={styles.welcome}>
-          Welcome to React Native!
-        </Text>
-        <Button
-          onPress={() => navigate('Login')}
-          title="Login"
-        />
+        <StatusBar translucent={true} backgroundColor="rgba(0, 0, 0, 0)" barStyle="light-content" />
+        <View style={styles.topContainer}>
+          <Text style={styles.welcome}> Welcome </Text>
+        </View>
+        <View style={styles.bottomContainer}>
+          <View style={[styles.btnSignIn]}>
+            <TouchableHighlight style= {{flex:1, justifyContent: 'center', alignItems: 'center'}} underlayColor="rgba(255,255,255,0.15)" onPress={this.tapOnSignIn.bind(this)}>
+              <Text style={{color: '#37CDBE', fontWeight: 'bold', fontSize: 20}} numberOfLines={1}>Sign In</Text>
+            </TouchableHighlight>
+          </View>
+          <View style={styles.seperator}/>
+          <View style={[styles.signUpContainer, {flexDirection: 'row'}]}>
+            <TouchableHighlight style= {{flex:1, justifyContent: 'center', alignItems: 'center'}} underlayColor="rgba(255,255,255,0.15)" onPress={() => alert('click')}>
+              <Text style={{color: '#37CDBE', fontWeight: 'bold', fontSize: 20}} numberOfLines={1}>Sign Up</Text>
+            </TouchableHighlight>
+          </View>
+        </View>
       </View>
     );
   }
@@ -46,24 +67,42 @@ const navigationScreens = StackNavigator({
   Home: { screen: Home }
 });
 
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
+    backgroundColor: '#37CDBE'
   },
   welcome: {
     fontSize: 20,
     textAlign: 'center',
     margin: 10,
   },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
+  topContainer: {
+    flex: 0.5,
+    backgroundColor: '#37CDBE',
+    justifyContent: 'center'
   },
+  bottomContainer: {
+    flex: 0.5,
+    justifyContent: 'flex-end',
+    backgroundColor: '#37CDBE',
+  },
+  loginContainer: {
+    height: 100,
+    backgroundColor: 'white'
+  },
+  btnSignIn: {
+    height: 75,
+    backgroundColor: '#FFFFFF'
+  },
+  signUpContainer: {
+    height: 75,
+    backgroundColor: '#37B4F0'
+  },
+  seperator: {
+    height: 0.5,
+    backgroundColor: '#37AADC'
+  }
 });
 
 module.exports = navigationScreens;
