@@ -12,6 +12,8 @@ import {
 import { NavigationActions, StackNavigator } from 'react-navigation';
 import Login from './Login';
 import Home from './Home';
+import Register from './Register';
+import RegisterPage_2 from './RegisterPage_2';
 
 class Root extends Component {
   constructor(props) {
@@ -35,6 +37,11 @@ class Root extends Component {
     this.props.navigation.navigate('Login');
   }
 
+  tapOnSignUp() {
+    this.props.navigation.navigate('RegisterPage_2');
+  }
+
+
   render() {
     const { navigate } = this.props.navigation;
     return (
@@ -51,7 +58,7 @@ class Root extends Component {
           </View>
           <View style={styles.seperator}/>
           <View style={[styles.signUpContainer, {flexDirection: 'row'}]}>
-            <TouchableHighlight style= {{flex:1, justifyContent: 'center', alignItems: 'center'}} underlayColor="rgba(255,255,255,0.15)" onPress={() => alert('click')}>
+            <TouchableHighlight style= {{flex:1, justifyContent: 'center', alignItems: 'center'}} underlayColor="rgba(255,255,255,0.15)" onPress={this.tapOnSignUp.bind(this)}>
               <Text style={{color: '#37CDBE', fontWeight: 'bold', fontSize: 20}} numberOfLines={1}>Sign Up</Text>
             </TouchableHighlight>
           </View>
@@ -64,7 +71,9 @@ class Root extends Component {
 const navigationScreens = StackNavigator({
   Root: { screen: Root },
   Login: { screen: Login },
-  Home: { screen: Home }
+  Home: { screen: Home },
+  Register: {screen: Register},
+  RegisterPage_2: {screen: RegisterPage_2}
 });
 
 const styles = StyleSheet.create({
