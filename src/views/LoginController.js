@@ -1,7 +1,7 @@
-import Client from './api/HttpClient';
-import HttpHeader from './api/HttpHeader';
-import ApiUrl from './api/ApiUrl';
-import { User } from './entities';
+import Client from '../api/HttpClient';
+import HttpHeader from '../api/HttpHeader';
+import ApiUrl from '../api/ApiUrl';
+import { User } from '../entities';
 
 class LoginController {
   constructor() {
@@ -28,7 +28,7 @@ class LoginController {
     var onResponse = function(response, errorResponse, responseStatus, responseHeaders) {
       try {
         if (response && responseHeaders && responseStatus === 200) {
-          alert('api Success');
+          // alert('api Success');
 
           var authDetails = {
             "Access-Token" : responseHeaders.get('access-token'),

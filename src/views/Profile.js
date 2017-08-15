@@ -9,21 +9,13 @@ import {
 } from 'react-native';
 import { NavigationActions, StackNavigator } from 'react-navigation';
 
-const resetAction = NavigationActions.reset({
-  index: 0,
-  actions: [
-    NavigationActions.navigate({ routeName: 'Root'})
-  ]
-})
-
-
-class Home extends Component {
+class Profile extends Component {
   constructor(props) {
     super(props);
   }
 
   static navigationOptions = {
-    title: 'Home',
+    title: 'Profile',
   };
 
   componentDidMount(){
@@ -40,18 +32,12 @@ class Home extends Component {
     return (
       <View style={styles.container}>
         <Text style={styles.welcome}>
-          Welcome to Home!
+          Welcome to Profile!
         </Text>
-        <Button
-          onPress={() =>this.props.navigation.dispatch(resetAction)}
-          title="Log out"
-        />
-
       </View>
     );
   }
 }
-
 
 const styles = StyleSheet.create({
   container: {
@@ -72,4 +58,4 @@ const styles = StyleSheet.create({
   },
 });
 
-module.exports = Home;
+module.exports = Profile;

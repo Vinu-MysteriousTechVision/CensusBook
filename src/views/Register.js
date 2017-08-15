@@ -14,7 +14,7 @@ import {
   Dimensions
 } from 'react-native';
 import { NavigationActions, StackNavigator } from 'react-navigation';
-import Utils from './utils/Utils';
+import Utils from '../utils/Utils';
 
 var width = Dimensions.get('window').width - 80; //Menu width
 
@@ -90,7 +90,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent'
   }
 });
-class RegisterPage_2 extends React.Component {
+class Register extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -109,7 +109,7 @@ class RegisterPage_2 extends React.Component {
       headerLeft: (
         <TouchableHighlight style= {{flex:1, justifyContent: 'center', alignItems: 'center',marginTop: Utils.getStatusBarHeight(), paddingLeft: 10, backgroundColor: 'transparent'}} underlayColor="rgba(255,255,255,0.15)"
         onPress={() => params.onBack()}>
-          <Image style={{ width: 16, height: 16 }} source={require('./res/images/back_white.png')} />
+          <Image style={{ width: 16, height: 16 }} source={require('../res/images/back_white.png')} />
         </TouchableHighlight>
       )
     }
@@ -155,7 +155,7 @@ class RegisterPage_2 extends React.Component {
 
   render() {
     const { navigate } = this.props.navigation;
-    var profileIcon = require('./res/images/user_default.png');
+    var profileIcon = require('../res/images/user_default.png');
     return(
       <View style={styles.container}>
         <View style={{height: 150, backgroundColor: 'transparent', padding: 5}}>
@@ -169,7 +169,7 @@ class RegisterPage_2 extends React.Component {
         <View style={styles.registerContainer}>
           <View style={styles.fieldContainer}>
             <View style={styles.imageContainer}>
-              <Image style={styles.fieldIcon} source={require('./res/images/usr_blue.png')} />
+              <Image style={styles.fieldIcon} source={require('../res/images/usr_blue.png')} />
             </View>
             <View style={styles.verticalSeperator} />
 
@@ -193,7 +193,7 @@ class RegisterPage_2 extends React.Component {
           </View>
           <View style={styles.fieldContainer}>
             <View style={styles.imageContainer}>
-              <Image style={styles.fieldIcon} source={require('./res/images/pwd_blue.png')} />
+              <Image style={styles.fieldIcon} source={require('../res/images/pwd_blue.png')} />
             </View>
             <View style={styles.verticalSeperator} />
             <TextInput
@@ -215,7 +215,7 @@ class RegisterPage_2 extends React.Component {
           <View style={styles.seperator}/>
           <View style={styles.fieldContainer}>
             <View style={styles.imageContainer}>
-              <Image style={styles.fieldIcon} source={require('./res/images/pwd_blue.png')} />
+              <Image style={styles.fieldIcon} source={require('../res/images/pwd_blue.png')} />
             </View>
             <View style={styles.verticalSeperator} />
             <TextInput
@@ -237,7 +237,7 @@ class RegisterPage_2 extends React.Component {
           <View style={styles.seperator}/>
           <View style={styles.fieldContainer}>
             <View style={styles.imageContainer}>
-              <Image style={styles.fieldIcon} source={require('./res/images/pwd_blue.png')} />
+              <Image style={styles.fieldIcon} source={require('../res/images/pwd_blue.png')} />
             </View>
             <View style={styles.verticalSeperator} />
             <TextInput
@@ -267,4 +267,4 @@ class RegisterPage_2 extends React.Component {
   }
 }
 
-module.exports = RegisterPage_2;
+module.exports = Register;

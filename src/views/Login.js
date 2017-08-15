@@ -16,9 +16,9 @@ import {
   Dimensions
 } from 'react-native';
 import { NavigationActions, StackNavigator } from 'react-navigation';
-import ScrollViewKeybordHandler from './components/KeyboardAwareScrollView';
+import ScrollViewKeybordHandler from '../components/KeyboardAwareScrollView';
 import LoginController from './LoginController'
-import Utils from './utils/Utils';
+import Utils from '../utils/Utils';
 
 var width = Dimensions.get('window').width; //full width
 var height = Dimensions.get('window').height; //full height
@@ -42,10 +42,9 @@ const styles = StyleSheet.create({
     flex: 1
   },
   scrollViewLayout: {
+    flex: 1,
     width: width,
     height: getScrollViewHeight(),
-    // justifyContent: 'center',
-    // alignItems: 'center',
     backgroundColor: 'transparent'
   },
   topContainer: {
@@ -90,12 +89,13 @@ const styles = StyleSheet.create({
 
 const resetAction = NavigationActions.reset({
   index: 0,
+  key: null,
   actions: [
-    NavigationActions.navigate({ routeName: 'Home'})
+    NavigationActions.navigate({ routeName: 'Authorized'})
   ]
 })
 
-class Login extends React.Component {
+export default class Login extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -114,11 +114,11 @@ class Login extends React.Component {
     const { params = {} } = navigation.state
 
     return {
-      headerStyle: {backgroundColor: '#37CDBE', height: 0},
+      headerStyle: {backgroundColor: '#37CDBE'},
       headerLeft: (
         <TouchableHighlight style= {{flex:1, justifyContent: 'center', alignItems: 'center',marginTop: Utils.getStatusBarHeight(), paddingLeft: 10, backgroundColor: 'transparent'}} underlayColor="rgba(255,255,255,0.15)"
         onPress={() => params.onBack()}>
-          <Image style={{ width: 16, height: 16 }} source={require('./res/images/back_white.png')} />
+          <Image style={{ width: 16, height: 16 }} source={require('../res/images/back_white.png')} />
         </TouchableHighlight>
       )
     }
@@ -199,7 +199,7 @@ class Login extends React.Component {
             <View style={styles.loginContainer}>
               <View style={styles.userName}>
                 <View style={{height:50, width: 50, backgroundColor:'#E6F5F5', justifyContent: 'center', alignItems: 'center',}}>
-                  <Image style={{height:30, width: 30, backgroundColor:'#E6F5F5'}} source={require('./res/images/usr_blue.png')} />
+                  <Image style={{height:30, width: 30, backgroundColor:'#E6F5F5'}} source={require('../res/images/usr_blue.png')} />
                 </View>
                 <TextInput
                   ref={(objUserName) => this.refUsername = objUserName}
@@ -221,7 +221,7 @@ class Login extends React.Component {
               </View>
               <View style={styles.passWord}>
                 <View style={{height:50, width: 50, backgroundColor:'#E6F5F5', justifyContent: 'center', alignItems: 'center',}}>
-                  <Image style={{height:30, width: 30, backgroundColor:'#E6F5F5'}} source={require('./res/images/pwd_blue.png')} />
+                  <Image style={{height:30, width: 30, backgroundColor:'#E6F5F5'}} source={require('../res/images/pwd_blue.png')} />
                 </View>
                 <TextInput
                   ref={(objUserName) => this.refUsername = objUserName}
@@ -264,5 +264,3 @@ class Login extends React.Component {
     );
   }
 }
-
-module.exports = Login;

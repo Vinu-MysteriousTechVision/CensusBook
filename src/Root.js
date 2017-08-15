@@ -10,10 +10,11 @@ import {
   StatusBar
 } from 'react-native';
 import { NavigationActions, StackNavigator } from 'react-navigation';
-import Login from './Login';
-import Home from './Home';
-import Register from './Register';
-import RegisterPage_2 from './RegisterPage_2';
+import getSlideFromRightTransitionConfig from './components/SlideFromRightTransition';
+import Login from './views/Login';
+import Register from './views/Register';
+import Home from './views/Home';
+import Profile from './views/Profile';
 
 class Root extends Component {
   constructor(props) {
@@ -38,7 +39,7 @@ class Root extends Component {
   }
 
   tapOnSignUp() {
-    this.props.navigation.navigate('RegisterPage_2');
+    this.props.navigation.navigate('Register');
   }
 
 
@@ -56,7 +57,6 @@ class Root extends Component {
               <Text style={{color: '#37CDBE', fontWeight: 'bold', fontSize: 20}} numberOfLines={1}>Sign In</Text>
             </TouchableHighlight>
           </View>
-          <View style={styles.seperator}/>
           <View style={[styles.signUpContainer, {flexDirection: 'row'}]}>
             <TouchableHighlight style= {{flex:1, justifyContent: 'center', alignItems: 'center'}} underlayColor="rgba(255,255,255,0.15)" onPress={this.tapOnSignUp.bind(this)}>
               <Text style={{color: '#37CDBE', fontWeight: 'bold', fontSize: 20}} numberOfLines={1}>Sign Up</Text>
@@ -68,44 +68,74 @@ class Root extends Component {
   }
 }
 
-const navigationScreens = StackNavigator({
+const UnauthorizedNavigator = StackNavigator({
   Root: { screen: Root },
   Login: { screen: Login },
-  Home: { screen: Home },
-  Register: {screen: Register},
-  RegisterPage_2: {screen: RegisterPage_2}
+  Register: { screen: Register }
+
+}, {
+  initialRouteName: 'Root',
+  headerMode: 'none',
+  transitionConfig: getSlideFromRightTransitionConfig
+
 });
+
+const AuthorizedNavigator  = StackNavigator({
+  Home: { screen: Home },
+  Profile: { screen: Profile }
+}, {
+  initialRouteName: 'Home',
+  // headerMode: 'none',
+  transitionConfig: getSlideFromRightTransitionConfig
+
+});
+
+const navigationScreens = StackNavigator({
+  Unauthorized: { screen: UnauthorizedNavigator  },
+  Authorized: { screen: AuthorizedNavigator }
+}, {
+  initialRouteName: 'Unauthorized',
+  headerMode: 'none'
+});
+
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#37CDBE'
+    backgroundColor: '#062D2D'
   },
   welcome: {
-    fontSize: 20,
+    fontSize: 30,
     textAlign: 'center',
     margin: 10,
+    color: 'white'
   },
   topContainer: {
     flex: 0.5,
-    backgroundColor: '#37CDBE',
+    backgroundColor: '#062D2D',
     justifyContent: 'center'
   },
   bottomContainer: {
     flex: 0.5,
-    justifyContent: 'flex-end',
-    backgroundColor: '#37CDBE',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#062D2D',
   },
   loginContainer: {
     height: 100,
     backgroundColor: 'white'
   },
   btnSignIn: {
-    height: 75,
+    height: 50,
+    width: 230,
+    borderRadius: 5,
     backgroundColor: '#FFFFFF'
   },
   signUpContainer: {
-    height: 75,
+    height: 50,
+    width: 230,
+    borderRadius: 5,
+    marginTop: 20,
     backgroundColor: '#37B4F0'
   },
   seperator: {
