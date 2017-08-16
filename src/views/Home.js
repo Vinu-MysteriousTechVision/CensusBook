@@ -23,9 +23,15 @@ class Home extends Component {
     super(props);
   }
 
-  static navigationOptions = {
-    title: 'Home',
-  };
+  static navigationOptions = ({ navigation }) => {
+    const { params = {} } = navigation.state
+
+    return {
+      title: 'Home',
+      headerTitleStyle: { color: '#FFFFFF'},
+      headerStyle: {backgroundColor: '#062D2D'}
+    }
+  }
 
   componentDidMount(){
 
@@ -61,7 +67,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#F5FCFF',
+    backgroundColor: '#F5FCFF'
   },
   welcome: {
     fontSize: 20,

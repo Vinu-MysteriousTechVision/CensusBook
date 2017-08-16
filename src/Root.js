@@ -59,7 +59,7 @@ class Root extends Component {
           </View>
           <View style={[styles.signUpContainer, {flexDirection: 'row'}]}>
             <TouchableHighlight style= {{flex:1, justifyContent: 'center', alignItems: 'center'}} underlayColor="rgba(255,255,255,0.15)" onPress={this.tapOnSignUp.bind(this)}>
-              <Text style={{color: '#37CDBE', fontWeight: 'bold', fontSize: 20}} numberOfLines={1}>Sign Up</Text>
+              <Text style={{color: '#FFFFFF', fontWeight: 'bold', fontSize: 20}} numberOfLines={1}>Sign Up</Text>
             </TouchableHighlight>
           </View>
         </View>
@@ -136,7 +136,7 @@ const styles = StyleSheet.create({
     width: 230,
     borderRadius: 5,
     marginTop: 20,
-    backgroundColor: '#37B4F0'
+    backgroundColor: '#14DC96'
   },
   seperator: {
     height: 0.5,

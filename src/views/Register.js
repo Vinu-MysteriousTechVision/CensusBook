@@ -96,7 +96,9 @@ class Register extends React.Component {
     this.state = {
       isConnected: null,
       username: '',
-      password: ''
+      email: '',
+      password: '',
+      mobileNumber: ''
     };
     this._handleConnectivityChange = this._handleConnectivityChange.bind(this);
   }
@@ -175,7 +177,7 @@ class Register extends React.Component {
 
             <TextInput
               ref={(objUserName) => this.refUsername = objUserName}
-              style={{flex:1,height: 44, margin: 5, backgroundColor: 'transparent'}}
+              style={{flex:1,height: 44, margin: 5, backgroundColor: 'transparent', color: '#FFFFFF'}}
               onChangeText={(username) => this.setState({username})}
               value={this.state.username}
               editable={true}
@@ -193,14 +195,14 @@ class Register extends React.Component {
           </View>
           <View style={styles.fieldContainer}>
             <View style={styles.imageContainer}>
-              <Image style={styles.fieldIcon} source={require('../res/images/pwd_blue.png')} />
+              <Image style={styles.fieldIcon} source={require('../res/images/email_blue.png')} />
             </View>
             <View style={styles.verticalSeperator} />
             <TextInput
-              ref={(objUserName) => this.refUsername = objUserName}
-              style={{flex:1, height: 44, margin: 5, backgroundColor: 'transparent'}}
-              onChangeText={(password) => this.setState({password})}
-              value={this.state.password}
+              ref={(objEmail) => this.refEmail = objEmail}
+              style={{flex:1, height: 44, margin: 5, backgroundColor: 'transparent', color: '#FFFFFF'}}
+              onChangeText={(email) => this.setState({email})}
+              value={this.state.email}
               editable={true}
               maxLength={100}
               placeholder="Email"
@@ -219,8 +221,8 @@ class Register extends React.Component {
             </View>
             <View style={styles.verticalSeperator} />
             <TextInput
-              ref={(objUserName) => this.refUsername = objUserName}
-              style={{flex:1, height: 44, margin: 5, backgroundColor: 'transparent'}}
+              ref={(objPassword) => this.refPassword = objPassword}
+              style={{flex:1, height: 44, margin: 5, backgroundColor: 'transparent', color: '#FFFFFF'}}
               onChangeText={(password) => this.setState({password})}
               value={this.state.password}
               editable={true}
@@ -230,21 +232,20 @@ class Register extends React.Component {
               underlineColorAndroid="rgba(0,0,0,0)"
               returnKeyType="next"
               returnKeyLabel="次"
-              keyboardType="email-address"
               blurOnSubmit={false}
             />
           </View>
           <View style={styles.seperator}/>
           <View style={styles.fieldContainer}>
             <View style={styles.imageContainer}>
-              <Image style={styles.fieldIcon} source={require('../res/images/pwd_blue.png')} />
+              <Image style={styles.fieldIcon} source={require('../res/images/contactNum.png')} />
             </View>
             <View style={styles.verticalSeperator} />
             <TextInput
-              ref={(objUserName) => this.refUsername = objUserName}
-              style={{flex:1, height: 44, margin: 5, backgroundColor: 'transparent'}}
-              onChangeText={(password) => this.setState({password})}
-              value={this.state.password}
+              ref={(objMobileNumber) => this.refMobileNumber = objMobileNumber}
+              style={{flex:1, height: 44, margin: 5, backgroundColor: 'transparent', color: '#FFFFFF'}}
+              onChangeText={(mobileNumber) => this.setState({mobileNumber})}
+              value={this.state.mobileNumber}
               editable={true}
               maxLength={100}
               placeholder="Mobile number"
@@ -252,10 +253,10 @@ class Register extends React.Component {
               underlineColorAndroid="rgba(0,0,0,0)"
               returnKeyType="next"
               returnKeyLabel="次"
-              keyboardType="email-address"
               blurOnSubmit={false}
             />
           </View>
+          <View style={styles.seperator}/>
         </View>
         <View style={[styles.btnRegister]}>
           <TouchableHighlight style= {{flex:1, justifyContent: 'center', alignItems: 'center'}} underlayColor="rgba(255,255,255,0.15)" onPress={this.registerRequest.bind(this)}>

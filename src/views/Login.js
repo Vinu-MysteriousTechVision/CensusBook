@@ -49,19 +49,26 @@ const styles = StyleSheet.create({
   },
   topContainer: {
     flex: 0.5,
-    backgroundColor: '#37CDBE'
+    backgroundColor: '#062D2D'
   },
   bottomContainer: {
     flex: 0.5,
-    backgroundColor: 'gray',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    backgroundColor: '#062D2D',
   },
   loginContainer: {
-    height: 100,
-    backgroundColor: 'white'
+    // height: 100,
+    width: 250,
+    backgroundColor: 'transparent'
   },
   btnSignIn: {
-    flex: 0.25,
-    backgroundColor: '#37B4F0'
+    // flex: 0.25,
+    height: 50,
+    width: 250,
+    marginTop: 20,
+    backgroundColor: '#37B4F0',
+    backgroundColor: '#14DC96'
   },
   signUpContainer: {
     flex: 0.25,
@@ -71,19 +78,27 @@ const styles = StyleSheet.create({
     height: 0.5,
     backgroundColor: '#37AADC'
   },
+  verticalSeperator: {
+    height: 30,
+    width: 0.5,
+    backgroundColor: '#37AADC'
+  },
   userName: {
     height: 50,
+    width: 250,
     flexDirection: 'row',
     justifyContent: 'flex-start',
     alignItems: 'center',
-    backgroundColor: "rgba(255,255,255,0.15)",
+    backgroundColor: "transparent",
   },
   passWord: {
     height: 50,
+    width: 250,
+    marginTop: 20,
     flexDirection: 'row',
     justifyContent: 'flex-start',
     alignItems: 'center',
-    backgroundColor: "rgba(255,255,255,0.15)",
+    backgroundColor: "transparent",
   }
 })
 
@@ -198,12 +213,13 @@ export default class Login extends React.Component {
           <View style={styles.bottomContainer}>
             <View style={styles.loginContainer}>
               <View style={styles.userName}>
-                <View style={{height:50, width: 50, backgroundColor:'#E6F5F5', justifyContent: 'center', alignItems: 'center',}}>
-                  <Image style={{height:30, width: 30, backgroundColor:'#E6F5F5'}} source={require('../res/images/usr_blue.png')} />
+                <View style={{height:50, width: 50, backgroundColor:'transparent', justifyContent: 'center', alignItems: 'center',}}>
+                  <Image style={{height:30, width: 30, backgroundColor:'transparent'}} source={require('../res/images/usr_blue.png')} />
                 </View>
+                <View style={styles.verticalSeperator} />
                 <TextInput
                   ref={(objUserName) => this.refUsername = objUserName}
-                  style={{flex:1,height: 44, margin: 5, backgroundColor: 'transparent'}}
+                  style={{height: 50, width: 250, margin: 5, backgroundColor: 'transparent'}}
                   onChangeText={(username) => this.setState({username})}
                   value={this.state.username}
                   editable={true}
@@ -217,15 +233,15 @@ export default class Login extends React.Component {
                   blurOnSubmit={false}
                 />
               </View>
-              <View style={styles.seperator}>
-              </View>
+              <View style={styles.seperator}/>
               <View style={styles.passWord}>
-                <View style={{height:50, width: 50, backgroundColor:'#E6F5F5', justifyContent: 'center', alignItems: 'center',}}>
-                  <Image style={{height:30, width: 30, backgroundColor:'#E6F5F5'}} source={require('../res/images/pwd_blue.png')} />
+                <View style={{height:50, width: 50, backgroundColor:'transparent', justifyContent: 'center', alignItems: 'center',}}>
+                  <Image style={{height:30, width: 30, backgroundColor:'transparent'}} source={require('../res/images/pwd_blue.png')} />
                 </View>
+                <View style={styles.verticalSeperator} />
                 <TextInput
                   ref={(objUserName) => this.refUsername = objUserName}
-                  style={{flex:1, height: 44, margin: 5, backgroundColor: 'transparent'}}
+                  style={{height: 50, width: 250, margin: 5, backgroundColor: 'transparent'}}
                   onChangeText={(password) => this.setState({password})}
                   value={this.state.password}
                   editable={true}
@@ -239,24 +255,27 @@ export default class Login extends React.Component {
                   blurOnSubmit={false}
                 />
               </View>
+              <View style={styles.seperator}/>
             </View>
             <View style={[styles.btnSignIn]}>
               <TouchableHighlight style= {{flex:1, justifyContent: 'center', alignItems: 'center'}} underlayColor="rgba(255,255,255,0.15)" onPress={this.loginRequest.bind(this)}>
                 <Text style={{color: '#FFFFFF', fontWeight: 'bold', fontSize: 20}} numberOfLines={1}>Sign In</Text>
               </TouchableHighlight>
             </View>
-            <View style={[styles.signUpContainer, {flexDirection: 'row'}]}>
-              <View style={{flex: 0.4, backgroundColor:'#1E96A0'}}>
-                <TouchableHighlight style= {{flex:1, justifyContent: 'center', alignItems: 'center'}} underlayColor="rgba(255,255,255,0.15)" onPress={() => alert('click')}>
-                  <Text style={{color: '#FFFFFF', fontWeight: 'bold', fontSize: 20}} numberOfLines={2}>Forgot Password</Text>
-                </TouchableHighlight>
+            {/*
+              <View style={[styles.signUpContainer, {flexDirection: 'row'}]}>
+                <View style={{flex: 0.4, backgroundColor:'#1E96A0'}}>
+                  <TouchableHighlight style= {{flex:1, justifyContent: 'center', alignItems: 'center'}} underlayColor="rgba(255,255,255,0.15)" onPress={() => alert('click')}>
+                    <Text style={{color: '#FFFFFF', fontWeight: 'bold', fontSize: 20}} numberOfLines={2}>Forgot Password</Text>
+                  </TouchableHighlight>
+                </View>
+                <View style={{flex: 0.6, backgroundColor:'#2DC391'}}>
+                  <TouchableHighlight style= {{flex:1, justifyContent: 'center', alignItems: 'center'}} underlayColor="rgba(255,255,255,0.15)" onPress={this.tapOnRegister.bind(this)}>
+                    <Text style={{color: '#FFFFFF', fontWeight: 'bold', fontSize: 20}} numberOfLines={1}>Sign Up</Text>
+                  </TouchableHighlight>
+                </View>
               </View>
-              <View style={{flex: 0.6, backgroundColor:'#2DC391'}}>
-                <TouchableHighlight style= {{flex:1, justifyContent: 'center', alignItems: 'center'}} underlayColor="rgba(255,255,255,0.15)" onPress={this.tapOnRegister.bind(this)}>
-                  <Text style={{color: '#FFFFFF', fontWeight: 'bold', fontSize: 20}} numberOfLines={1}>Sign Up</Text>
-                </TouchableHighlight>
-              </View>
-            </View>
+            */}
           </View>
         </ScrollViewKeybordHandler>
 
