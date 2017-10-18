@@ -57,6 +57,10 @@ class Home extends Component {
           onPress={() =>this.props.navigation.navigate('Profile')}
           title="open profile"
         />
+        <Button
+          onPress={() =>this.props.navigation.navigate('BranchList')}
+          title="open Branches"
+        />
       </View>
     );
   }

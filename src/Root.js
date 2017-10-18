@@ -15,6 +15,8 @@ import Login from './views/Login';
 import Register from './views/Register';
 import Home from './views/Home';
 import Profile from './views/Profile';
+import BranchList from './views/BranchList';
+import BranchCreate from './views/BranchCreate';
 
 class Root extends Component {
   constructor(props) {
@@ -82,7 +84,9 @@ const UnauthorizedNavigator = StackNavigator({
 
 const AuthorizedNavigator  = StackNavigator({
   Home: { screen: Home },
-  Profile: { screen: Profile }
+  Profile: { screen: Profile },
+  BranchList: { screen: BranchList },
+  BranchCreate: { screen: BranchCreate}
 }, {
   initialRouteName: 'Home',
   // headerMode: 'none',
