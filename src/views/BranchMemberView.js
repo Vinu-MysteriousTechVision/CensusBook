@@ -1,10 +1,10 @@
-'use strict';
 import React, { Component } from 'react';
 import {
   TouchableHighlight,
   AppRegistry,
   StyleSheet,
   ListView,
+  NetInfo,
   Image,
   View,
   Text,
@@ -12,9 +12,34 @@ import {
 } from 'react-native';
 import { NavigationActions, StackNavigator } from 'react-navigation';
 import Utils from '../utils/Utils';
-import BranchView from './Branch';
+import BranchMember from './BranchMember';
 
-class BranchList extends Component {
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#062D2D',
+    backgroundColor: '#FCFCFC',
+    justifyContent: 'flex-start',
+    padding: 10
+  },
+  seperator: {
+    height: 0.5,
+    marginBottom: 20,
+    backgroundColor: '#37AADC',
+    backgroundColor: '#002887'
+  },
+  registerContainer: {
+    backgroundColor: 'transparent'
+  },
+  btnRegister: {
+    height: 50,
+    marginTop: 20,
+    backgroundColor: '#37B4F0',
+    backgroundColor: '#14DC96',
+    backgroundColor: '#001956'
+  }
+});
+class branchMemberView extends React.Component {
   constructor(props) {
     super(props);
     const ds = new ListView.DataSource({
@@ -23,14 +48,14 @@ class BranchList extends Component {
     this.state = {
       dataSource: ds.cloneWithRows([])
     }
+    this._handleConnectivityChange = this._handleConnectivityChange.bind(this);
   }
 
-  /*
   static navigationOptions = ({ navigation }) => {
     const { params = {} } = navigation.state
 
     return {
-      title: 'Branches',
+      title: 'Branch Members',
       headerTitleStyle: { color: '#FFFFFF'},
       headerStyle: {backgroundColor: '#062D2D'},
       headerBackTitleStyle: {backgroundColor: '#FFFFFF'},
@@ -41,24 +66,18 @@ class BranchList extends Component {
         </TouchableHighlight>
       )
     }
-  }*/
-
-  static navigationOptions = ({ navigation }) => {
-    const { params = {} } = navigation.state
-
-    return {
-      title: 'Home',
-      headerTitleStyle: { color: '#FFFFFF'},
-      headerStyle: {backgroundColor: '#062D2D'}
-    }
   }
 
+
+  _handleConnectivityChange = (isConnected) => {
+    this.setState({ isConnected });
+  };
 
   tapOnBack() {
     this.props.navigation.goBack();
   }
 
-  loadBrances() {
+  loadBranceMembers() {
     this.setState({
       dataSource: this.state.dataSource.cloneWithRows(['abc', 'bvg', 'bvg', 'bvg', 'bvg', 'bvg', 'bvg', 'bvg', 'bvg', 'bvg'])
     });
@@ -66,15 +85,6 @@ class BranchList extends Component {
 
   actionOnAddBranch() {
     this.props.navigation.navigate('BranchCreate')
-  }
-
-  componentDidMount(){
-    // this.props.navigation.setParams({ onBack: this.tapOnBack.bind(this) })
-    this.loadBrances();
-  }
-
-  componentWillUnmount(){
-
   }
 
   actionOnAddBranchMember() {
@@ -85,6 +95,26 @@ class BranchList extends Component {
     this.props.navigation.navigate('BranchMemberView')
   }
 
+
+  componentDidMount() {
+    NetInfo.isConnected.addEventListener('change', this._handleConnectivityChange );
+    NetInfo.isConnected.fetch().done( (isConnected) => { this.setState({ isConnected }); } );
+
+    this.props.navigation.setParams({ onBack: this.tapOnBack.bind(this) })
+    this.loadBranceMembers();
+  }
+
+  componentWillMount() {
+
+  }
+
+  componentWillUnmount() {
+    NetInfo.isConnected.removeEventListener( 'change', this._handleConnectivityChange );
+  }
+
+  registerRequest() {
+
+  }
 
   render() {
     const { navigate } = this.props.navigation;
@@ -98,7 +128,8 @@ class BranchList extends Component {
           showsVerticalscrollIndicator={false}
           dataSource = {this.state.dataSource}
           renderRow = {(data) =>
-            <BranchView
+            <BranchMember
+              actionOnAddBranchMember = {this.actionOnAddBranchMember.bind(this)}
               actionOnViewBranchMember = {this.actionOnViewBranchMember.bind(this)} />
           }
         />
@@ -114,21 +145,4 @@ class BranchList extends Component {
   }
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#F5FCFF',
-  },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-  },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
-  },
-});
-
-module.exports = BranchList;
+module.exports = branchMemberView;

@@ -33,13 +33,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#37AADC',
     backgroundColor: '#002887'
   },
-  fieldContainer: {
-    height: 50,
-    flexDirection: 'row',
-    justifyContent: 'flex-start',
-    alignItems: 'flex-start',
-    backgroundColor: 'transparent'
-  },
   registerContainer: {
     backgroundColor: 'transparent'
   },
@@ -49,52 +42,9 @@ const styles = StyleSheet.create({
     backgroundColor: '#37B4F0',
     backgroundColor: '#14DC96',
     backgroundColor: '#001956'
-  },
-  imageContainer: {
-    height:50,
-    width: 50,
-    backgroundColor:'transparent',
-    justifyContent: 'center',
-    alignItems: 'center'
-  },
-  fieldIcon: {
-    height:25,
-    width: 25,
-    backgroundColor:'transparent'
-  },
-  verticalSeperator: {
-    height: 30,
-    width: 0.5,
-    backgroundColor: '#37AADC'
-  },
-  menuHeaderImageBoarder: {
-    width: 106,
-    height: 106,
-    backgroundColor: '#E1E1E1',
-    alignSelf: 'center',
-    justifyContent: 'center',
-    borderRadius: 53
-  },
-  menuHeaderimage: {
-    alignSelf: 'center',
-    justifyContent: 'center',
-    height: 100,
-    borderRadius: 50,
-    width: 100,
-    backgroundColor: 'transparent'
-  },
-  menuHeaderLabel: {
-    height: 20,
-    marginTop: 5,
-    alignSelf: 'center',
-    justifyContent: 'center',
-    color: 'white',
-    fontSize: 18,
-    fontWeight: 'bold',
-    backgroundColor: 'transparent'
   }
 });
-class BranchCreate extends React.Component {
+class branchMemberCreate extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -111,7 +61,7 @@ class BranchCreate extends React.Component {
     const { params = {} } = navigation.state
 
     return {
-      title: 'Add Branche',
+      title: 'Add Branch Member',
       headerTitleStyle: { color: '#FFFFFF'},
       headerStyle: {backgroundColor: '#062D2D'},
       headerBackTitleStyle: {backgroundColor: '#FFFFFF'},
@@ -319,4 +269,4 @@ class BranchCreate extends React.Component {
   }
 }
 
-module.exports = BranchCreate;
+module.exports = branchMemberCreate;
