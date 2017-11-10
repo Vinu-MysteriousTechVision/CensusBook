@@ -21,7 +21,8 @@ class BranchList extends Component {
       rowHasChanged: (r1, r2) => r1 !== r2
     });
     this.state = {
-      dataSource: ds.cloneWithRows([])
+      dataSource: ds.cloneWithRows([]),
+      aryBranches: []
     }
   }
 
@@ -60,12 +61,8 @@ class BranchList extends Component {
 
   loadBrances() {
     this.setState({
-      dataSource: this.state.dataSource.cloneWithRows(['abc', 'bvg', 'bvg', 'bvg', 'bvg', 'bvg', 'bvg', 'bvg', 'bvg', 'bvg'])
+      dataSource: this.state.dataSource.cloneWithRows(this.state.aryBranches)
     });
-  }
-
-  actionOnAddBranch() {
-    this.props.navigation.navigate('BranchCreate')
   }
 
   componentDidMount(){
@@ -77,12 +74,25 @@ class BranchList extends Component {
 
   }
 
+  memberRegisterCallback(data) {
+    var tempArray = this.state.aryBranches;
+    tempArray.push(data);
+    this.setState({
+      aryBranches: tempArray,
+      dataSource: this.state.dataSource.cloneWithRows(tempArray)
+    });
+  }
+
+  actionOnAddBranch() {
+    this.props.navigation.navigate('BranchCreate', {registerCallback: this.memberRegisterCallback.bind(this)});
+  }
+
   actionOnAddBranchMember() {
     this.props.navigation.navigate('BranchMemberCreate')
   }
 
   actionOnViewBranchMember() {
-    this.props.navigation.navigate('BranchMemberView')
+    this.props.navigation.navigate('BranchMemberViewList')
   }
 
 
@@ -92,21 +102,20 @@ class BranchList extends Component {
     return (
       <View style={styles.container}>
         <ListView
-          style= {{ flex: 1, backgroundColor: 'gray'}}
+          style= {{ flex: 1, backgroundColor: '#d6efff'}}
           removeClippedSubviews={false}
           enableEmptySections={true}
           showsVerticalscrollIndicator={false}
           dataSource = {this.state.dataSource}
           renderRow = {(data) =>
-            <BranchView
-              actionOnViewBranchMember = {this.actionOnViewBranchMember.bind(this)} />
+            <BranchView actionOnViewBranchMember = {this.actionOnViewBranchMember.bind(this)} />
           }
         />
         <TouchableHighlight style={{ position: 'absolute', height: 44, width: 44, right: 15, bottom: 15, justifyContent: 'center', alignItems: 'center' }}
           onPress={this.actionOnAddBranch.bind(this)}
           underlayColor="rgba(0,0,0,0)"
         >
-          <View style={{ width: 44, height: 44 , backgroundColor: 'green'}}/>
+          <Image style={{ width: 44, height: 44 }} source={require('../res/images/add.png')} />
         </TouchableHighlight>
 
       </View>

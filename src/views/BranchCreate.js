@@ -16,6 +16,7 @@ import {
 import { NavigationActions, StackNavigator } from 'react-navigation';
 import Utils from '../utils/Utils';
 import ScrollViewKeybordHandler from '../components/KeyboardAwareScrollView';
+import { Branch } from '../entities';
 
 var width = Dimensions.get('window').width - 80; //Menu width
 
@@ -100,9 +101,13 @@ class BranchCreate extends React.Component {
     this.state = {
       isConnected: null,
       branchName: '',
-      email: '',
-      password: '',
-      mobileNumber: ''
+      branchNo: '',
+      taluk: '',
+      district: '',
+      panchayath: '',
+      village: '',
+      place: '',
+      pinCode: ''
     };
     this._handleConnectivityChange = this._handleConnectivityChange.bind(this);
   }
@@ -116,9 +121,10 @@ class BranchCreate extends React.Component {
       headerStyle: {backgroundColor: '#062D2D'},
       headerBackTitleStyle: {backgroundColor: '#FFFFFF'},
       headerLeft: (
-        <TouchableHighlight style= {{flex:1, justifyContent: 'center', alignItems: 'center', paddingLeft: 10, backgroundColor: 'transparent'}} underlayColor="rgba(255,255,255,0.15)"
-        onPress={() => params.onBack()}>
-          <Image style={{ width: 16, height: 16 }} source={require('../res/images/back_white.png')} />
+        <TouchableHighlight style= {{flex:1, justifyContent: 'center', alignItems: 'center', paddingLeft: 10, backgroundColor: 'transparent'}}
+          underlayColor="rgba(255,255,255,0.15)"
+          onPress={() => params.onBack()}>
+            <Image style={{ width: 16, height: 16 }} source={require('../res/images/back_white.png')} />
         </TouchableHighlight>
       )
     }
@@ -162,6 +168,28 @@ class BranchCreate extends React.Component {
 
   registerRequest() {
 
+    var branch = {
+      'branchName': 'KSS Branch No.14',
+      'branchNo' : '14',
+      'taluk' : 'Kodungallur',
+      'district' : 'Thrissur',
+      'panchayath': 'Poyya',
+      'village': 'Pallipuram',
+      'place': 'Chanthuruthy',
+      'pinCode': '680732'
+    }
+
+    var regBranchObj = {
+      'branch' : branch
+    }
+
+    var objBranch = new Branch(regBranchObj['branch']);
+    const { params = {} } = this.props.navigation.state
+    if (params.registerCallback) {
+      params.registerCallback(objBranch);
+    }
+    this.tapOnBack();
+
   }
 
   render() {
@@ -173,7 +201,7 @@ class BranchCreate extends React.Component {
         <View style={[styles.registerContainer, {backgroundColor: 'transparent'}]}>
           <Text style= {{ color: '#37AADC', fontSize: 16, marginLeft: 5 }} >Branch Name</Text>
           <TextInput
-            ref={(objUserName) => this.refBranchname = objUserName}
+            ref={(objBranchName) => this.refBranchname = objBranchName}
             style={{height: 44, margin: 5, justifyContent: 'flex-start', alignItems: 'center', backgroundColor: 'transparent', color: '#FFFFFF'}}
             onChangeText={(branchName) => this.setState({branchName})}
             value={this.state.branchName}
@@ -190,10 +218,10 @@ class BranchCreate extends React.Component {
           <View style={styles.seperator}/>
           <Text style= {{ color: '#37AADC', fontSize: 16, marginLeft: 5 }} >Branch No</Text>
           <TextInput
-            ref={(objUserName) => this.refUsername = objUserName}
+            ref={(objBranchNo) => this.refBranchNo = objBranchNo}
             style={{height: 44, margin: 5, justifyContent: 'flex-start', alignItems: 'center', backgroundColor: 'transparent', color: '#FFFFFF'}}
-            onChangeText={(username) => this.setState({username})}
-            value={this.state.username}
+            onChangeText={(branchNo) => this.setState({branchNo})}
+            value={this.state.branchNo}
             editable={true}
             maxLength={100}
             placeholder=""
@@ -207,10 +235,10 @@ class BranchCreate extends React.Component {
           <View style={styles.seperator}/>
           <Text style= {{ color: '#37AADC', fontSize: 16, marginLeft: 5 }} >Taluk</Text>
           <TextInput
-            ref={(objUserName) => this.refUsername = objUserName}
+            ref={(objTaluk) => this.refTaluk = objTaluk}
             style={{height: 44, margin: 5, justifyContent: 'flex-start', alignItems: 'center', backgroundColor: 'transparent', color: '#FFFFFF'}}
-            onChangeText={(username) => this.setState({username})}
-            value={this.state.username}
+            onChangeText={(taluk) => this.setState({taluk})}
+            value={this.state.taluk}
             editable={true}
             maxLength={100}
             placeholder=""
@@ -224,10 +252,10 @@ class BranchCreate extends React.Component {
           <View style={styles.seperator}/>
           <Text style= {{ color: '#37AADC', fontSize: 16, marginLeft: 5 }} >District</Text>
           <TextInput
-            ref={(objUserName) => this.refUsername = objUserName}
+            ref={(objDistrict) => this.refDistrict = objDistrict}
             style={{height: 44, margin: 5, justifyContent: 'flex-start', alignItems: 'center', backgroundColor: 'transparent', color: '#FFFFFF'}}
-            onChangeText={(username) => this.setState({username})}
-            value={this.state.username}
+            onChangeText={(district) => this.setState({district})}
+            value={this.state.district}
             editable={true}
             maxLength={100}
             placeholder=""
@@ -241,10 +269,10 @@ class BranchCreate extends React.Component {
           <View style={styles.seperator}/>
           <Text style= {{ color: '#37AADC', fontSize: 16, marginLeft: 5 }} >Panchayath</Text>
           <TextInput
-            ref={(objUserName) => this.refUsername = objUserName}
+            ref={(objPanchayath) => this.refPanchayath = objPanchayath}
             style={{height: 44, margin: 5, justifyContent: 'flex-start', alignItems: 'center', backgroundColor: 'transparent', color: '#FFFFFF'}}
-            onChangeText={(username) => this.setState({username})}
-            value={this.state.username}
+            onChangeText={(panchayath) => this.setState({panchayath})}
+            value={this.state.panchayath}
             editable={true}
             maxLength={100}
             placeholder=""
@@ -258,10 +286,10 @@ class BranchCreate extends React.Component {
           <View style={styles.seperator}/>
           <Text style= {{ color: '#37AADC', fontSize: 16, marginLeft: 5 }} >Vilage</Text>
           <TextInput
-            ref={(objUserName) => this.refUsername = objUserName}
+            ref={(objVillage) => this.refVillage = objVillage}
             style={{height: 44, margin: 5, justifyContent: 'flex-start', alignItems: 'center', backgroundColor: 'transparent', color: '#FFFFFF'}}
-            onChangeText={(username) => this.setState({username})}
-            value={this.state.username}
+            onChangeText={(village) => this.setState({village})}
+            value={this.state.village}
             editable={true}
             maxLength={100}
             placeholder=""
@@ -275,10 +303,10 @@ class BranchCreate extends React.Component {
           <View style={styles.seperator}/>
           <Text style= {{ color: '#37AADC', fontSize: 16, marginLeft: 5 }} >Place</Text>
           <TextInput
-            ref={(objUserName) => this.refUsername = objUserName}
+            ref={(objPlace) => this.refPlace = objPlace}
             style={{height: 44, margin: 5, justifyContent: 'flex-start', alignItems: 'center', backgroundColor: 'transparent', color: '#FFFFFF'}}
-            onChangeText={(username) => this.setState({username})}
-            value={this.state.username}
+            onChangeText={(place) => this.setState({place})}
+            value={this.state.place}
             editable={true}
             maxLength={100}
             placeholder=""
@@ -292,10 +320,10 @@ class BranchCreate extends React.Component {
           <View style={styles.seperator}/>
           <Text style= {{ color: '#37AADC', fontSize: 16, marginLeft: 5 }} >Pin code</Text>
           <TextInput
-            ref={(objUserName) => this.refUsername = objUserName}
+            ref={(objPinCode) => this.refPinCode = objPinCode}
             style={{height: 44, margin: 5, justifyContent: 'flex-start', alignItems: 'center', backgroundColor: 'transparent', color: '#FFFFFF'}}
-            onChangeText={(username) => this.setState({username})}
-            value={this.state.username}
+            onChangeText={(pinCode) => this.setState({pinCode})}
+            value={this.state.pinCode}
             editable={true}
             maxLength={100}
             placeholder=""
@@ -309,7 +337,9 @@ class BranchCreate extends React.Component {
           <View style={styles.seperator}/>
         </View>
         <View style={[styles.btnRegister]}>
-          <TouchableHighlight style= {{flex:1, justifyContent: 'center', alignItems: 'center'}} underlayColor="rgba(255,255,255,0.15)" onPress={this.registerRequest.bind(this)}>
+          <TouchableHighlight style= {{flex:1, justifyContent: 'center', alignItems: 'center'}}
+            underlayColor="rgba(255,255,255,0.15)"
+            onPress={this.registerRequest.bind(this)}>
             <Text style={{color: '#FFFFFF', fontWeight: 'bold', fontSize: 20}} numberOfLines={1}>Add</Text>
           </TouchableHighlight>
         </View>

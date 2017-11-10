@@ -18,7 +18,7 @@ import Profile from './views/Profile';
 import BranchList from './views/BranchList';
 import BranchCreate from './views/BranchCreate';
 import BranchMemberCreate from './views/BranchMemberCreate';
-import BranchMemberView from './views/BranchMemberView';
+import BranchMemberViewList from './views/BranchMemberViewList';
 
 class Root extends Component {
   constructor(props) {
@@ -90,7 +90,7 @@ const AuthorizedNavigator  = StackNavigator({
   BranchList: { screen: BranchList },
   BranchCreate: { screen: BranchCreate},
   BranchMemberCreate: { screen: BranchMemberCreate},
-  BranchMemberView: { screen: BranchMemberView}
+  BranchMemberViewList: { screen: BranchMemberViewList}
 }, {
   initialRouteName: 'BranchList',
   // headerMode: 'none',

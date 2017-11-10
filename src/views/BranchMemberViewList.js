@@ -19,8 +19,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#062D2D',
     backgroundColor: '#FCFCFC',
-    justifyContent: 'flex-start',
-    padding: 10
+    justifyContent: 'flex-start'
   },
   seperator: {
     height: 0.5,
@@ -39,7 +38,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#001956'
   }
 });
-class branchMemberView extends React.Component {
+class BranchMemberViewList extends React.Component {
   constructor(props) {
     super(props);
     const ds = new ListView.DataSource({
@@ -84,15 +83,11 @@ class branchMemberView extends React.Component {
   }
 
   actionOnAddBranch() {
-    this.props.navigation.navigate('BranchCreate')
-  }
-
-  actionOnAddBranchMember() {
     this.props.navigation.navigate('BranchMemberCreate')
   }
 
   actionOnViewBranchMember() {
-    this.props.navigation.navigate('BranchMemberView')
+    // this.props.navigation.navigate('BranchMemberViewList')
   }
 
 
@@ -122,27 +117,23 @@ class branchMemberView extends React.Component {
     return (
       <View style={styles.container}>
         <ListView
-          style= {{ flex: 1, backgroundColor: 'gray'}}
+          style= {{ flex: 1, backgroundColor: '#d6efff'}}
           removeClippedSubviews={false}
           enableEmptySections={true}
           showsVerticalscrollIndicator={false}
           dataSource = {this.state.dataSource}
           renderRow = {(data) =>
-            <BranchMember
-              actionOnAddBranchMember = {this.actionOnAddBranchMember.bind(this)}
-              actionOnViewBranchMember = {this.actionOnViewBranchMember.bind(this)} />
+            <BranchMember actionOnViewBranchMember = {this.actionOnViewBranchMember.bind(this)} />
           }
         />
         <TouchableHighlight style={{ position: 'absolute', height: 44, width: 44, right: 15, bottom: 15, justifyContent: 'center', alignItems: 'center' }}
           onPress={this.actionOnAddBranch.bind(this)}
-          underlayColor="rgba(0,0,0,0)"
-        >
-          <View style={{ width: 44, height: 44 , backgroundColor: 'green'}}/>
+          underlayColor="rgba(0,0,0,0)" >
+          <Image style={{ width: 44, height: 44 }} source={require('../res/images/add.png')} />
         </TouchableHighlight>
-
       </View>
     );
   }
 }
 
-module.exports = branchMemberView;
+module.exports = BranchMemberViewList;
