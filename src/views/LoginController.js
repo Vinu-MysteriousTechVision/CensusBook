@@ -28,8 +28,6 @@ class LoginController {
     var onResponse = function(response, errorResponse, responseStatus, responseHeaders) {
       try {
         if (response && responseHeaders && responseStatus === 200) {
-          // alert('api Success');
-
           var authDetails = {
             "Access-Token" : responseHeaders.get('access-token'),
             "Client" : responseHeaders.get('client'),
@@ -59,7 +57,6 @@ class LoginController {
           }
 
         } else {
-          alert('api Error');
           if (this.state.isConnected) {
             if (!_.isUndefined(errorResponse) && !_.isNull(errorResponse) && !_.isUndefined(responseStatus) && !_.isNull(responseStatus)) {
               var error = errorResponse.Error;

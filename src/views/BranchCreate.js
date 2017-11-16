@@ -17,6 +17,8 @@ import { NavigationActions, StackNavigator } from 'react-navigation';
 import Utils from '../utils/Utils';
 import ScrollViewKeybordHandler from '../components/KeyboardAwareScrollView';
 import { Branch } from '../entities';
+const Realm = require('realm');
+import Schema from '../dataBase/Schema';
 
 var width = Dimensions.get('window').width - 80; //Menu width
 
@@ -109,6 +111,8 @@ class BranchCreate extends React.Component {
       place: '',
       pinCode: ''
     };
+
+    this.dataBase = null;
     this._handleConnectivityChange = this._handleConnectivityChange.bind(this);
   }
 
@@ -147,12 +151,23 @@ class BranchCreate extends React.Component {
     this.props.navigation.goBack();
   }
 
+  componentWillMount() {
+
+  }
+
   componentDidMount() {
     NetInfo.isConnected.addEventListener('change', this._handleConnectivityChange );
     NetInfo.isConnected.fetch().done( (isConnected) => { this.setState({ isConnected }); } );
 
     this.props.navigation.setParams({ onBack: this.tapOnBack.bind(this) })
     this.refBranchname.focus();
+
+    Realm.open({
+      schema: [Schema.BranchSchema]
+    }).then(dbObj => {
+      this.dataBase = dbObj
+    });
+
   }
 
   componentWillMount() {
@@ -184,9 +199,28 @@ class BranchCreate extends React.Component {
     }
 
     var objBranch = new Branch(regBranchObj['branch']);
+
+    this.dataBase.write(() => {
+      this.dataBase.create('Branch',
+        {
+          branchName: this.state.branchName,
+          branchNo : this.state.branchNo,
+          taluk : this.state.taluk,
+          district : this.state.district,
+          panchayath: this.state.panchayath,
+          village: this.state.village,
+          place: this.state.place,
+          pinCode: this.state.pinCode
+        }
+      );
+    });
+
+
+    let dbObjBranch =  this.dataBase.objects('Branch');
+
     const { params = {} } = this.props.navigation.state
     if (params.registerCallback) {
-      params.registerCallback(objBranch);
+      params.registerCallback(objBranch, dbObjBranch);
     }
     this.tapOnBack();
 
@@ -202,7 +236,7 @@ class BranchCreate extends React.Component {
           <Text style= {{ color: '#37AADC', fontSize: 16, marginLeft: 5 }} >Branch Name</Text>
           <TextInput
             ref={(objBranchName) => this.refBranchname = objBranchName}
-            style={{height: 44, margin: 5, justifyContent: 'flex-start', alignItems: 'center', backgroundColor: 'transparent', color: '#FFFFFF'}}
+            style={{height: 44, margin: 5, justifyContent: 'flex-start', alignItems: 'center', backgroundColor: 'transparent', color: 'gray'}}
             onChangeText={(branchName) => this.setState({branchName})}
             value={this.state.branchName}
             editable={true}
@@ -219,7 +253,7 @@ class BranchCreate extends React.Component {
           <Text style= {{ color: '#37AADC', fontSize: 16, marginLeft: 5 }} >Branch No</Text>
           <TextInput
             ref={(objBranchNo) => this.refBranchNo = objBranchNo}
-            style={{height: 44, margin: 5, justifyContent: 'flex-start', alignItems: 'center', backgroundColor: 'transparent', color: '#FFFFFF'}}
+            style={{height: 44, margin: 5, justifyContent: 'flex-start', alignItems: 'center', backgroundColor: 'transparent', color: 'gray'}}
             onChangeText={(branchNo) => this.setState({branchNo})}
             value={this.state.branchNo}
             editable={true}
@@ -236,7 +270,7 @@ class BranchCreate extends React.Component {
           <Text style= {{ color: '#37AADC', fontSize: 16, marginLeft: 5 }} >Taluk</Text>
           <TextInput
             ref={(objTaluk) => this.refTaluk = objTaluk}
-            style={{height: 44, margin: 5, justifyContent: 'flex-start', alignItems: 'center', backgroundColor: 'transparent', color: '#FFFFFF'}}
+            style={{height: 44, margin: 5, justifyContent: 'flex-start', alignItems: 'center', backgroundColor: 'transparent', color: 'gray'}}
             onChangeText={(taluk) => this.setState({taluk})}
             value={this.state.taluk}
             editable={true}
@@ -253,7 +287,7 @@ class BranchCreate extends React.Component {
           <Text style= {{ color: '#37AADC', fontSize: 16, marginLeft: 5 }} >District</Text>
           <TextInput
             ref={(objDistrict) => this.refDistrict = objDistrict}
-            style={{height: 44, margin: 5, justifyContent: 'flex-start', alignItems: 'center', backgroundColor: 'transparent', color: '#FFFFFF'}}
+            style={{height: 44, margin: 5, justifyContent: 'flex-start', alignItems: 'center', backgroundColor: 'transparent', color: 'gray'}}
             onChangeText={(district) => this.setState({district})}
             value={this.state.district}
             editable={true}
@@ -270,7 +304,7 @@ class BranchCreate extends React.Component {
           <Text style= {{ color: '#37AADC', fontSize: 16, marginLeft: 5 }} >Panchayath</Text>
           <TextInput
             ref={(objPanchayath) => this.refPanchayath = objPanchayath}
-            style={{height: 44, margin: 5, justifyContent: 'flex-start', alignItems: 'center', backgroundColor: 'transparent', color: '#FFFFFF'}}
+            style={{height: 44, margin: 5, justifyContent: 'flex-start', alignItems: 'center', backgroundColor: 'transparent', color: 'gray'}}
             onChangeText={(panchayath) => this.setState({panchayath})}
             value={this.state.panchayath}
             editable={true}
@@ -287,7 +321,7 @@ class BranchCreate extends React.Component {
           <Text style= {{ color: '#37AADC', fontSize: 16, marginLeft: 5 }} >Vilage</Text>
           <TextInput
             ref={(objVillage) => this.refVillage = objVillage}
-            style={{height: 44, margin: 5, justifyContent: 'flex-start', alignItems: 'center', backgroundColor: 'transparent', color: '#FFFFFF'}}
+            style={{height: 44, margin: 5, justifyContent: 'flex-start', alignItems: 'center', backgroundColor: 'transparent', color: 'gray'}}
             onChangeText={(village) => this.setState({village})}
             value={this.state.village}
             editable={true}
@@ -304,7 +338,7 @@ class BranchCreate extends React.Component {
           <Text style= {{ color: '#37AADC', fontSize: 16, marginLeft: 5 }} >Place</Text>
           <TextInput
             ref={(objPlace) => this.refPlace = objPlace}
-            style={{height: 44, margin: 5, justifyContent: 'flex-start', alignItems: 'center', backgroundColor: 'transparent', color: '#FFFFFF'}}
+            style={{height: 44, margin: 5, justifyContent: 'flex-start', alignItems: 'center', backgroundColor: 'transparent', color: 'gray'}}
             onChangeText={(place) => this.setState({place})}
             value={this.state.place}
             editable={true}
@@ -321,7 +355,7 @@ class BranchCreate extends React.Component {
           <Text style= {{ color: '#37AADC', fontSize: 16, marginLeft: 5 }} >Pin code</Text>
           <TextInput
             ref={(objPinCode) => this.refPinCode = objPinCode}
-            style={{height: 44, margin: 5, justifyContent: 'flex-start', alignItems: 'center', backgroundColor: 'transparent', color: '#FFFFFF'}}
+            style={{height: 44, margin: 5, justifyContent: 'flex-start', alignItems: 'center', backgroundColor: 'transparent', color: 'gray'}}
             onChangeText={(pinCode) => this.setState({pinCode})}
             value={this.state.pinCode}
             editable={true}

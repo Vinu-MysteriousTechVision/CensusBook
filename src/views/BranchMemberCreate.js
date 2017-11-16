@@ -16,8 +16,10 @@ import {
 import { NavigationActions, StackNavigator } from 'react-navigation';
 import Utils from '../utils/Utils';
 import ScrollViewKeybordHandler from '../components/KeyboardAwareScrollView';
-
+import { BranchMember } from '../entities';
 var width = Dimensions.get('window').width - 80; //Menu width
+const Realm = require('realm');
+import Schema from '../dataBase/Schema';
 
 const styles = StyleSheet.create({
   container: {
@@ -49,11 +51,19 @@ class branchMemberCreate extends React.Component {
     super(props);
     this.state = {
       isConnected: null,
-      branchName: '',
-      email: '',
-      password: '',
-      mobileNumber: ''
+      name: '',
+      houseName: '',
+      place: '',
+      postalName: '',
+      pincode: '',
+      dateOfBirth: '',
+      fatherName: '',
+      motherName: '',
+      qualification: '',
+      job: ''
     };
+
+    this.dataBase = null;
     this._handleConnectivityChange = this._handleConnectivityChange.bind(this);
   }
 
@@ -96,7 +106,14 @@ class branchMemberCreate extends React.Component {
     NetInfo.isConnected.fetch().done( (isConnected) => { this.setState({ isConnected }); } );
 
     this.props.navigation.setParams({ onBack: this.tapOnBack.bind(this) })
-    this.refBranchname.focus();
+    this.refName.focus();
+
+    Realm.open({
+      schema: [Schema.BranchMemberSchema]
+    }).then(dbObj => {
+      this.dataBase = dbObj
+    });
+
   }
 
   componentWillMount() {
@@ -112,7 +129,61 @@ class branchMemberCreate extends React.Component {
 
   registerRequest() {
 
+    var branchMember = {
+      name: 'Vinu',
+      houseName: 'Kuriyedath Parambhil',
+      place: 'Chenthuruthy',
+      postalName: 'malapallipuram',
+      pincode: '680732',
+      dateOfBirth: '20/01/1990',
+      fatherName: 'Venu',
+      motherName: 'Vasansthy',
+      qualification: 'MCA',
+      job: 'Software Engineer'
+    }
+
+    var regBranchMemberObj = {
+      'branchMember' : branchMember
+    }
+
+    var objBranchMemeber = new BranchMember(regBranchMemberObj['branchMember']);
+
+    this.dataBase.write(() => {
+      this.dataBase.create('BranchMember',
+        {
+          name: this.state.name,
+          houseName: this.state.houseName,
+          place: this.state.place,
+          postalName: this.state.postalName,
+          pincode: this.state.pincode,
+          dateOfBirth: this.state.dateOfBirth,
+          fatherName: this.state.fatherName,
+          motherName: this.state.motherName,
+          qualification: this.state.qualification,
+          job: this.state.job
+        }
+      );
+    });
+    let dbObjBranch =  this.dataBase.objects('BranchMember');
+
+
+    const { params = {} } = this.props.navigation.state
+    if (params.registerCallback) {
+      params.registerCallback(dbObjBranch);
+    }
+    this.tapOnBack();
   }
+
+  focusNextField = (nextField, nextFieldSubstitute = null) => {
+    if (nextField) {
+      nextField.focus();
+      return;
+    }
+
+    if (nextFieldSubstitute) {
+      nextFieldSubstitute.focus();
+    }
+  };
 
   render() {
     const { navigate } = this.props.navigation;
@@ -121,12 +192,13 @@ class branchMemberCreate extends React.Component {
       <View style={styles.container}>
         <ScrollViewKeybordHandler keyboardShouldPersistTaps={'always'}>
         <View style={[styles.registerContainer, {backgroundColor: 'transparent'}]}>
-          <Text style= {{ color: '#37AADC', fontSize: 16, marginLeft: 5 }} >Branch Name</Text>
+          <Text style= {{ color: '#37AADC', fontSize: 16, marginLeft: 5 }} >Name</Text>
           <TextInput
-            ref={(objUserName) => this.refBranchname = objUserName}
-            style={{height: 44, margin: 5, justifyContent: 'flex-start', alignItems: 'center', backgroundColor: 'transparent', color: '#FFFFFF'}}
-            onChangeText={(branchName) => this.setState({branchName})}
-            value={this.state.branchName}
+            ref={(objName) => this.refName = objName}
+            style={{height: 44, margin: 5, justifyContent: 'flex-start', alignItems: 'center',
+            backgroundColor: 'transparent', color: 'gray'}}
+            onChangeText={(name) => this.setState({name})}
+            value={this.state.name}
             editable={true}
             maxLength={100}
             placeholder=""
@@ -134,16 +206,85 @@ class branchMemberCreate extends React.Component {
             underlineColorAndroid="rgba(0,0,0,0)"
             returnKeyType="next"
             returnKeyLabel="次"
-            keyboardType="email-address"
             blurOnSubmit={false}
+            onSubmitEditing={() => this.focusNextField(this.refHouseName)}
           />
           <View style={styles.seperator}/>
-          <Text style= {{ color: '#37AADC', fontSize: 16, marginLeft: 5 }} >Branch No</Text>
+          <Text style= {{ color: '#37AADC', fontSize: 16, marginLeft: 5 }} >Address</Text>
           <TextInput
-            ref={(objUserName) => this.refUsername = objUserName}
+            ref={(objHouseName) => this.refHouseName = objHouseName}
+            style={{height: 44, margin: 5, justifyContent: 'flex-start', alignItems: 'center',
+            backgroundColor: 'transparent', color: 'gray'}}
+            onChangeText={(houseName) => this.setState({houseName})}
+            value={this.state.houseName}
+            editable={true}
+            maxLength={100}
+            placeholder="House name"
+            placeholderTextColor= 'gray'
+            underlineColorAndroid="rgba(0,0,0,0)"
+            returnKeyType="next"
+            returnKeyLabel="次"
+            blurOnSubmit={false}
+            onSubmitEditing={() => this.focusNextField(this.refPlace)}
+          />
+          <View style={[styles.seperator, {marginBottom: 0}]}/>
+          <TextInput
+            ref={(objPlace) => this.refPlace = objPlace}
+            style={{height: 44, margin: 5, justifyContent: 'flex-start', alignItems: 'center',
+            backgroundColor: 'transparent', color: 'gray'}}
+            onChangeText={(place) => this.setState({place})}
+            value={this.state.place}
+            editable={true}
+            maxLength={100}
+            placeholder="Place"
+            placeholderTextColor= 'gray'
+            underlineColorAndroid="rgba(0,0,0,0)"
+            returnKeyType="next"
+            returnKeyLabel="次"
+            blurOnSubmit={false}
+            onSubmitEditing={() => this.focusNextField(this.refPostalName)}
+          />
+          <View style={[styles.seperator, {marginBottom: 0}]}/>
+          <TextInput
+            ref={(objPostalName) => this.refPostalName = objPostalName}
+            style={{height: 44, margin: 5, justifyContent: 'flex-start', alignItems: 'center',
+            backgroundColor: 'transparent', color: 'gray'}}
+            onChangeText={(postalName) => this.setState({postalName})}
+            value={this.state.postalName}
+            editable={true}
+            maxLength={100}
+            placeholder="Postal Name"
+            placeholderTextColor= 'gray'
+            underlineColorAndroid="rgba(0,0,0,0)"
+            returnKeyType="next"
+            returnKeyLabel="次"
+            blurOnSubmit={false}
+            onSubmitEditing={() => this.focusNextField(this.refPincode)}
+          />
+          <View style={[styles.seperator, {marginBottom: 0}]}/>
+          <TextInput
+            ref={(objPincode) => this.refPincode = objPincode}
+            style={{height: 44, margin: 5, justifyContent: 'flex-start', alignItems: 'center',
+            backgroundColor: 'transparent', color: 'gray'}}
+            onChangeText={(pincode) => this.setState({pincode})}
+            value={this.state.pincode}
+            editable={true}
+            maxLength={100}
+            placeholder="Pincode"
+            placeholderTextColor= 'gray'
+            underlineColorAndroid="rgba(0,0,0,0)"
+            returnKeyType="next"
+            returnKeyLabel="次"
+            blurOnSubmit={false}
+            onSubmitEditing={() => this.focusNextField(this.refDOB)}
+          />
+          <View style={styles.seperator}/>
+          <Text style= {{ color: '#37AADC', fontSize: 16, marginLeft: 5 }} >Date Of Birth</Text>
+          <TextInput
+            ref={(objDateOfBirth) => this.refDOB = objDateOfBirth}
             style={{height: 44, margin: 5, justifyContent: 'flex-start', alignItems: 'center', backgroundColor: 'transparent', color: '#FFFFFF'}}
-            onChangeText={(username) => this.setState({username})}
-            value={this.state.username}
+            onChangeText={(dateOfBirth) => this.setState({dateOfBirth})}
+            value={this.state.dateOfBirth}
             editable={true}
             maxLength={100}
             placeholder=""
@@ -151,16 +292,17 @@ class branchMemberCreate extends React.Component {
             underlineColorAndroid="rgba(0,0,0,0)"
             returnKeyType="next"
             returnKeyLabel="次"
-            keyboardType="email-address"
             blurOnSubmit={false}
+            onSubmitEditing={() => this.focusNextField(this.refFatherName)}
           />
           <View style={styles.seperator}/>
-          <Text style= {{ color: '#37AADC', fontSize: 16, marginLeft: 5 }} >Taluk</Text>
+          <Text style= {{ color: '#37AADC', fontSize: 16, marginLeft: 5 }} >Father Name</Text>
           <TextInput
-            ref={(objUserName) => this.refUsername = objUserName}
-            style={{height: 44, margin: 5, justifyContent: 'flex-start', alignItems: 'center', backgroundColor: 'transparent', color: '#FFFFFF'}}
-            onChangeText={(username) => this.setState({username})}
-            value={this.state.username}
+            ref={(objFatherName) => this.refFatherName = objFatherName}
+            style={{height: 44, margin: 5, justifyContent: 'flex-start', alignItems: 'center',
+            backgroundColor: 'transparent', color: 'gray'}}
+            onChangeText={(fatherName) => this.setState({fatherName})}
+            value={this.state.fatherName}
             editable={true}
             maxLength={100}
             placeholder=""
@@ -168,16 +310,17 @@ class branchMemberCreate extends React.Component {
             underlineColorAndroid="rgba(0,0,0,0)"
             returnKeyType="next"
             returnKeyLabel="次"
-            keyboardType="email-address"
             blurOnSubmit={false}
+            onSubmitEditing={() => this.focusNextField(this.refMotherName)}
           />
           <View style={styles.seperator}/>
-          <Text style= {{ color: '#37AADC', fontSize: 16, marginLeft: 5 }} >District</Text>
+          <Text style= {{ color: '#37AADC', fontSize: 16, marginLeft: 5 }} >Mother Name</Text>
           <TextInput
-            ref={(objUserName) => this.refUsername = objUserName}
-            style={{height: 44, margin: 5, justifyContent: 'flex-start', alignItems: 'center', backgroundColor: 'transparent', color: '#FFFFFF'}}
-            onChangeText={(username) => this.setState({username})}
-            value={this.state.username}
+            ref={(objMotherName) => this.refMotherName = objMotherName}
+            style={{height: 44, margin: 5, justifyContent: 'flex-start', alignItems: 'center',
+            backgroundColor: 'transparent', color: 'gray'}}
+            onChangeText={(motherName) => this.setState({motherName})}
+            value={this.state.motherName}
             editable={true}
             maxLength={100}
             placeholder=""
@@ -185,16 +328,17 @@ class branchMemberCreate extends React.Component {
             underlineColorAndroid="rgba(0,0,0,0)"
             returnKeyType="next"
             returnKeyLabel="次"
-            keyboardType="email-address"
             blurOnSubmit={false}
+            onSubmitEditing={() => this.focusNextField(this.refQualification)}
           />
           <View style={styles.seperator}/>
-          <Text style= {{ color: '#37AADC', fontSize: 16, marginLeft: 5 }} >Panchayath</Text>
+          <Text style= {{ color: '#37AADC', fontSize: 16, marginLeft: 5 }} >Qualification</Text>
           <TextInput
-            ref={(objUserName) => this.refUsername = objUserName}
-            style={{height: 44, margin: 5, justifyContent: 'flex-start', alignItems: 'center', backgroundColor: 'transparent', color: '#FFFFFF'}}
-            onChangeText={(username) => this.setState({username})}
-            value={this.state.username}
+            ref={(objQualification) => this.refQualification = objQualification}
+            style={{height: 44, margin: 5, justifyContent: 'flex-start', alignItems: 'center',
+            backgroundColor: 'transparent', color: 'gray'}}
+            onChangeText={(qualification) => this.setState({qualification})}
+            value={this.state.qualification}
             editable={true}
             maxLength={100}
             placeholder=""
@@ -202,16 +346,17 @@ class branchMemberCreate extends React.Component {
             underlineColorAndroid="rgba(0,0,0,0)"
             returnKeyType="next"
             returnKeyLabel="次"
-            keyboardType="email-address"
             blurOnSubmit={false}
+            onSubmitEditing={() => this.focusNextField(this.refJob)}
           />
           <View style={styles.seperator}/>
-          <Text style= {{ color: '#37AADC', fontSize: 16, marginLeft: 5 }} >Vilage</Text>
+          <Text style= {{ color: '#37AADC', fontSize: 16, marginLeft: 5 }} >Job</Text>
           <TextInput
-            ref={(objUserName) => this.refUsername = objUserName}
-            style={{height: 44, margin: 5, justifyContent: 'flex-start', alignItems: 'center', backgroundColor: 'transparent', color: '#FFFFFF'}}
-            onChangeText={(username) => this.setState({username})}
-            value={this.state.username}
+            ref={(objJob) => this.refJob = objJob}
+            style={{height: 44, margin: 5, justifyContent: 'flex-start', alignItems: 'center',
+            backgroundColor: 'transparent', color: 'gray'}}
+            onChangeText={(job) => this.setState({job})}
+            value={this.state.job}
             editable={true}
             maxLength={100}
             placeholder=""
@@ -219,44 +364,11 @@ class branchMemberCreate extends React.Component {
             underlineColorAndroid="rgba(0,0,0,0)"
             returnKeyType="next"
             returnKeyLabel="次"
-            keyboardType="email-address"
             blurOnSubmit={false}
+            onSubmitEditing={() => this.focusNextField(this.refMotherName)}
           />
           <View style={styles.seperator}/>
-          <Text style= {{ color: '#37AADC', fontSize: 16, marginLeft: 5 }} >Place</Text>
-          <TextInput
-            ref={(objUserName) => this.refUsername = objUserName}
-            style={{height: 44, margin: 5, justifyContent: 'flex-start', alignItems: 'center', backgroundColor: 'transparent', color: '#FFFFFF'}}
-            onChangeText={(username) => this.setState({username})}
-            value={this.state.username}
-            editable={true}
-            maxLength={100}
-            placeholder=""
-            placeholderTextColor= '#37AADC'
-            underlineColorAndroid="rgba(0,0,0,0)"
-            returnKeyType="next"
-            returnKeyLabel="次"
-            keyboardType="email-address"
-            blurOnSubmit={false}
-          />
-          <View style={styles.seperator}/>
-          <Text style= {{ color: '#37AADC', fontSize: 16, marginLeft: 5 }} >Pin code</Text>
-          <TextInput
-            ref={(objUserName) => this.refUsername = objUserName}
-            style={{height: 44, margin: 5, justifyContent: 'flex-start', alignItems: 'center', backgroundColor: 'transparent', color: '#FFFFFF'}}
-            onChangeText={(username) => this.setState({username})}
-            value={this.state.username}
-            editable={true}
-            maxLength={100}
-            placeholder=""
-            placeholderTextColor= '#37AADC'
-            underlineColorAndroid="rgba(0,0,0,0)"
-            returnKeyType="next"
-            returnKeyLabel="次"
-            keyboardType="email-address"
-            blurOnSubmit={false}
-          />
-          <View style={styles.seperator}/>
+
         </View>
         <View style={[styles.btnRegister]}>
           <TouchableHighlight style= {{flex:1, justifyContent: 'center', alignItems: 'center'}} underlayColor="rgba(255,255,255,0.15)" onPress={this.registerRequest.bind(this)}>

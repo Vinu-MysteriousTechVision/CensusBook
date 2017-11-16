@@ -2,6 +2,7 @@
 import React, { Component } from 'react';
 import {
   TouchableHighlight,
+  RefreshControl,
   AppRegistry,
   StyleSheet,
   ListView,
@@ -13,6 +14,10 @@ import {
 import { NavigationActions, StackNavigator } from 'react-navigation';
 import Utils from '../utils/Utils';
 import BranchView from './Branch';
+const Realm = require('realm');
+import { Branch } from '../entities';
+import Schema from '../dataBase/Schema';
+import colors from '../utils/Color';
 
 class BranchList extends Component {
   constructor(props) {
@@ -21,28 +26,12 @@ class BranchList extends Component {
       rowHasChanged: (r1, r2) => r1 !== r2
     });
     this.state = {
+      isRefreshing: false,
       dataSource: ds.cloneWithRows([]),
       aryBranches: []
     }
+    this.dataBase = null;
   }
-
-  /*
-  static navigationOptions = ({ navigation }) => {
-    const { params = {} } = navigation.state
-
-    return {
-      title: 'Branches',
-      headerTitleStyle: { color: '#FFFFFF'},
-      headerStyle: {backgroundColor: '#062D2D'},
-      headerBackTitleStyle: {backgroundColor: '#FFFFFF'},
-      headerLeft: (
-        <TouchableHighlight style= {{flex:1, justifyContent: 'center', alignItems: 'center', paddingLeft: 10, backgroundColor: 'transparent'}} underlayColor="rgba(255,255,255,0.15)"
-        onPress={() => params.onBack()}>
-          <Image style={{ width: 16, height: 16 }} source={require('../res/images/back_white.png')} />
-        </TouchableHighlight>
-      )
-    }
-  }*/
 
   static navigationOptions = ({ navigation }) => {
     const { params = {} } = navigation.state
@@ -61,22 +50,46 @@ class BranchList extends Component {
 
   loadBrances() {
     this.setState({
-      dataSource: this.state.dataSource.cloneWithRows(this.state.aryBranches)
+      isRefreshing: false
+    });
+
+    let objBranches =  this.dataBase.objects('Branch');
+
+    var tempArray = [];
+    for (var i = 0; i < objBranches.length; i++) {
+      tempArray.push(objBranches[i]);
+    }
+
+    this.setState({
+      aryBranches: tempArray,
+      dataSource: this.state.dataSource.cloneWithRows(tempArray)
+    });
+  }
+
+  componentWillMount() {
+
+    Realm.open({
+      schema: [Schema.BranchSchema]
+    }).then(dbObj => {
+      this.dataBase = dbObj
     });
   }
 
   componentDidMount(){
-    // this.props.navigation.setParams({ onBack: this.tapOnBack.bind(this) })
-    this.loadBrances();
+
+    setTimeout(() => {
+      this.loadBrances();
+    }, 300);
+
   }
 
   componentWillUnmount(){
 
   }
 
-  memberRegisterCallback(data) {
+  memberRegisterCallback(data, dbObjBranch) {
     var tempArray = this.state.aryBranches;
-    tempArray.push(data);
+    tempArray.push(dbObjBranch[dbObjBranch.length - 1]);
     this.setState({
       aryBranches: tempArray,
       dataSource: this.state.dataSource.cloneWithRows(tempArray)
@@ -95,9 +108,14 @@ class BranchList extends Component {
     this.props.navigation.navigate('BranchMemberViewList')
   }
 
+  _onRefresh() {
+    this.setState({ isRefreshing: true });
+    this.loadBrances();
+  }
+
+
 
   render() {
-    const { navigate } = this.props.navigation;
 
     return (
       <View style={styles.container}>
@@ -108,7 +126,18 @@ class BranchList extends Component {
           showsVerticalscrollIndicator={false}
           dataSource = {this.state.dataSource}
           renderRow = {(data) =>
-            <BranchView actionOnViewBranchMember = {this.actionOnViewBranchMember.bind(this)} />
+            <BranchView
+              branch={data}
+              actionOnViewBranchMember = {this.actionOnViewBranchMember.bind(this)} />
+          }
+          refreshControl={
+            <RefreshControl
+              refreshing={this.state.isRefreshing}
+              onRefresh={this._onRefresh.bind(this)}
+              tintColor={colors.progressColorDark}
+              colors={[colors.refreshColor1, colors.refreshColor2, colors.refreshColor3, colors.refreshColor4]}
+              progressBackgroundColor={colors.refreshBgColor}
+            />
           }
         />
         <TouchableHighlight style={{ position: 'absolute', height: 44, width: 44, right: 15, bottom: 15, justifyContent: 'center', alignItems: 'center' }}

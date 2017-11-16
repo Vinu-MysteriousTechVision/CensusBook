@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import {
   TouchableHighlight,
+  RefreshControl,
   AppRegistry,
   StyleSheet,
   ListView,
@@ -13,6 +14,9 @@ import {
 import { NavigationActions, StackNavigator } from 'react-navigation';
 import Utils from '../utils/Utils';
 import BranchMember from './BranchMember';
+const Realm = require('realm');
+import Schema from '../dataBase/Schema';
+import colors from '../utils/Color';
 
 const styles = StyleSheet.create({
   container: {
@@ -45,8 +49,11 @@ class BranchMemberViewList extends React.Component {
       rowHasChanged: (r1, r2) => r1 !== r2
     });
     this.state = {
-      dataSource: ds.cloneWithRows([])
+      isRefreshing: false,
+      dataSource: ds.cloneWithRows([]),
+      aryBrancheMembers: []
     }
+    this.dataBase = null;
     this._handleConnectivityChange = this._handleConnectivityChange.bind(this);
   }
 
@@ -78,28 +85,65 @@ class BranchMemberViewList extends React.Component {
 
   loadBranceMembers() {
     this.setState({
-      dataSource: this.state.dataSource.cloneWithRows(['abc', 'bvg', 'bvg', 'bvg', 'bvg', 'bvg', 'bvg', 'bvg', 'bvg', 'bvg'])
+      isRefreshing: false
+    });
+
+    let objBrancheMembers =  this.dataBase.objects('BranchMember');
+
+    var tempArray = [];
+    for (var i = 0; i < objBrancheMembers.length; i++) {
+      tempArray.push(objBrancheMembers[i]);
+    }
+
+    this.setState({
+      aryBrancheMembers: tempArray,
+      dataSource: this.state.dataSource.cloneWithRows(tempArray)
+    });
+  }
+
+  memberRegisterCallback(data) {
+    var tempArray = this.state.aryBrancheMembers;
+    tempArray.push(data[data.length - 1]);
+    this.setState({
+      aryBrancheMembers: tempArray,
+      dataSource: this.state.dataSource.cloneWithRows(tempArray)
     });
   }
 
   actionOnAddBranch() {
-    this.props.navigation.navigate('BranchMemberCreate')
+    this.props.navigation.navigate('BranchMemberCreate', {registerCallback: this.memberRegisterCallback.bind(this)});
   }
 
   actionOnViewBranchMember() {
     // this.props.navigation.navigate('BranchMemberViewList')
   }
 
+  _onRefresh() {
+    this.setState({ isRefreshing: true });
+    this.loadBranceMembers();
+  }
+
+
+  componentWillMount() {
+
+    Realm.open({
+      schema: [Schema.BranchMemberSchema]
+    }).then(dbObj => {
+      this.dataBase = dbObj
+    });
+
+
+  }
 
   componentDidMount() {
+
     NetInfo.isConnected.addEventListener('change', this._handleConnectivityChange );
     NetInfo.isConnected.fetch().done( (isConnected) => { this.setState({ isConnected }); } );
 
     this.props.navigation.setParams({ onBack: this.tapOnBack.bind(this) })
-    this.loadBranceMembers();
-  }
-
-  componentWillMount() {
+    setTimeout(() => {
+      this.loadBranceMembers();
+    }, 300);
 
   }
 
@@ -123,7 +167,18 @@ class BranchMemberViewList extends React.Component {
           showsVerticalscrollIndicator={false}
           dataSource = {this.state.dataSource}
           renderRow = {(data) =>
-            <BranchMember actionOnViewBranchMember = {this.actionOnViewBranchMember.bind(this)} />
+            <BranchMember
+              branchMember={data}
+              actionOnViewBranchMember = {this.actionOnViewBranchMember.bind(this)} />
+          }
+          refreshControl={
+            <RefreshControl
+              refreshing={this.state.isRefreshing}
+              onRefresh={this._onRefresh.bind(this)}
+              tintColor={colors.progressColorDark}
+              colors={[colors.refreshColor1, colors.refreshColor2, colors.refreshColor3, colors.refreshColor4]}
+              progressBackgroundColor={colors.refreshBgColor}
+            />
           }
         />
         <TouchableHighlight style={{ position: 'absolute', height: 44, width: 44, right: 15, bottom: 15, justifyContent: 'center', alignItems: 'center' }}

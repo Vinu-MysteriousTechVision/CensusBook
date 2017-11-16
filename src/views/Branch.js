@@ -21,6 +21,7 @@ class Branch extends Component {
   }
 
   render() {
+    const { branch } = this.props;
     return (
       <View style={{ flex: 1, paddingTop: 10, paddingHorizontal: 10, backgroundColor: '#d6efff'}}>
         {/*<View style={{ height: 1, backgroundColor: '#11c1ff'}}/>*/}
@@ -28,12 +29,13 @@ class Branch extends Component {
         <View style={{backgroundColor: 'transparent', flexDirection: 'row'}}>
           <View style={{width: 10, backgroundColor: '#11c1ff', justifyContent: 'center', alignItems: 'center'}}/>
           <View style={{ flex: 1, backgroundColor: '#FFFFFF', padding: 10 }}>
-            <Text style={{fontWeight: 'bold', fontSize: 14}}>KYS Branch No: 14</Text>
-            <Text style={{fontWeight: 'normal', fontSize: 12}}>Kodungallur</Text>
-            <Text style={{fontWeight: 'normal', fontSize: 12}}>Chenthuruthy</Text>
-            <Text style={{fontWeight: 'normal', fontSize: 12}}>Thrissur</Text>
-            <Text style={{fontWeight: 'normal', fontSize: 12}}>Poyya</Text>
-            <Text style={{fontWeight: 'normal', fontSize: 12}}>Pallipuram</Text>
+            <Text style={{fontWeight: 'bold', fontSize: 14}}>{branch.branchName}</Text>
+            <Text style={{fontWeight: 'normal', fontSize: 12}}>{branch.taluk}</Text>
+            <Text style={{fontWeight: 'normal', fontSize: 12}}>{branch.district}</Text>
+            <Text style={{fontWeight: 'normal', fontSize: 12}}>{branch.panchayath}</Text>
+            <Text style={{fontWeight: 'normal', fontSize: 12}}>{branch.village}</Text>
+            <Text style={{fontWeight: 'normal', fontSize: 12}}>{branch.place}</Text>
+            <Text style={{fontWeight: 'normal', fontSize: 12}}>{branch.pinCode}</Text>
             <View style={{backgroundColor: 'red'}}>
             </View>
 
