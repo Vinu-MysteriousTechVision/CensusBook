@@ -2,15 +2,13 @@
 
 import React, { Component } from 'react';
 import {
-  StyleSheet,
   View,
   Text,
   Image,
-  TouchableHighlight,
-  Dimensions
+  TouchableHighlight
 } from 'react-native';
-
-var width = Dimensions.get('window').width; //full width
+import PropTypes from 'prop-types';
+import styles from '../style/BranchStyle';
 
 class Branch extends Component {
 
@@ -23,33 +21,33 @@ class Branch extends Component {
   render() {
     const { branch } = this.props;
     return (
-      <View style={{ paddingTop: 10, paddingHorizontal: 10, backgroundColor: '#d6efff' }}>
-        {/*<View style={{ height: 1, backgroundColor: '#11c1ff'}}/>*/}
+      <View style={styles.container}>
         <TouchableHighlight onPress={this.actionOnViewBranchMember.bind(this)} underlayColor="rgba(0,0,0,0)">
-          <View style={{ backgroundColor: 'transparent', flexDirection: 'row' }}>
-            <View style={{ width: 10, backgroundColor: '#11c1ff', justifyContent: 'center', alignItems: 'center' }} />
-            <View style={{ flex: 1, backgroundColor: '#FFFFFF', padding: 10 }}>
-              <Text style={{ fontWeight: 'bold', fontSize: 14 }}>{branch.branchName}</Text>
-              <Text style={{ fontWeight: 'normal', fontSize: 12 }}>{branch.taluk}</Text>
-              <Text style={{ fontWeight: 'normal', fontSize: 12 }}>{branch.district}</Text>
-              <Text style={{ fontWeight: 'normal', fontSize: 12 }}>{branch.panchayath}</Text>
-              <Text style={{ fontWeight: 'normal', fontSize: 12 }}>{branch.village}</Text>
-              <Text style={{ fontWeight: 'normal', fontSize: 12 }}>{branch.place}</Text>
-              <Text style={{ fontWeight: 'normal', fontSize: 12 }}>{branch.pinCode}</Text>
-              <View style={{ backgroundColor: 'red' }} />
-
+          <View style={styles.btnBranchContainer}>
+            <View style={styles.viewLeftBoreder} />
+            <View style={styles.viewContentContainer}>
+              <Text style={styles.txtContentHeader}>{branch.branchName}</Text>
+              <Text style={styles.txtContent}>{branch.taluk}</Text>
+              <Text style={styles.txtContent}>{branch.district}</Text>
+              <Text style={styles.txtContent}>{branch.panchayath}</Text>
+              <Text style={styles.txtContent}>{branch.village}</Text>
+              <Text style={styles.txtContent}>{branch.place}</Text>
+              <Text style={styles.txtContent}>{branch.pinCode}</Text>
             </View>
-            <View style={{ width: 30, backgroundColor: '#FFFFFF', justifyContent: 'center', alignItems: 'center' }}>
-              <Image style={{ width: 10, height: 20 }} source={require('../res/images/right.png')} />
+            <View style={styles.viewRightArrow}>
+              <Image source={require('../res/images/right.png')} style={styles.imageRightArrow} />
             </View>
-
           </View>
-
         </TouchableHighlight>
-        <View style={{ height: 1, backgroundColor: 'gray' }} />
+        <View style={styles.viewBottomBorder} />
       </View>
     );
   }
 }
+
+Branch.propTypes = {
+  actionOnViewBranchMember: PropTypes.func,
+  branch: PropTypes.object
+};
 
 module.exports = Branch;
