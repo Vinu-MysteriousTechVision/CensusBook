@@ -36,8 +36,7 @@ const KeyboardAwareListView = React.createClass({
         onScroll={e => {
           this.handleOnScroll(e);
           this.props.onScroll && this.props.onScroll(e);
-        }}
-      />
+        }} />
     );
   }
 });

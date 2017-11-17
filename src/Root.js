@@ -26,7 +26,7 @@ class Root extends Component {
   }
 
   static navigationOptions = {
-    headerStyle: {backgroundColor: '#37CDBE', height: 0}
+    headerStyle: { backgroundColor: '#37CDBE', height: 0 }
   };
 
 
@@ -57,13 +57,13 @@ class Root extends Component {
         </View>
         <View style={styles.bottomContainer}>
           <View style={[styles.btnSignIn]}>
-            <TouchableHighlight style= {{flex:1, justifyContent: 'center', alignItems: 'center'}} underlayColor="rgba(255,255,255,0.15)" onPress={this.tapOnSignIn.bind(this)}>
-              <Text style={{color: '#37CDBE', fontWeight: 'bold', fontSize: 20}} numberOfLines={1}>Sign In</Text>
+            <TouchableHighlight style={{ flex:1, justifyContent: 'center', alignItems: 'center' }} underlayColor="rgba(255,255,255,0.15)" onPress={this.tapOnSignIn.bind(this)}>
+              <Text style={{ color: '#37CDBE', fontWeight: 'bold', fontSize: 20 }} numberOfLines={1}>Sign In</Text>
             </TouchableHighlight>
           </View>
-          <View style={[styles.signUpContainer, {flexDirection: 'row'}]}>
-            <TouchableHighlight style= {{flex:1, justifyContent: 'center', alignItems: 'center'}} underlayColor="rgba(255,255,255,0.15)" onPress={this.tapOnSignUp.bind(this)}>
-              <Text style={{color: '#FFFFFF', fontWeight: 'bold', fontSize: 20}} numberOfLines={1}>Sign Up</Text>
+          <View style={[styles.signUpContainer, { flexDirection: 'row' }]}>
+            <TouchableHighlight style={{ flex:1, justifyContent: 'center', alignItems: 'center' }} underlayColor="rgba(255,255,255,0.15)" onPress={this.tapOnSignUp.bind(this)}>
+              <Text style={{ color: '#FFFFFF', fontWeight: 'bold', fontSize: 20 }} numberOfLines={1}>Sign Up</Text>
             </TouchableHighlight>
           </View>
         </View>
@@ -88,9 +88,9 @@ const AuthorizedNavigator  = StackNavigator({
   Home: { screen: Home },
   Profile: { screen: Profile },
   BranchList: { screen: BranchList },
-  BranchCreate: { screen: BranchCreate},
-  BranchMemberCreate: { screen: BranchMemberCreate},
-  BranchMemberViewList: { screen: BranchMemberViewList}
+  BranchCreate: { screen: BranchCreate },
+  BranchMemberCreate: { screen: BranchMemberCreate },
+  BranchMemberViewList: { screen: BranchMemberViewList }
 }, {
   initialRouteName: 'BranchList',
   // headerMode: 'none',
@@ -102,7 +102,7 @@ const navigationScreens = StackNavigator({
   Unauthorized: { screen: UnauthorizedNavigator  },
   Authorized: { screen: AuthorizedNavigator }
 }, {
-  initialRouteName: 'Unauthorized',
+  initialRouteName: 'Authorized',
   headerMode: 'none'
 });
 
@@ -127,7 +127,7 @@ const styles = StyleSheet.create({
     flex: 0.5,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#062D2D',
+    backgroundColor: '#062D2D'
   },
   loginContainer: {
     height: 100,

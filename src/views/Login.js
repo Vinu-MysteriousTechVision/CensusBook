@@ -16,7 +16,7 @@ import {
 } from 'react-native';
 import { NavigationActions, StackNavigator } from 'react-navigation';
 import ScrollViewKeybordHandler from '../components/KeyboardAwareScrollView';
-import LoginController from './LoginController'
+import LoginController from './LoginController';
 import Utils from '../utils/Utils';
 
 var width = Dimensions.get('window').width; //full width
@@ -54,7 +54,7 @@ const styles = StyleSheet.create({
     flex: 0.5,
     justifyContent: 'flex-start',
     alignItems: 'center',
-    backgroundColor: '#062D2D',
+    backgroundColor: '#062D2D'
   },
   loginContainer: {
     // height: 100,
@@ -88,7 +88,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'flex-start',
     alignItems: 'center',
-    backgroundColor: "transparent",
+    backgroundColor: "transparent"
   },
   passWord: {
     height: 50,
@@ -97,17 +97,17 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'flex-start',
     alignItems: 'center',
-    backgroundColor: "transparent",
+    backgroundColor: "transparent"
   }
-})
+});
 
 const resetAction = NavigationActions.reset({
   index: 0,
   key: null,
   actions: [
-    NavigationActions.navigate({ routeName: 'Authorized'})
+    NavigationActions.navigate({ routeName: 'Authorized' })
   ]
-})
+});
 
 export default class Login extends React.Component {
   constructor(props) {
@@ -125,17 +125,17 @@ export default class Login extends React.Component {
   }
 
   static navigationOptions = ({ navigation }) => {
-    const { params = {} } = navigation.state
+    const { params = {} } = navigation.state;
 
     return {
-      headerStyle: {backgroundColor: '#37CDBE'},
+      headerStyle: { backgroundColor: '#37CDBE' },
       headerLeft: (
-        <TouchableHighlight style= {{flex:1, justifyContent: 'center', alignItems: 'center',marginTop: Utils.getStatusBarHeight(), paddingLeft: 10, backgroundColor: 'transparent'}} underlayColor="rgba(255,255,255,0.15)"
-        onPress={() => params.onBack()}>
+        <TouchableHighlight style={{ flex:1, justifyContent: 'center', alignItems: 'center', marginTop: Utils.getStatusBarHeight(), paddingLeft: 10, backgroundColor: 'transparent' }} underlayColor="rgba(255,255,255,0.15)"
+          onPress={() => params.onBack()}>
           <Image style={{ width: 16, height: 16 }} source={require('../res/images/back_white.png')} />
         </TouchableHighlight>
       )
-    }
+    };
   }
 
 
@@ -164,7 +164,7 @@ export default class Login extends React.Component {
     NetInfo.isConnected.addEventListener('change', this._handleConnectivityChange );
     NetInfo.isConnected.fetch().done( (isConnected) => { this.setState({ isConnected }); } );
 
-    this.props.navigation.setParams({ onBack: this.tapOnBack.bind(this) })
+    this.props.navigation.setParams({ onBack: this.tapOnBack.bind(this) });
   }
 
   componentWillMount() {
@@ -179,7 +179,7 @@ export default class Login extends React.Component {
   }
 
   loginSuccessCallback() {
-    this.props.navigation.dispatch(resetAction)
+    this.props.navigation.dispatch(resetAction);
   }
 
   loginErrorCallback() {
@@ -187,7 +187,7 @@ export default class Login extends React.Component {
   }
 
   loginRequest() {
-    this.objLoginController.loginRequest('vinu11@gmail.com', 'qwerty', this.loginSuccessCallback.bind(this), this.loginErrorCallback.bind(this))
+    this.objLoginController.loginRequest('vinu11@gmail.com', 'qwerty', this.loginSuccessCallback.bind(this), this.loginErrorCallback.bind(this));
   }
 
   tapOnRegister() {
@@ -207,58 +207,55 @@ export default class Login extends React.Component {
           contentContainerStyle={[styles.scrollViewLayout ]}
           keyboardShouldPersistTaps={'always'}>
 
-          <View style={styles.topContainer}>
-          </View>
+          <View style={styles.topContainer} />
           <View style={styles.bottomContainer}>
             <View style={styles.loginContainer}>
               <View style={styles.userName}>
-                <View style={{height:50, width: 50, backgroundColor:'transparent', justifyContent: 'center', alignItems: 'center',}}>
-                  <Image style={{height:30, width: 30, backgroundColor:'transparent'}} source={require('../res/images/usr_blue.png')} />
+                <View style={{ height:50, width: 50, backgroundColor:'transparent', justifyContent: 'center', alignItems: 'center' }}>
+                  <Image style={{ height:30, width: 30, backgroundColor:'transparent' }} source={require('../res/images/usr_blue.png')} />
                 </View>
                 <View style={styles.verticalSeperator} />
                 <TextInput
                   ref={(objUserName) => this.refUsername = objUserName}
-                  style={{height: 50, width: 250, margin: 5, backgroundColor: 'transparent'}}
-                  onChangeText={(username) => this.setState({username})}
+                  style={{ height: 50, width: 250, margin: 5, backgroundColor: 'transparent' }}
+                  onChangeText={(username) => this.setState({ username })}
                   value={this.state.username}
                   editable={true}
                   maxLength={100}
                   placeholder="Username or Email"
-                  placeholderTextColor= '#37AADC'
+                  placeholderTextColor='#37AADC'
                   underlineColorAndroid="rgba(0,0,0,0)"
                   returnKeyType="next"
                   returnKeyLabel="次"
                   keyboardType="email-address"
-                  blurOnSubmit={false}
-                />
+                  blurOnSubmit={false} />
               </View>
-              <View style={styles.seperator}/>
+              <View style={styles.seperator} />
               <View style={styles.passWord}>
-                <View style={{height:50, width: 50, backgroundColor:'transparent', justifyContent: 'center', alignItems: 'center',}}>
-                  <Image style={{height:30, width: 30, backgroundColor:'transparent'}} source={require('../res/images/pwd_blue.png')} />
+                <View style={{ height:50, width: 50, backgroundColor:'transparent', justifyContent: 'center', alignItems: 'center' }}>
+                  <Image style={{ height:30, width: 30, backgroundColor:'transparent' }} source={require('../res/images/pwd_blue.png')} />
                 </View>
                 <View style={styles.verticalSeperator} />
                 <TextInput
                   ref={(objUserName) => this.refUsername = objUserName}
-                  style={{height: 50, width: 250, margin: 5, backgroundColor: 'transparent'}}
-                  onChangeText={(password) => this.setState({password})}
+                  style={{ height: 50, width: 250, margin: 5, backgroundColor: 'transparent' }}
+                  onChangeText={(password) => this.setState({ password })}
                   value={this.state.password}
                   editable={true}
                   maxLength={100}
                   placeholder="Password"
-                  placeholderTextColor= '#37AADC'
+                  placeholderTextColor='#37AADC'
                   underlineColorAndroid="rgba(0,0,0,0)"
                   returnKeyType="next"
                   returnKeyLabel="次"
                   keyboardType="email-address"
-                  blurOnSubmit={false}
-                />
+                  blurOnSubmit={false} />
               </View>
-              <View style={styles.seperator}/>
+              <View style={styles.seperator} />
             </View>
             <View style={[styles.btnSignIn]}>
-              <TouchableHighlight style= {{flex:1, justifyContent: 'center', alignItems: 'center'}} underlayColor="rgba(255,255,255,0.15)" onPress={this.loginRequest.bind(this)}>
-                <Text style={{color: '#FFFFFF', fontWeight: 'bold', fontSize: 20}} numberOfLines={1}>Sign In</Text>
+              <TouchableHighlight style={{ flex:1, justifyContent: 'center', alignItems: 'center' }} underlayColor="rgba(255,255,255,0.15)" onPress={this.loginRequest.bind(this)}>
+                <Text style={{ color: '#FFFFFF', fontWeight: 'bold', fontSize: 20 }} numberOfLines={1}>Sign In</Text>
               </TouchableHighlight>
             </View>
             {/*

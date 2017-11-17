@@ -3,21 +3,15 @@ import React, { Component } from 'react';
 import {
   TouchableHighlight,
   RefreshControl,
-  AppRegistry,
-  StyleSheet,
   ListView,
   Image,
-  View,
-  Text,
-  Button
+  View
 } from 'react-native';
-import { NavigationActions, StackNavigator } from 'react-navigation';
-import Utils from '../utils/Utils';
 import BranchView from './Branch';
-const Realm = require('realm');
-import { Branch } from '../entities';
-import Schema from '../dataBase/Schema';
 import colors from '../utils/Color';
+import styles from '../style/BranchListStyle';
+import BranchListController from '../controller/BranchListController';
+import PropTypes from 'prop-types';
 
 class BranchList extends Component {
   constructor(props) {
@@ -27,108 +21,92 @@ class BranchList extends Component {
     });
     this.state = {
       isRefreshing: false,
-      dataSource: ds.cloneWithRows([]),
-      aryBranches: []
-    }
-    this.dataBase = null;
+      dataSource: ds.cloneWithRows([])
+    };
+    this.objBranchListController = new BranchListController();
   }
 
-  static navigationOptions = ({ navigation }) => {
-    const { params = {} } = navigation.state
+  static navigationOptions = () => {
 
     return {
       title: 'Home',
-      headerTitleStyle: { color: '#FFFFFF'},
-      headerStyle: {backgroundColor: '#062D2D'}
-    }
-  }
-
-
-  tapOnBack() {
-    this.props.navigation.goBack();
-  }
-
-  loadBrances() {
-    this.setState({
-      isRefreshing: false
-    });
-
-    let objBranches =  this.dataBase.objects('Branch');
-
-    var tempArray = [];
-    for (var i = 0; i < objBranches.length; i++) {
-      tempArray.push(objBranches[i]);
-    }
-
-    this.setState({
-      aryBranches: tempArray,
-      dataSource: this.state.dataSource.cloneWithRows(tempArray)
-    });
+      headerTitleStyle: { color: '#FFFFFF' },
+      headerStyle: { backgroundColor: '#4187F5' }
+    };
   }
 
   componentWillMount() {
-
-    Realm.open({
-      schema: [Schema.BranchSchema]
-    }).then(dbObj => {
-      this.dataBase = dbObj
-    });
+    this.objBranchListController.openDBSchema();
   }
 
   componentDidMount(){
 
     setTimeout(() => {
-      this.loadBrances();
+      try {
+        this.objBranchListController.loadBrances();
+        this.setState({
+          dataSource: this.state.dataSource.cloneWithRows(this.objBranchListController.getBranches()),
+          isRefreshing: false
+        });
+      } catch (e) {
+        alert('Error: ' + e);
+      }
     }, 300);
-
   }
 
   componentWillUnmount(){
 
   }
 
-  memberRegisterCallback(data, dbObjBranch) {
-    var tempArray = this.state.aryBranches;
-    tempArray.push(dbObjBranch[dbObjBranch.length - 1]);
-    this.setState({
-      aryBranches: tempArray,
-      dataSource: this.state.dataSource.cloneWithRows(tempArray)
-    });
+  memberRegisterCallback(branch) {
+    try {
+      this.objBranchListController.addBranch(branch);
+      this.setState({
+        dataSource: this.state.dataSource.cloneWithRows(this.objBranchListController.getBranches())
+      });
+    } catch (e) {
+      alert('Error: ' + e);
+    }
   }
 
   actionOnAddBranch() {
-    this.props.navigation.navigate('BranchCreate', {registerCallback: this.memberRegisterCallback.bind(this)});
+    this.props.navigation.navigate('BranchCreate', { registerCallback: this.memberRegisterCallback.bind(this) });
   }
 
-  actionOnAddBranchMember() {
-    this.props.navigation.navigate('BranchMemberCreate')
-  }
-
-  actionOnViewBranchMember() {
-    this.props.navigation.navigate('BranchMemberViewList')
+  actionOnViewBranchMember(branch) {
+    // this.objBranchListController.updateBranch(branch);
+    this.props.navigation.navigate('BranchMemberViewList', { branch: branch });
   }
 
   _onRefresh() {
-    this.setState({ isRefreshing: true });
-    this.loadBrances();
+    this.setState({
+      isRefreshing: true
+    });
+
+    try {
+      this.objBranchListController.loadBrances();
+      this.setState({
+        dataSource: this.state.dataSource.cloneWithRows(this.objBranchListController.getBranches()),
+        isRefreshing: false
+      });
+    } catch (e) {
+      alert('Error: ' + e);
+    }
   }
 
-
-
   render() {
-
     return (
       <View style={styles.container}>
         <ListView
-          style= {{ flex: 1, backgroundColor: '#d6efff'}}
+          style={[styles.listViewStyle]}
           removeClippedSubviews={false}
           enableEmptySections={true}
           showsVerticalscrollIndicator={false}
-          dataSource = {this.state.dataSource}
-          renderRow = {(data) =>
+          dataSource={this.state.dataSource}
+          renderRow={(data) =>
             <BranchView
               branch={data}
-              actionOnViewBranchMember = {this.actionOnViewBranchMember.bind(this)} />
+              actionOnViewBranchMember={this.actionOnViewBranchMember.bind(this, data)} />
           }
           refreshControl={
             <RefreshControl
@@ -136,37 +114,20 @@ class BranchList extends Component {
               onRefresh={this._onRefresh.bind(this)}
               tintColor={colors.progressColorDark}
               colors={[colors.refreshColor1, colors.refreshColor2, colors.refreshColor3, colors.refreshColor4]}
-              progressBackgroundColor={colors.refreshBgColor}
-            />
-          }
-        />
-        <TouchableHighlight style={{ position: 'absolute', height: 44, width: 44, right: 15, bottom: 15, justifyContent: 'center', alignItems: 'center' }}
+              progressBackgroundColor={colors.refreshBgColor} />
+          } />
+        <TouchableHighlight style={styles.buttonAddStyle}
           onPress={this.actionOnAddBranch.bind(this)}
-          underlayColor="rgba(0,0,0,0)"
-        >
-          <Image style={{ width: 44, height: 44 }} source={require('../res/images/add.png')} />
+          underlayColor="rgba(0,0,0,0)">
+          <Image style={styles.imageAddStyle} source={require('../res/images/add.png')} />
         </TouchableHighlight>
-
       </View>
     );
   }
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#F5FCFF',
-  },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-  },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
-  },
-});
+BranchList.propTypes = {
+  navigation: PropTypes.object
+};
 
 module.exports = BranchList;

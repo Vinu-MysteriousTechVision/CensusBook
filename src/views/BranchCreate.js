@@ -1,102 +1,18 @@
-import React, { Component } from 'react';
+import React from 'react';
 import {
   TouchableHighlight,
-  AppRegistry,
-  StyleSheet,
   Text,
   View,
-  Button,
   TextInput,
   Image,
   NetInfo,
-  Keyboard,
-  StatusBar,
-  Dimensions
+  Keyboard
 } from 'react-native';
-import { NavigationActions, StackNavigator } from 'react-navigation';
-import Utils from '../utils/Utils';
 import ScrollViewKeybordHandler from '../components/KeyboardAwareScrollView';
-import { Branch } from '../entities';
-const Realm = require('realm');
-import Schema from '../dataBase/Schema';
+import styles from '../style/BranchCreateStyle';
+import PropTypes from 'prop-types';
+import BranchCreateController from '../controller/BranchCreateController';
 
-var width = Dimensions.get('window').width - 80; //Menu width
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#062D2D',
-    backgroundColor: '#FCFCFC',
-    justifyContent: 'flex-start',
-    padding: 10
-  },
-  seperator: {
-    height: 0.5,
-    marginBottom: 20,
-    backgroundColor: '#37AADC',
-    backgroundColor: '#002887'
-  },
-  fieldContainer: {
-    height: 50,
-    flexDirection: 'row',
-    justifyContent: 'flex-start',
-    alignItems: 'flex-start',
-    backgroundColor: 'transparent'
-  },
-  registerContainer: {
-    backgroundColor: 'transparent'
-  },
-  btnRegister: {
-    height: 50,
-    marginTop: 20,
-    backgroundColor: '#37B4F0',
-    backgroundColor: '#14DC96',
-    backgroundColor: '#001956'
-  },
-  imageContainer: {
-    height:50,
-    width: 50,
-    backgroundColor:'transparent',
-    justifyContent: 'center',
-    alignItems: 'center'
-  },
-  fieldIcon: {
-    height:25,
-    width: 25,
-    backgroundColor:'transparent'
-  },
-  verticalSeperator: {
-    height: 30,
-    width: 0.5,
-    backgroundColor: '#37AADC'
-  },
-  menuHeaderImageBoarder: {
-    width: 106,
-    height: 106,
-    backgroundColor: '#E1E1E1',
-    alignSelf: 'center',
-    justifyContent: 'center',
-    borderRadius: 53
-  },
-  menuHeaderimage: {
-    alignSelf: 'center',
-    justifyContent: 'center',
-    height: 100,
-    borderRadius: 50,
-    width: 100,
-    backgroundColor: 'transparent'
-  },
-  menuHeaderLabel: {
-    height: 20,
-    marginTop: 5,
-    alignSelf: 'center',
-    justifyContent: 'center',
-    color: 'white',
-    fontSize: 18,
-    fontWeight: 'bold',
-    backgroundColor: 'transparent'
-  }
-});
 class BranchCreate extends React.Component {
   constructor(props) {
     super(props);
@@ -112,39 +28,38 @@ class BranchCreate extends React.Component {
       pinCode: ''
     };
 
-    this.dataBase = null;
+    this.objBranchCreateController = new BranchCreateController();
     this._handleConnectivityChange = this._handleConnectivityChange.bind(this);
   }
 
   static navigationOptions = ({ navigation }) => {
-    const { params = {} } = navigation.state
+    const { params = {} } = navigation.state;
 
     return {
       title: 'Add Branche',
-      headerTitleStyle: { color: '#FFFFFF'},
-      headerStyle: {backgroundColor: '#062D2D'},
-      headerBackTitleStyle: {backgroundColor: '#FFFFFF'},
+      headerTitleStyle: { color: '#FFFFFF' },
+      headerStyle: { backgroundColor: '#4187F5' },
+      headerBackTitleStyle: { backgroundColor: '#FFFFFF' },
       headerLeft: (
-        <TouchableHighlight style= {{flex:1, justifyContent: 'center', alignItems: 'center', paddingLeft: 10, backgroundColor: 'transparent'}}
+        <TouchableHighlight style={styles.btnNavBackStyle}
           underlayColor="rgba(255,255,255,0.15)"
           onPress={() => params.onBack()}>
-            <Image style={{ width: 16, height: 16 }} source={require('../res/images/back_white.png')} />
+          <Image source={require('../res/images/back_white.png')} style={styles.imageNavBackStyle} />
         </TouchableHighlight>
       )
-    }
+    };
   }
-
 
   _handleConnectivityChange = (isConnected) => {
     this.setState({ isConnected });
   };
 
   _keyboardDidShow (e) {
-
+    console.log(e);
   }
 
   _keyboardDidHide (e) {
-
+    console.log(e);
   }
 
   tapOnBack() {
@@ -152,28 +67,20 @@ class BranchCreate extends React.Component {
   }
 
   componentWillMount() {
+    this.keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', this._keyboardDidShow.bind(this));
+    this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this._keyboardDidHide.bind(this));
 
+    this.objBranchCreateController.openDBSchema();
   }
 
   componentDidMount() {
     NetInfo.isConnected.addEventListener('change', this._handleConnectivityChange );
     NetInfo.isConnected.fetch().done( (isConnected) => { this.setState({ isConnected }); } );
 
-    this.props.navigation.setParams({ onBack: this.tapOnBack.bind(this) })
+    this.props.navigation.setParams({ onBack: this.tapOnBack.bind(this) });
     this.refBranchname.focus();
-
-    Realm.open({
-      schema: [Schema.BranchSchema]
-    }).then(dbObj => {
-      this.dataBase = dbObj
-    });
-
   }
 
-  componentWillMount() {
-    this.keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', this._keyboardDidShow.bind(this));
-    this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this._keyboardDidHide.bind(this));
-  }
 
   componentWillUnmount() {
     NetInfo.isConnected.removeEventListener( 'change', this._handleConnectivityChange );
@@ -184,203 +91,193 @@ class BranchCreate extends React.Component {
   registerRequest() {
 
     var branch = {
-      'branchName': 'KSS Branch No.14',
-      'branchNo' : '14',
-      'taluk' : 'Kodungallur',
-      'district' : 'Thrissur',
-      'panchayath': 'Poyya',
-      'village': 'Pallipuram',
-      'place': 'Chanthuruthy',
-      'pinCode': '680732'
-    }
+      'branchName': this.state.branchName,
+      'branchNo' : this.state.branchNo,
+      'taluk' : this.state.taluk,
+      'district' : this.state.district,
+      'panchayath': this.state.panchayath,
+      'village': this.state.village,
+      'place': this.state.place,
+      'pinCode': this.state.pinCode
+    };
+    this.objBranchCreateController.createBranch(branch);
 
-    var regBranchObj = {
-      'branch' : branch
-    }
-
-    var objBranch = new Branch(regBranchObj['branch']);
-
-    this.dataBase.write(() => {
-      this.dataBase.create('Branch',
-        {
-          branchName: this.state.branchName,
-          branchNo : this.state.branchNo,
-          taluk : this.state.taluk,
-          district : this.state.district,
-          panchayath: this.state.panchayath,
-          village: this.state.village,
-          place: this.state.place,
-          pinCode: this.state.pinCode
-        }
-      );
-    });
-
-
-    let dbObjBranch =  this.dataBase.objects('Branch');
-
-    const { params = {} } = this.props.navigation.state
+    const { params = {} } = this.props.navigation.state;
     if (params.registerCallback) {
-      params.registerCallback(objBranch, dbObjBranch);
+      params.registerCallback(this.objBranchCreateController.getBranch());
     }
     this.tapOnBack();
-
   }
 
   render() {
-    const { navigate } = this.props.navigation;
-    var profileIcon = require('../res/images/user_default.png');
     return(
       <View style={styles.container}>
         <ScrollViewKeybordHandler keyboardShouldPersistTaps={'always'}>
-        <View style={[styles.registerContainer, {backgroundColor: 'transparent'}]}>
-          <Text style= {{ color: '#37AADC', fontSize: 16, marginLeft: 5 }} >Branch Name</Text>
-          <TextInput
-            ref={(objBranchName) => this.refBranchname = objBranchName}
-            style={{height: 44, margin: 5, justifyContent: 'flex-start', alignItems: 'center', backgroundColor: 'transparent', color: 'gray'}}
-            onChangeText={(branchName) => this.setState({branchName})}
-            value={this.state.branchName}
-            editable={true}
-            maxLength={100}
-            placeholder=""
-            placeholderTextColor= '#37AADC'
-            underlineColorAndroid="rgba(0,0,0,0)"
-            returnKeyType="next"
-            returnKeyLabel="次"
-            keyboardType="email-address"
-            blurOnSubmit={false}
-          />
-          <View style={styles.seperator}/>
-          <Text style= {{ color: '#37AADC', fontSize: 16, marginLeft: 5 }} >Branch No</Text>
-          <TextInput
-            ref={(objBranchNo) => this.refBranchNo = objBranchNo}
-            style={{height: 44, margin: 5, justifyContent: 'flex-start', alignItems: 'center', backgroundColor: 'transparent', color: 'gray'}}
-            onChangeText={(branchNo) => this.setState({branchNo})}
-            value={this.state.branchNo}
-            editable={true}
-            maxLength={100}
-            placeholder=""
-            placeholderTextColor= '#37AADC'
-            underlineColorAndroid="rgba(0,0,0,0)"
-            returnKeyType="next"
-            returnKeyLabel="次"
-            keyboardType="email-address"
-            blurOnSubmit={false}
-          />
-          <View style={styles.seperator}/>
-          <Text style= {{ color: '#37AADC', fontSize: 16, marginLeft: 5 }} >Taluk</Text>
-          <TextInput
-            ref={(objTaluk) => this.refTaluk = objTaluk}
-            style={{height: 44, margin: 5, justifyContent: 'flex-start', alignItems: 'center', backgroundColor: 'transparent', color: 'gray'}}
-            onChangeText={(taluk) => this.setState({taluk})}
-            value={this.state.taluk}
-            editable={true}
-            maxLength={100}
-            placeholder=""
-            placeholderTextColor= '#37AADC'
-            underlineColorAndroid="rgba(0,0,0,0)"
-            returnKeyType="next"
-            returnKeyLabel="次"
-            keyboardType="email-address"
-            blurOnSubmit={false}
-          />
-          <View style={styles.seperator}/>
-          <Text style= {{ color: '#37AADC', fontSize: 16, marginLeft: 5 }} >District</Text>
-          <TextInput
-            ref={(objDistrict) => this.refDistrict = objDistrict}
-            style={{height: 44, margin: 5, justifyContent: 'flex-start', alignItems: 'center', backgroundColor: 'transparent', color: 'gray'}}
-            onChangeText={(district) => this.setState({district})}
-            value={this.state.district}
-            editable={true}
-            maxLength={100}
-            placeholder=""
-            placeholderTextColor= '#37AADC'
-            underlineColorAndroid="rgba(0,0,0,0)"
-            returnKeyType="next"
-            returnKeyLabel="次"
-            keyboardType="email-address"
-            blurOnSubmit={false}
-          />
-          <View style={styles.seperator}/>
-          <Text style= {{ color: '#37AADC', fontSize: 16, marginLeft: 5 }} >Panchayath</Text>
-          <TextInput
-            ref={(objPanchayath) => this.refPanchayath = objPanchayath}
-            style={{height: 44, margin: 5, justifyContent: 'flex-start', alignItems: 'center', backgroundColor: 'transparent', color: 'gray'}}
-            onChangeText={(panchayath) => this.setState({panchayath})}
-            value={this.state.panchayath}
-            editable={true}
-            maxLength={100}
-            placeholder=""
-            placeholderTextColor= '#37AADC'
-            underlineColorAndroid="rgba(0,0,0,0)"
-            returnKeyType="next"
-            returnKeyLabel="次"
-            keyboardType="email-address"
-            blurOnSubmit={false}
-          />
-          <View style={styles.seperator}/>
-          <Text style= {{ color: '#37AADC', fontSize: 16, marginLeft: 5 }} >Vilage</Text>
-          <TextInput
-            ref={(objVillage) => this.refVillage = objVillage}
-            style={{height: 44, margin: 5, justifyContent: 'flex-start', alignItems: 'center', backgroundColor: 'transparent', color: 'gray'}}
-            onChangeText={(village) => this.setState({village})}
-            value={this.state.village}
-            editable={true}
-            maxLength={100}
-            placeholder=""
-            placeholderTextColor= '#37AADC'
-            underlineColorAndroid="rgba(0,0,0,0)"
-            returnKeyType="next"
-            returnKeyLabel="次"
-            keyboardType="email-address"
-            blurOnSubmit={false}
-          />
-          <View style={styles.seperator}/>
-          <Text style= {{ color: '#37AADC', fontSize: 16, marginLeft: 5 }} >Place</Text>
-          <TextInput
-            ref={(objPlace) => this.refPlace = objPlace}
-            style={{height: 44, margin: 5, justifyContent: 'flex-start', alignItems: 'center', backgroundColor: 'transparent', color: 'gray'}}
-            onChangeText={(place) => this.setState({place})}
-            value={this.state.place}
-            editable={true}
-            maxLength={100}
-            placeholder=""
-            placeholderTextColor= '#37AADC'
-            underlineColorAndroid="rgba(0,0,0,0)"
-            returnKeyType="next"
-            returnKeyLabel="次"
-            keyboardType="email-address"
-            blurOnSubmit={false}
-          />
-          <View style={styles.seperator}/>
-          <Text style= {{ color: '#37AADC', fontSize: 16, marginLeft: 5 }} >Pin code</Text>
-          <TextInput
-            ref={(objPinCode) => this.refPinCode = objPinCode}
-            style={{height: 44, margin: 5, justifyContent: 'flex-start', alignItems: 'center', backgroundColor: 'transparent', color: 'gray'}}
-            onChangeText={(pinCode) => this.setState({pinCode})}
-            value={this.state.pinCode}
-            editable={true}
-            maxLength={100}
-            placeholder=""
-            placeholderTextColor= '#37AADC'
-            underlineColorAndroid="rgba(0,0,0,0)"
-            returnKeyType="next"
-            returnKeyLabel="次"
-            keyboardType="email-address"
-            blurOnSubmit={false}
-          />
-          <View style={styles.seperator}/>
-        </View>
-        <View style={[styles.btnRegister]}>
-          <TouchableHighlight style= {{flex:1, justifyContent: 'center', alignItems: 'center'}}
-            underlayColor="rgba(255,255,255,0.15)"
-            onPress={this.registerRequest.bind(this)}>
-            <Text style={{color: '#FFFFFF', fontWeight: 'bold', fontSize: 20}} numberOfLines={1}>Add</Text>
-          </TouchableHighlight>
-        </View>
+          <View style={[styles.registerContainer]}>
+            <Text style={styles.lblFieldTitleStyle} >Branch Name</Text>
+            <TextInput
+              ref={(objBranchName) => this.refBranchname = objBranchName}
+              style={styles.txtInputStyle}
+              onChangeText={(branchName) => this.setState({ branchName })}
+              value={this.state.branchName}
+              editable={true}
+              maxLength={100}
+              placeholder=""
+              placeholderTextColor='#37AADC'
+              underlineColorAndroid="rgba(0,0,0,0)"
+              returnKeyType="next"
+              returnKeyLabel="次"
+              keyboardType="email-address"
+              blurOnSubmit={false} />
+            <View style={styles.seperator} />
+            <Text style={styles.lblFieldTitleStyle} >Branch No</Text>
+            <TextInput
+              ref={(objBranchNo) => this.refBranchNo = objBranchNo}
+              style={styles.txtInputStyle}
+              onChangeText={(branchNo) => this.setState({ branchNo })}
+              value={this.state.branchNo}
+              editable={true}
+              maxLength={100}
+              placeholder=""
+              placeholderTextColor='#37AADC'
+              underlineColorAndroid="rgba(0,0,0,0)"
+              returnKeyType="next"
+              returnKeyLabel="次"
+              keyboardType="email-address"
+              blurOnSubmit={false} />
+            <View style={styles.seperator} />
+            <Text style={styles.lblFieldTitleStyle} >Taluk</Text>
+            <TextInput
+              ref={(objTaluk) => this.refTaluk = objTaluk}
+              style={styles.txtInputStyle}
+              onChangeText={(taluk) => this.setState({ taluk })}
+              value={this.state.taluk}
+              editable={true}
+              maxLength={100}
+              placeholder=""
+              placeholderTextColor='#37AADC'
+              underlineColorAndroid="rgba(0,0,0,0)"
+              returnKeyType="next"
+              returnKeyLabel="次"
+              keyboardType="email-address"
+              blurOnSubmit={false} />
+            <View style={styles.seperator} />
+            <Text style={styles.lblFieldTitleStyle} >District</Text>
+            <TextInput
+              ref={(objDistrict) => this.refDistrict = objDistrict}
+              style={styles.txtInputStyle}
+              onChangeText={(district) => this.setState({ district })}
+              value={this.state.district}
+              editable={true}
+              maxLength={100}
+              placeholder=""
+              placeholderTextColor='#37AADC'
+              underlineColorAndroid="rgba(0,0,0,0)"
+              returnKeyType="next"
+              returnKeyLabel="次"
+              keyboardType="email-address"
+              blurOnSubmit={false} />
+            <View style={styles.seperator} />
+            <Text style={styles.lblFieldTitleStyle} >Panchayath</Text>
+            <TextInput
+              ref={(objPanchayath) => this.refPanchayath = objPanchayath}
+              style={styles.txtInputStyle}
+              onChangeText={(panchayath) => this.setState({ panchayath })}
+              value={this.state.panchayath}
+              editable={true}
+              maxLength={100}
+              placeholder=""
+              placeholderTextColor='#37AADC'
+              underlineColorAndroid="rgba(0,0,0,0)"
+              returnKeyType="next"
+              returnKeyLabel="次"
+              keyboardType="email-address"
+              blurOnSubmit={false} />
+            <View style={styles.seperator} />
+            <Text style={styles.lblFieldTitleStyle} >Vilage</Text>
+            <TextInput
+              ref={(objVillage) => this.refVillage = objVillage}
+              style={styles.txtInputStyle}
+              onChangeText={(village) => this.setState({ village })}
+              value={this.state.village}
+              editable={true}
+              maxLength={100}
+              placeholder=""
+              placeholderTextColor='#37AADC'
+              underlineColorAndroid="rgba(0,0,0,0)"
+              returnKeyType="next"
+              returnKeyLabel="次"
+              keyboardType="email-address"
+              blurOnSubmit={false} />
+            <View style={styles.seperator} />
+            <Text style={styles.lblFieldTitleStyle} >Place</Text>
+            <TextInput
+              ref={(objPlace) => this.refPlace = objPlace}
+              style={styles.txtInputStyle}
+              onChangeText={(place) => this.setState({ place })}
+              value={this.state.place}
+              editable={true}
+              maxLength={100}
+              placeholder=""
+              placeholderTextColor='#37AADC'
+              underlineColorAndroid="rgba(0,0,0,0)"
+              returnKeyType="next"
+              returnKeyLabel="次"
+              keyboardType="email-address"
+              blurOnSubmit={false} />
+            <View style={styles.seperator} />
+            <Text style={styles.lblFieldTitleStyle} >Pin code</Text>
+            <TextInput
+              ref={(objPinCode) => this.refPinCode = objPinCode}
+              style={styles.txtInputStyle}
+              onChangeText={(pinCode) => this.setState({ pinCode })}
+              value={this.state.pinCode}
+              editable={true}
+              maxLength={100}
+              placeholder=""
+              placeholderTextColor='#37AADC'
+              underlineColorAndroid="rgba(0,0,0,0)"
+              returnKeyType="next"
+              returnKeyLabel="次"
+              keyboardType="email-address"
+              blurOnSubmit={false} />
+            <View style={styles.seperator} />
+          </View>
+          <View style={[styles.btnRegisterContainer]}>
+            <TouchableHighlight style={styles.btnRegister}
+              underlayColor="rgba(255,255,255,0.15)"
+              onPress={this.registerRequest.bind(this)}>
+              <Text style={styles.txtButtonRegister} numberOfLines={1}>Add</Text>
+            </TouchableHighlight>
+          </View>
         </ScrollViewKeybordHandler>
       </View>
     );
   }
 }
 
+BranchCreate.propTypes = {
+  navigation: PropTypes.object
+};
+
 module.exports = BranchCreate;
+
+
+/*
+var branch = {
+  'branchName': 'KSS Branch No.14',
+  'branchNo' : '14',
+  'taluk' : 'Kodungallur',
+  'district' : 'Thrissur',
+  'panchayath': 'Poyya',
+  'village': 'Pallipuram',
+  'place': 'Chanthuruthy',
+  'pinCode': '680732'
+};
+
+var regBranchObj = {
+  'branch' : branch
+};
+
+var objBranch = new Branch(regBranchObj['branch']);
+*/
