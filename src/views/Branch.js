@@ -23,23 +23,21 @@ class Branch extends Component {
     return (
       <View style={styles.container}>
         <TouchableHighlight onPress={this.actionOnViewBranchMember.bind(this)} underlayColor="rgba(0,0,0,0)">
-          <View style={styles.btnBranchContainer}>
-            <View style={styles.viewLeftBoreder} />
+          <View style={[styles.btnBranchContainer]}>
             <View style={styles.viewContentContainer}>
               <Text style={styles.txtContentHeader}>{branch.branchName}</Text>
-              <Text style={styles.txtContent}>{branch.taluk}</Text>
-              <Text style={styles.txtContent}>{branch.district}</Text>
-              <Text style={styles.txtContent}>{branch.panchayath}</Text>
-              <Text style={styles.txtContent}>{branch.village}</Text>
-              <Text style={styles.txtContent}>{branch.place}</Text>
-              <Text style={styles.txtContent}>{branch.pinCode}</Text>
+              {(branch.taluk != '') && <Text style={styles.txtContent}>{branch.taluk}</Text>}
+              {(branch.district != '') && <Text style={styles.txtContent}>{branch.district}</Text>}
+              {(branch.panchayath != '') && <Text style={styles.txtContent}>{branch.panchayath}</Text>}
+              {(branch.village != '') && <Text style={styles.txtContent}>{branch.village}</Text>}
+              {(branch.place != '') && <Text style={styles.txtContent}>{branch.place}</Text>}
+              {(branch.pinCode != '') && <Text style={styles.txtContent}>{branch.pinCode}</Text>}
             </View>
             <View style={styles.viewRightArrow}>
               <Image source={require('../res/images/right.png')} style={styles.imageRightArrow} />
             </View>
           </View>
         </TouchableHighlight>
-        <View style={styles.viewBottomBorder} />
       </View>
     );
   }

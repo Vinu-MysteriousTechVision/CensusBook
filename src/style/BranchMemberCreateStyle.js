@@ -29,7 +29,8 @@ const styles = StyleSheet.create({
   },
   lblFieldTitleStyle: {
     color: '#37AADC',
-    fontSize: 16,
+    fontWeight: 'normal',
+    fontSize: 12,
     marginLeft: 5
   },
   txtInputStyle: {
@@ -38,6 +39,8 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     alignItems: 'center',
     backgroundColor: 'transparent',
+    fontWeight: 'normal',
+    fontSize: 14,
     color: 'gray'
   },
   btnRegisterContainer: {
@@ -55,7 +58,6 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 20
   }
-
 });
 
 module.exports = styles;

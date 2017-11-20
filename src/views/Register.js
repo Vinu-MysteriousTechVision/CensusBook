@@ -1,95 +1,17 @@
 import React, { Component } from 'react';
 import {
   TouchableHighlight,
-  AppRegistry,
-  StyleSheet,
   Text,
   View,
-  Button,
   TextInput,
   Image,
   NetInfo,
-  Keyboard,
-  StatusBar,
-  Dimensions
+  Keyboard
 } from 'react-native';
-import { NavigationActions, StackNavigator } from 'react-navigation';
-import Utils from '../utils/Utils';
+import styles from '../style/RegisterStyle';
+import PropTypes from 'prop-types';
+import ScrollViewKeybordHandler from '../components/KeyboardAwareScrollView';
 
-var width = Dimensions.get('window').width - 80; //Menu width
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#062D2D',
-    justifyContent: 'center',
-    padding: 40
-  },
-  seperator: {
-    height: 0.5,
-    marginBottom: 20,
-    backgroundColor: '#37AADC'
-  },
-  fieldContainer: {
-    height: 50,
-    flexDirection: 'row',
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-    backgroundColor: 'transparent'
-  },
-  registerContainer: {
-    backgroundColor: 'transparent'
-  },
-  btnRegister: {
-    height: 50,
-    marginTop: 20,
-    backgroundColor: '#37B4F0',
-    backgroundColor: '#14DC96'
-  },
-  imageContainer: {
-    height:50,
-    width: 50,
-    backgroundColor:'transparent',
-    justifyContent: 'center',
-    alignItems: 'center'
-  },
-  fieldIcon: {
-    height:25,
-    width: 25,
-    backgroundColor:'transparent'
-  },
-  verticalSeperator: {
-    height: 30,
-    width: 0.5,
-    backgroundColor: '#37AADC'
-  },
-  menuHeaderImageBoarder: {
-    width: 106,
-    height: 106,
-    backgroundColor: '#E1E1E1',
-    alignSelf: 'center',
-    justifyContent: 'center',
-    borderRadius: 53
-  },
-  menuHeaderimage: {
-    alignSelf: 'center',
-    justifyContent: 'center',
-    height: 100,
-    borderRadius: 50,
-    width: 100,
-    backgroundColor: 'transparent'
-  },
-  menuHeaderLabel: {
-    height: 20,
-    marginTop: 5,
-    alignSelf: 'center',
-    justifyContent: 'center',
-    color: 'white',
-    fontSize: 18,
-    fontWeight: 'bold',
-    backgroundColor: 'transparent'
-  }
-});
 class Register extends React.Component {
   constructor(props) {
     super(props);
@@ -103,30 +25,16 @@ class Register extends React.Component {
     this._handleConnectivityChange = this._handleConnectivityChange.bind(this);
   }
 
-  static navigationOptions = ({ navigation }) => {
-    const { params = {} } = navigation.state
-
-    return {
-      headerStyle: {backgroundColor: '#062D2D', height: 0},
-      headerLeft: (
-        <TouchableHighlight style= {{flex:1, justifyContent: 'center', alignItems: 'center',marginTop: Utils.getStatusBarHeight(), paddingLeft: 10, backgroundColor: 'transparent'}} underlayColor="rgba(255,255,255,0.15)"
-        onPress={() => params.onBack()}>
-          <Image style={{ width: 16, height: 16 }} source={require('../res/images/back_white.png')} />
-        </TouchableHighlight>
-      )
-    }
-  }
-
   _handleConnectivityChange = (isConnected) => {
     this.setState({ isConnected });
   };
 
   _keyboardDidShow (e) {
-
+    console.log(e);
   }
 
   _keyboardDidHide (e) {
-
+    console.log(e);
   }
 
   tapOnBack() {
@@ -134,10 +42,9 @@ class Register extends React.Component {
   }
 
   componentDidMount() {
+
     NetInfo.isConnected.addEventListener('change', this._handleConnectivityChange );
     NetInfo.isConnected.fetch().done( (isConnected) => { this.setState({ isConnected }); } );
-
-    this.props.navigation.setParams({ onBack: this.tapOnBack.bind(this) })
   }
 
   componentWillMount() {
@@ -151,121 +58,142 @@ class Register extends React.Component {
     this.keyboardDidHideListener.remove();
   }
 
+  focusNextField = (nextField, nextFieldSubstitute = null) => {
+    if (nextField) {
+      nextField.focus();
+      return;
+    }
+
+    if (nextFieldSubstitute) {
+      nextFieldSubstitute.focus();
+    }
+  };
+
   registerRequest() {
 
   }
 
   render() {
-    const { navigate } = this.props.navigation;
     var profileIcon = require('../res/images/user_default.png');
     return(
       <View style={styles.container}>
-        <View style={{height: 150, backgroundColor: 'transparent', padding: 5}}>
-          <View style={styles.menuHeaderImageBoarder}>
-            <Image style={styles.menuHeaderimage}
-              source={profileIcon}
-            />
-          </View>
-          <Text ellipsizeMode="tail"  numberOfLines={1} style={styles.menuHeaderLabel}>Jon Doe</Text>
-        </View>
-        <View style={styles.registerContainer}>
-          <View style={styles.fieldContainer}>
-            <View style={styles.imageContainer}>
-              <Image style={styles.fieldIcon} source={require('../res/images/usr_blue.png')} />
+        <ScrollViewKeybordHandler
+          keyboardShouldPersistTaps={'always'}
+          showsVerticalScrollIndicator={false}>
+          <View style={styles.regHeaderStyle}>
+            <View style={styles.menuHeaderImageBoarder}>
+              <Image style={styles.menuHeaderimage}
+                source={profileIcon} />
             </View>
-            <View style={styles.verticalSeperator} />
-
-            <TextInput
-              ref={(objUserName) => this.refUsername = objUserName}
-              style={{flex:1,height: 44, margin: 5, backgroundColor: 'transparent', color: '#FFFFFF'}}
-              onChangeText={(username) => this.setState({username})}
-              value={this.state.username}
-              editable={true}
-              maxLength={100}
-              placeholder="Username"
-              placeholderTextColor= '#37AADC'
-              underlineColorAndroid="rgba(0,0,0,0)"
-              returnKeyType="next"
-              returnKeyLabel="次"
-              keyboardType="email-address"
-              blurOnSubmit={false}
-            />
+            <Text ellipsizeMode="tail"  numberOfLines={1} style={styles.menuHeaderLabel}>Jon Doe</Text>
           </View>
-          <View style={styles.seperator}>
-          </View>
-          <View style={styles.fieldContainer}>
-            <View style={styles.imageContainer}>
-              <Image style={styles.fieldIcon} source={require('../res/images/email_blue.png')} />
+          <View style={styles.registerContainer}>
+            <View style={styles.fieldContainer}>
+              <View style={styles.imageContainer}>
+                <Image style={styles.fieldIcon} source={require('../res/images/usr_blue.png')} />
+              </View>
+              <View style={styles.verticalSeperator} />
+              <TextInput
+                ref={(objUserName) => this.refUsername = objUserName}
+                style={styles.txtInputStyle}
+                onChangeText={(username) => this.setState({ username })}
+                value={this.state.username}
+                editable={true}
+                maxLength={100}
+                placeholder="Username"
+                placeholderTextColor='#37AADC'
+                underlineColorAndroid="rgba(0,0,0,0)"
+                returnKeyType="next"
+                returnKeyLabel="次"
+                keyboardType="email-address"
+                blurOnSubmit={false}
+                onSubmitEditing={() => this.focusNextField(this.refEmail)} />
             </View>
-            <View style={styles.verticalSeperator} />
-            <TextInput
-              ref={(objEmail) => this.refEmail = objEmail}
-              style={{flex:1, height: 44, margin: 5, backgroundColor: 'transparent', color: '#FFFFFF'}}
-              onChangeText={(email) => this.setState({email})}
-              value={this.state.email}
-              editable={true}
-              maxLength={100}
-              placeholder="Email"
-              placeholderTextColor= '#37AADC'
-              underlineColorAndroid="rgba(0,0,0,0)"
-              returnKeyType="next"
-              returnKeyLabel="次"
-              keyboardType="email-address"
-              blurOnSubmit={false}
-            />
-          </View>
-          <View style={styles.seperator}/>
-          <View style={styles.fieldContainer}>
-            <View style={styles.imageContainer}>
-              <Image style={styles.fieldIcon} source={require('../res/images/pwd_blue.png')} />
+            <View style={styles.seperator} />
+            <View style={styles.fieldContainer}>
+              <View style={styles.imageContainer}>
+                <Image style={styles.fieldIcon} source={require('../res/images/email_blue.png')} />
+              </View>
+              <View style={styles.verticalSeperator} />
+              <TextInput
+                ref={(objEmail) => this.refEmail = objEmail}
+                style={styles.txtInputStyle}
+                onChangeText={(email) => this.setState({ email })}
+                value={this.state.email}
+                editable={true}
+                maxLength={100}
+                placeholder="Email"
+                placeholderTextColor='#37AADC'
+                underlineColorAndroid="rgba(0,0,0,0)"
+                returnKeyType="next"
+                returnKeyLabel="次"
+                keyboardType="email-address"
+                blurOnSubmit={false}
+                onSubmitEditing={() => this.focusNextField(this.refPassword)} />
             </View>
-            <View style={styles.verticalSeperator} />
-            <TextInput
-              ref={(objPassword) => this.refPassword = objPassword}
-              style={{flex:1, height: 44, margin: 5, backgroundColor: 'transparent', color: '#FFFFFF'}}
-              onChangeText={(password) => this.setState({password})}
-              value={this.state.password}
-              editable={true}
-              maxLength={100}
-              placeholder="Password"
-              placeholderTextColor= '#37AADC'
-              underlineColorAndroid="rgba(0,0,0,0)"
-              returnKeyType="next"
-              returnKeyLabel="次"
-              blurOnSubmit={false}
-            />
-          </View>
-          <View style={styles.seperator}/>
-          <View style={styles.fieldContainer}>
-            <View style={styles.imageContainer}>
-              <Image style={styles.fieldIcon} source={require('../res/images/contactNum.png')} />
+            <View style={styles.seperator} />
+            <View style={styles.fieldContainer}>
+              <View style={styles.imageContainer}>
+                <Image style={styles.fieldIcon} source={require('../res/images/pwd_blue.png')} />
+              </View>
+              <View style={styles.verticalSeperator} />
+              <TextInput
+                ref={(objPassword) => this.refPassword = objPassword}
+                style={styles.txtInputStyle}
+                onChangeText={(password) => this.setState({ password })}
+                value={this.state.password}
+                editable={true}
+                maxLength={100}
+                placeholder="Password"
+                placeholderTextColor='#37AADC'
+                underlineColorAndroid="rgba(0,0,0,0)"
+                returnKeyType="next"
+                returnKeyLabel="次"
+                blurOnSubmit={false}
+                onSubmitEditing={() => this.focusNextField(this.refMobileNumber)} />
             </View>
-            <View style={styles.verticalSeperator} />
-            <TextInput
-              ref={(objMobileNumber) => this.refMobileNumber = objMobileNumber}
-              style={{flex:1, height: 44, margin: 5, backgroundColor: 'transparent', color: '#FFFFFF'}}
-              onChangeText={(mobileNumber) => this.setState({mobileNumber})}
-              value={this.state.mobileNumber}
-              editable={true}
-              maxLength={100}
-              placeholder="Mobile number"
-              placeholderTextColor= '#37AADC'
-              underlineColorAndroid="rgba(0,0,0,0)"
-              returnKeyType="next"
-              returnKeyLabel="次"
-              blurOnSubmit={false}
-            />
+            <View style={styles.seperator} />
+            <View style={styles.fieldContainer}>
+              <View style={styles.imageContainer}>
+                <Image style={styles.fieldIcon} source={require('../res/images/contactNum.png')} />
+              </View>
+              <View style={styles.verticalSeperator} />
+              <TextInput
+                ref={(objMobileNumber) => this.refMobileNumber = objMobileNumber}
+                style={styles.txtInputStyle}
+                onChangeText={(mobileNumber) => this.setState({ mobileNumber })}
+                value={this.state.mobileNumber}
+                editable={true}
+                maxLength={100}
+                placeholder="Mobile number"
+                placeholderTextColor='#37AADC'
+                underlineColorAndroid="rgba(0,0,0,0)"
+                returnKeyType="next"
+                returnKeyLabel="次"
+                blurOnSubmit={false} />
+            </View>
+            <View style={styles.seperator} />
           </View>
-          <View style={styles.seperator}/>
-        </View>
-        <View style={[styles.btnRegister]}>
-          <TouchableHighlight style= {{flex:1, justifyContent: 'center', alignItems: 'center'}} underlayColor="rgba(255,255,255,0.15)" onPress={this.registerRequest.bind(this)}>
-            <Text style={{color: '#FFFFFF', fontWeight: 'bold', fontSize: 20}} numberOfLines={1}>Register</Text>
+          <View style={styles.btnRegisterContainer}>
+            <TouchableHighlight style={styles.btnRegister} underlayColor="rgba(255,255,255,0.15)" onPress={this.registerRequest.bind(this)}>
+              <Text style={styles.txtRegButton} numberOfLines={1}>Register</Text>
+            </TouchableHighlight>
+          </View>
+        </ScrollViewKeybordHandler>
+        <View style={styles.btnNavBackContainer} >
+          <TouchableHighlight style={styles.btnNavBackStyle}
+            underlayColor="rgba(255,255,255,0.15)"
+            onPress={() => this.tapOnBack()}>
+            <Image source={require('../res/images/back_white.png')} style={styles.imageNavBackStyle} />
           </TouchableHighlight>
         </View>
       </View>
     );
   }
 }
+
+Register.propTypes = {
+  navigation: PropTypes.object
+};
 
 module.exports = Register;

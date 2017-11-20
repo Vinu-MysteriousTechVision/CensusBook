@@ -4,7 +4,7 @@ import { StyleSheet } from 'react-native';
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#d6efff',
+    backgroundColor: '#234B96',
     justifyContent: 'flex-start',
     paddingBottom: 10
   },
@@ -34,8 +34,26 @@ const styles = StyleSheet.create({
   imageAddStyle: {
     width: 44,
     height: 44
+  },
+  viewContentContainer: {
+    backgroundColor: '#FFFFFF',
+    padding: 10,
+    minHeight: 50,
+    borderWidth: 1,
+    borderRadius: 5,
+    borderColor: 'transparent',
+    margin: 10
+  },
+  txtContentHeader: {
+    fontWeight: 'bold',
+    fontSize: 14,
+    color: '#000'
+  },
+  txtContent: {
+    fontWeight: 'normal',
+    fontSize: 12,
+    color: '#000'
   }
-
 });
 
 module.exports = styles;

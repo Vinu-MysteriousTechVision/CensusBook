@@ -5,7 +5,7 @@ var styles = StyleSheet.create({
     flex: 1,
     paddingTop: 10,
     paddingHorizontal: 10,
-    backgroundColor: '#d6efff'
+    backgroundColor: 'transparent'
   },
   viewTopBorder: {
     height: 5,
@@ -20,26 +20,31 @@ var styles = StyleSheet.create({
     flexDirection: 'row',
     backgroundColor: 'transparent',
     height: 20,
-    justifyContent: 'flex-start'
+    justifyContent: 'flex-start',
+    paddingLeft: 10
   },
   txtKeyStyle: {
     width: 100,
     backgroundColor: 'transparent',
     fontWeight: 'normal',
-    fontSize: 12
+    fontSize: 12,
+    color: '#000066'
   },
   txtValueStyle: {
     marginLeft: 10,
     fontWeight: 'normal',
-    fontSize: 12
+    fontSize: 12,
+    color: '#000066'
   },
   txtHeaderStyle: {
     fontWeight: 'bold',
-    fontSize: 14
+    fontSize: 14,
+    color: '#000066'
   },
   txtNormalStyle: {
     fontWeight: 'normal',
-    fontSize: 12
+    fontSize: 12,
+    color: '#000066'
   },
   viewTopContainer: {
     flexDirection: 'row',
@@ -58,7 +63,7 @@ var styles = StyleSheet.create({
     height: 80,
     borderRadius: 40,
     width: 80,
-    backgroundColor: 'gray'
+    backgroundColor: 'transparent'
   },
   imageProfileIcon: {
     alignSelf: 'center',
@@ -70,9 +75,9 @@ var styles = StyleSheet.create({
   },
   viewProfileDataConatiner: {
     backgroundColor: 'transparent',
-    height: 20,
+    minHeight: 20,
     justifyContent: 'flex-start',
-    paddingLeft: 10
+    paddingLeft: 20
   }
 });
 

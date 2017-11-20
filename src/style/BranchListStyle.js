@@ -3,7 +3,7 @@ import { StyleSheet } from 'react-native';
 var styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#d6efff',
+    backgroundColor: '#234B96',
     paddingBottom: 10
   },
   listViewStyle: {
@@ -23,7 +23,6 @@ var styles = StyleSheet.create({
     width: 44,
     height: 44
   }
-
 });
 
 module.exports = styles;

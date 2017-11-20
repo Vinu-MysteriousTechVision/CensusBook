@@ -3,7 +3,7 @@ import { StyleSheet } from 'react-native';
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FCFCFC',
+    backgroundColor: '#234B96',
     justifyContent: 'flex-start',
     padding: 10
   },
@@ -28,7 +28,8 @@ const styles = StyleSheet.create({
   },
   lblFieldTitleStyle: {
     color: '#37AADC',
-    fontSize: 16,
+    fontWeight: 'normal',
+    fontSize: 12,
     marginLeft: 5
   },
   txtInputStyle: {
@@ -37,7 +38,9 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     alignItems: 'center',
     backgroundColor: 'transparent',
-    color: 'gray'
+    color: '#FFFFFF',
+    fontWeight: 'normal',
+    fontSize: 14
   },
   btnRegisterContainer: {
     height: 50,

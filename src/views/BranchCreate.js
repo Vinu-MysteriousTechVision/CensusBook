@@ -38,7 +38,7 @@ class BranchCreate extends React.Component {
     return {
       title: 'Add Branche',
       headerTitleStyle: { color: '#FFFFFF' },
-      headerStyle: { backgroundColor: '#4187F5' },
+      headerStyle: { backgroundColor: '#28417D' },
       headerBackTitleStyle: { backgroundColor: '#FFFFFF' },
       headerLeft: (
         <TouchableHighlight style={styles.btnNavBackStyle}
@@ -88,6 +88,17 @@ class BranchCreate extends React.Component {
     this.keyboardDidHideListener.remove();
   }
 
+  focusNextField = (nextField, nextFieldSubstitute = null) => {
+    if (nextField) {
+      nextField.focus();
+      return;
+    }
+
+    if (nextFieldSubstitute) {
+      nextFieldSubstitute.focus();
+    }
+  };
+
   registerRequest() {
 
     var branch = {
@@ -123,12 +134,13 @@ class BranchCreate extends React.Component {
               editable={true}
               maxLength={100}
               placeholder=""
-              placeholderTextColor='#37AADC'
+              placeholderTextColor='#63B9FF'
               underlineColorAndroid="rgba(0,0,0,0)"
               returnKeyType="next"
               returnKeyLabel="次"
               keyboardType="email-address"
-              blurOnSubmit={false} />
+              blurOnSubmit={false}
+              onSubmitEditing={() => this.focusNextField(this.refBranchNo)} />
             <View style={styles.seperator} />
             <Text style={styles.lblFieldTitleStyle} >Branch No</Text>
             <TextInput
@@ -144,7 +156,8 @@ class BranchCreate extends React.Component {
               returnKeyType="next"
               returnKeyLabel="次"
               keyboardType="email-address"
-              blurOnSubmit={false} />
+              blurOnSubmit={false}
+              onSubmitEditing={() => this.focusNextField(this.refTaluk)} />
             <View style={styles.seperator} />
             <Text style={styles.lblFieldTitleStyle} >Taluk</Text>
             <TextInput
@@ -160,7 +173,8 @@ class BranchCreate extends React.Component {
               returnKeyType="next"
               returnKeyLabel="次"
               keyboardType="email-address"
-              blurOnSubmit={false} />
+              blurOnSubmit={false}
+              onSubmitEditing={() => this.focusNextField(this.refDistrict)} />
             <View style={styles.seperator} />
             <Text style={styles.lblFieldTitleStyle} >District</Text>
             <TextInput
@@ -176,7 +190,8 @@ class BranchCreate extends React.Component {
               returnKeyType="next"
               returnKeyLabel="次"
               keyboardType="email-address"
-              blurOnSubmit={false} />
+              blurOnSubmit={false}
+              onSubmitEditing={() => this.focusNextField(this.refPanchayath)} />
             <View style={styles.seperator} />
             <Text style={styles.lblFieldTitleStyle} >Panchayath</Text>
             <TextInput
@@ -192,7 +207,8 @@ class BranchCreate extends React.Component {
               returnKeyType="next"
               returnKeyLabel="次"
               keyboardType="email-address"
-              blurOnSubmit={false} />
+              blurOnSubmit={false}
+              onSubmitEditing={() => this.focusNextField(this.refVillage)} />
             <View style={styles.seperator} />
             <Text style={styles.lblFieldTitleStyle} >Vilage</Text>
             <TextInput
@@ -208,7 +224,8 @@ class BranchCreate extends React.Component {
               returnKeyType="next"
               returnKeyLabel="次"
               keyboardType="email-address"
-              blurOnSubmit={false} />
+              blurOnSubmit={false}
+              onSubmitEditing={() => this.focusNextField(this.refPlace)} />
             <View style={styles.seperator} />
             <Text style={styles.lblFieldTitleStyle} >Place</Text>
             <TextInput
@@ -224,7 +241,8 @@ class BranchCreate extends React.Component {
               returnKeyType="next"
               returnKeyLabel="次"
               keyboardType="email-address"
-              blurOnSubmit={false} />
+              blurOnSubmit={false}
+              onSubmitEditing={() => this.focusNextField(this.refPinCode)} />
             <View style={styles.seperator} />
             <Text style={styles.lblFieldTitleStyle} >Pin code</Text>
             <TextInput

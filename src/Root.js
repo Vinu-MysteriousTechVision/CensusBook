@@ -1,15 +1,12 @@
 'use strict';
 import React, { Component } from 'react';
 import {
-  AppRegistry,
-  StyleSheet,
   View,
   Text,
-  Button,
   TouchableHighlight,
   StatusBar
 } from 'react-native';
-import { NavigationActions, StackNavigator } from 'react-navigation';
+import { StackNavigator } from 'react-navigation';
 import getSlideFromRightTransitionConfig from './components/SlideFromRightTransition';
 import Login from './views/Login';
 import Register from './views/Register';
@@ -19,6 +16,8 @@ import BranchList from './views/BranchList';
 import BranchCreate from './views/BranchCreate';
 import BranchMemberCreate from './views/BranchMemberCreate';
 import BranchMemberViewList from './views/BranchMemberViewList';
+import styles from './style/RootStyle';
+import PropTypes from 'prop-types';
 
 class Root extends Component {
   constructor(props) {
@@ -48,22 +47,21 @@ class Root extends Component {
 
 
   render() {
-    const { navigate } = this.props.navigation;
     return (
       <View style={styles.container}>
         <StatusBar translucent={true} backgroundColor="rgba(0, 0, 0, 0)" barStyle="light-content" />
         <View style={styles.topContainer}>
-          <Text style={styles.welcome}> Welcome </Text>
+          <Text style={styles.welcome}> KSS Survay</Text>
         </View>
         <View style={styles.bottomContainer}>
           <View style={[styles.btnSignIn]}>
-            <TouchableHighlight style={{ flex:1, justifyContent: 'center', alignItems: 'center' }} underlayColor="rgba(255,255,255,0.15)" onPress={this.tapOnSignIn.bind(this)}>
-              <Text style={{ color: '#37CDBE', fontWeight: 'bold', fontSize: 20 }} numberOfLines={1}>Sign In</Text>
+            <TouchableHighlight style={styles.buttonStyle} underlayColor="rgba(255,255,255,0.15)" onPress={this.tapOnSignIn.bind(this)}>
+              <Text style={styles.txtSignIn} numberOfLines={1}>Sign In</Text>
             </TouchableHighlight>
           </View>
-          <View style={[styles.signUpContainer, { flexDirection: 'row' }]}>
-            <TouchableHighlight style={{ flex:1, justifyContent: 'center', alignItems: 'center' }} underlayColor="rgba(255,255,255,0.15)" onPress={this.tapOnSignUp.bind(this)}>
-              <Text style={{ color: '#FFFFFF', fontWeight: 'bold', fontSize: 20 }} numberOfLines={1}>Sign Up</Text>
+          <View style={styles.signUpContainer}>
+            <TouchableHighlight style={styles.buttonStyle} underlayColor="rgba(255,255,255,0.15)" onPress={this.tapOnSignUp.bind(this)}>
+              <Text style={styles.txtSignUp} numberOfLines={1}>Sign Up</Text>
             </TouchableHighlight>
           </View>
         </View>
@@ -93,63 +91,19 @@ const AuthorizedNavigator  = StackNavigator({
   BranchMemberViewList: { screen: BranchMemberViewList }
 }, {
   initialRouteName: 'BranchList',
-  // headerMode: 'none',
   transitionConfig: getSlideFromRightTransitionConfig
-
 });
 
 const navigationScreens = StackNavigator({
   Unauthorized: { screen: UnauthorizedNavigator  },
   Authorized: { screen: AuthorizedNavigator }
 }, {
-  initialRouteName: 'Authorized',
+  initialRouteName: 'Unauthorized',
   headerMode: 'none'
 });
 
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#062D2D'
-  },
-  welcome: {
-    fontSize: 30,
-    textAlign: 'center',
-    margin: 10,
-    color: 'white'
-  },
-  topContainer: {
-    flex: 0.5,
-    backgroundColor: '#062D2D',
-    justifyContent: 'center'
-  },
-  bottomContainer: {
-    flex: 0.5,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#062D2D'
-  },
-  loginContainer: {
-    height: 100,
-    backgroundColor: 'white'
-  },
-  btnSignIn: {
-    height: 50,
-    width: 230,
-    borderRadius: 5,
-    backgroundColor: '#FFFFFF'
-  },
-  signUpContainer: {
-    height: 50,
-    width: 230,
-    borderRadius: 5,
-    marginTop: 20,
-    backgroundColor: '#14DC96'
-  },
-  seperator: {
-    height: 0.5,
-    backgroundColor: '#37AADC'
-  }
-});
+Root.propTypes = {
+  navigation: PropTypes.object
+};
 
 module.exports = navigationScreens;

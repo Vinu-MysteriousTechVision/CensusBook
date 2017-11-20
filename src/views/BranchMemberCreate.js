@@ -42,7 +42,7 @@ class BranchMemberCreate extends React.Component {
     return {
       title: 'Add Branch Member',
       headerTitleStyle: { color: '#FFFFFF' },
-      headerStyle: { backgroundColor: '#4187F5' },
+      headerStyle: { backgroundColor: '#28417D' },
       headerBackTitleStyle: { backgroundColor: '#FFFFFF' },
       headerLeft: (
         <TouchableHighlight style={styles.btnNavBackStyle} underlayColor="rgba(255,255,255,0.15)" onPress={() => params.onBack()}>
@@ -127,7 +127,8 @@ class BranchMemberCreate extends React.Component {
   render() {
     return(
       <View style={styles.container}>
-        <ScrollViewKeybordHandler keyboardShouldPersistTaps={'always'}>
+        <ScrollViewKeybordHandler keyboardShouldPersistTaps={'always'}
+          scrollEventThrottle={16}>
           <View style={[styles.registerContainer]}>
             <Text style={styles.lblFieldTitleStyle} >Name</Text>
             <TextInput
@@ -160,7 +161,7 @@ class BranchMemberCreate extends React.Component {
               returnKeyLabel="次"
               blurOnSubmit={false}
               onSubmitEditing={() => this.focusNextField(this.refPlace)} />
-            <View style={[styles.seperator, { marginBottom: 0 }]} />
+            <View style={[styles.seperator, { marginBottom: 0, marginLeft: 10 }]} />
             <TextInput
               ref={(objPlace) => this.refPlace = objPlace}
               style={styles.txtInputStyle}
@@ -175,7 +176,7 @@ class BranchMemberCreate extends React.Component {
               returnKeyLabel="次"
               blurOnSubmit={false}
               onSubmitEditing={() => this.focusNextField(this.refPostalName)} />
-            <View style={[styles.seperator, { marginBottom: 0 }]} />
+            <View style={[styles.seperator, { marginBottom: 0, marginLeft: 10 }]} />
             <TextInput
               ref={(objPostalName) => this.refPostalName = objPostalName}
               style={styles.txtInputStyle}
@@ -183,14 +184,14 @@ class BranchMemberCreate extends React.Component {
               value={this.state.postalName}
               editable={true}
               maxLength={100}
-              placeholder="Postal Name"
+              placeholder="Postoffice"
               placeholderTextColor='gray'
               underlineColorAndroid="rgba(0,0,0,0)"
               returnKeyType="next"
               returnKeyLabel="次"
               blurOnSubmit={false}
               onSubmitEditing={() => this.focusNextField(this.refPincode)} />
-            <View style={[styles.seperator, { marginBottom: 0 }]} />
+            <View style={[styles.seperator, { marginBottom: 0, marginLeft: 10 }]} />
             <TextInput
               ref={(objPincode) => this.refPincode = objPincode}
               style={styles.txtInputStyle}
@@ -283,8 +284,7 @@ class BranchMemberCreate extends React.Component {
               underlineColorAndroid="rgba(0,0,0,0)"
               returnKeyType="next"
               returnKeyLabel="次"
-              blurOnSubmit={false}
-              onSubmitEditing={() => this.focusNextField(this.refMotherName)} />
+              blurOnSubmit={false} />
             <View style={styles.seperator} />
 
           </View>

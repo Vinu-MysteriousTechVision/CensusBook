@@ -4,11 +4,14 @@ var styles = StyleSheet.create({
   container: {
     paddingTop: 10,
     paddingHorizontal: 10,
-    backgroundColor: '#d6efff'
+    backgroundColor: 'transparent'
   },
   btnBranchContainer: {
     backgroundColor: 'transparent',
-    flexDirection: 'row'
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center'
+
   },
   viewLeftBoreder: {
     width: 10,
@@ -19,19 +22,29 @@ var styles = StyleSheet.create({
   viewContentContainer: {
     flex: 1,
     backgroundColor: '#FFFFFF',
-    padding: 10
+    padding: 10,
+    paddingHorizontal: 20,
+    minHeight: 50,
+    borderWidth: 1,
+    borderRadius: 5,
+    borderColor: 'transparent'
   },
   txtContentHeader: {
     fontWeight: 'bold',
-    fontSize: 14
+    fontSize: 16,
+    color: '#000'
   },
   txtContent: {
     fontWeight: 'normal',
-    fontSize: 12
+    fontSize: 12,
+    color: '#000'
   },
   viewRightArrow: {
+    position: 'absolute',
+    right: 5,
     width: 30,
-    backgroundColor: '#FFFFFF',
+    height: 30,
+    backgroundColor: 'transparent',
     justifyContent: 'center',
     alignItems: 'center'
   },

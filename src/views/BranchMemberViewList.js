@@ -5,7 +5,8 @@ import {
   ListView,
   NetInfo,
   Image,
-  View
+  View,
+  Text
 } from 'react-native';
 import BranchMember from './BranchMember';
 import colors from '../utils/Color';
@@ -36,7 +37,7 @@ class BranchMemberViewList extends React.Component {
     return {
       title: 'Branch Members',
       headerTitleStyle: { color: '#FFFFFF' },
-      headerStyle: { backgroundColor: '#4187F5' },
+      headerStyle: { backgroundColor: '#28417D' },
       headerBackTitleStyle: { backgroundColor: '#FFFFFF' },
       headerLeft: (
         <TouchableHighlight style={styles.btnNavBackStyle} underlayColor="rgba(255,255,255,0.15)" onPress={() => params.onBack()}>
@@ -122,12 +123,27 @@ class BranchMemberViewList extends React.Component {
 
   }
 
+  branchHeaderView(branch) {
+    return (
+      <View style={styles.viewContentContainer}>
+        <Text style={styles.txtContentHeader}>{branch.branchName}</Text>
+        {(branch.taluk != '') && <Text style={styles.txtContent}>{branch.taluk}</Text>}
+        {(branch.district != '') && <Text style={styles.txtContent}>{branch.district}</Text>}
+        {(branch.panchayath != '') && <Text style={styles.txtContent}>{branch.panchayath}</Text>}
+        {(branch.village != '') && <Text style={styles.txtContent}>{branch.village}</Text>}
+        {(branch.place != '') && <Text style={styles.txtContent}>{branch.place}</Text>}
+        {(branch.pinCode != '') && <Text style={styles.txtContent}>{branch.pinCode}</Text>}
+      </View>
+    );
+  }
+
   render() {
     const { params = {} } = this.props.navigation.state;
 
     return (
       <View style={styles.container}>
-        <BranchView branch={params.branch} />
+        {/*<BranchView branch={params.branch} />*/}
+        {this.branchHeaderView(params.branch)}
         <ListView
           style={styles.listViewStyle}
           removeClippedSubviews={false}

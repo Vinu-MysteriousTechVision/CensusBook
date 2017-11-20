@@ -31,7 +31,7 @@ class BranchList extends Component {
     return {
       title: 'Home',
       headerTitleStyle: { color: '#FFFFFF' },
-      headerStyle: { backgroundColor: '#4187F5' }
+      headerStyle: { backgroundColor: '#28417D' }
     };
   }
 
