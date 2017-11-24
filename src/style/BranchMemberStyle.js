@@ -28,23 +28,23 @@ var styles = StyleSheet.create({
     backgroundColor: 'transparent',
     fontWeight: 'normal',
     fontSize: 12,
-    color: '#000066'
+    color: '#000000'
   },
   txtValueStyle: {
     marginLeft: 10,
     fontWeight: 'normal',
     fontSize: 12,
-    color: '#000066'
+    color: '#000000'
   },
   txtHeaderStyle: {
     fontWeight: 'bold',
     fontSize: 14,
-    color: '#000066'
+    color: '#000000'
   },
   txtNormalStyle: {
     fontWeight: 'normal',
     fontSize: 12,
-    color: '#000066'
+    color: '#000000'
   },
   viewTopContainer: {
     flexDirection: 'row',

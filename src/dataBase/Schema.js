@@ -2,7 +2,9 @@
 
 const BranchSchema = {
   name: 'Branch',
+  primaryKey: 'id',
   properties: {
+    id:         'int',    // primary key
     branchName: 'string',
     branchNo:   'string',
     taluk:      'string',
@@ -16,21 +18,24 @@ const BranchSchema = {
 
 const BranchMemberSchema = {
   name: 'BranchMember',
+  primaryKey: 'id',
   properties: {
-    name: 'string',
-    houseName: 'string',
-    place: 'string',
-    postalName: 'string',
-    pincode: 'string',
-    dateOfBirth: 'string',
-    fatherName: 'string',
-    motherName: 'string',
-    qualification: 'string',
-    job: 'string'
+    id:             'int',    // Primary key
+    branchId:       'int',    // Foreign key
+    name:           'string',
+    houseName:      'string',
+    place:          'string',
+    postalName:     'string',
+    pincode:        'string',
+    dateOfBirth:    'string',
+    fatherName:     'string',
+    motherName:     'string',
+    qualification:  'string',
+    job:            'string'
   }
 };
 
 module.exports = {
   BranchSchema,
   BranchMemberSchema
-}
+};

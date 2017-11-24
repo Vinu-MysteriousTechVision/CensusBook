@@ -36,13 +36,10 @@ const styles = StyleSheet.create({
     height: 44
   },
   viewContentContainer: {
-    backgroundColor: '#FFFFFF',
-    padding: 10,
-    minHeight: 50,
-    borderWidth: 1,
-    borderRadius: 5,
-    borderColor: 'transparent',
-    margin: 10
+    backgroundColor: '#DCDCDC',
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    minHeight: 50
   },
   txtContentHeader: {
     fontWeight: 'bold',

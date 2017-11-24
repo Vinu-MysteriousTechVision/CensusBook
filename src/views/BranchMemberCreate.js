@@ -90,8 +90,12 @@ class BranchMemberCreate extends React.Component {
   }
 
   registerRequest() {
+    const { params = {} } = this.props.navigation.state;
+    var branchData = params.branch;
+
 
     var branchMember = {
+      'branch_id': branchData.id,
       'name': this.state.name,
       'houseName': this.state.houseName,
       'place': this.state.place,
@@ -106,7 +110,6 @@ class BranchMemberCreate extends React.Component {
 
     this.objBranchMemberCreateController.createBranchMember(branchMember);
 
-    const { params = {} } = this.props.navigation.state;
     if (params.registerCallback) {
       params.registerCallback(this.objBranchMemberCreateController.getBranchMember());
     }
@@ -138,8 +141,8 @@ class BranchMemberCreate extends React.Component {
               value={this.state.name}
               editable={true}
               maxLength={100}
-              placeholder=""
-              placeholderTextColor='#37AADC'
+              placeholder="Name"
+              placeholderTextColor='#828282'
               underlineColorAndroid="rgba(0,0,0,0)"
               returnKeyType="next"
               returnKeyLabel="次"
@@ -155,7 +158,7 @@ class BranchMemberCreate extends React.Component {
               editable={true}
               maxLength={100}
               placeholder="House name"
-              placeholderTextColor='gray'
+              placeholderTextColor='#828282'
               underlineColorAndroid="rgba(0,0,0,0)"
               returnKeyType="next"
               returnKeyLabel="次"
@@ -170,7 +173,7 @@ class BranchMemberCreate extends React.Component {
               editable={true}
               maxLength={100}
               placeholder="Place"
-              placeholderTextColor='gray'
+              placeholderTextColor='#828282'
               underlineColorAndroid="rgba(0,0,0,0)"
               returnKeyType="next"
               returnKeyLabel="次"
@@ -185,7 +188,7 @@ class BranchMemberCreate extends React.Component {
               editable={true}
               maxLength={100}
               placeholder="Postoffice"
-              placeholderTextColor='gray'
+              placeholderTextColor='#828282'
               underlineColorAndroid="rgba(0,0,0,0)"
               returnKeyType="next"
               returnKeyLabel="次"
@@ -200,7 +203,7 @@ class BranchMemberCreate extends React.Component {
               editable={true}
               maxLength={100}
               placeholder="Pincode"
-              placeholderTextColor='gray'
+              placeholderTextColor='#828282'
               underlineColorAndroid="rgba(0,0,0,0)"
               returnKeyType="next"
               returnKeyLabel="次"
@@ -215,8 +218,8 @@ class BranchMemberCreate extends React.Component {
               value={this.state.dateOfBirth}
               editable={true}
               maxLength={100}
-              placeholder=""
-              placeholderTextColor='#37AADC'
+              placeholder="Date Of Birth"
+              placeholderTextColor='#828282'
               underlineColorAndroid="rgba(0,0,0,0)"
               returnKeyType="next"
               returnKeyLabel="次"
@@ -231,8 +234,8 @@ class BranchMemberCreate extends React.Component {
               value={this.state.fatherName}
               editable={true}
               maxLength={100}
-              placeholder=""
-              placeholderTextColor='#37AADC'
+              placeholder="Father name"
+              placeholderTextColor='#828282'
               underlineColorAndroid="rgba(0,0,0,0)"
               returnKeyType="next"
               returnKeyLabel="次"
@@ -247,8 +250,8 @@ class BranchMemberCreate extends React.Component {
               value={this.state.motherName}
               editable={true}
               maxLength={100}
-              placeholder=""
-              placeholderTextColor='#37AADC'
+              placeholder="Mother name"
+              placeholderTextColor='#828282'
               underlineColorAndroid="rgba(0,0,0,0)"
               returnKeyType="next"
               returnKeyLabel="次"
@@ -263,15 +266,15 @@ class BranchMemberCreate extends React.Component {
               value={this.state.qualification}
               editable={true}
               maxLength={100}
-              placeholder=""
-              placeholderTextColor='#37AADC'
+              placeholder="Qualification"
+              placeholderTextColor='#828282'
               underlineColorAndroid="rgba(0,0,0,0)"
               returnKeyType="next"
               returnKeyLabel="次"
               blurOnSubmit={false}
               onSubmitEditing={() => this.focusNextField(this.refJob)} />
             <View style={styles.seperator} />
-            <Text style={styles.lblFieldTitleStyle} >Job</Text>
+            <Text style={styles.lblFieldTitleStyle} >Occupation</Text>
             <TextInput
               ref={(objJob) => this.refJob = objJob}
               style={styles.txtInputStyle}
@@ -279,8 +282,8 @@ class BranchMemberCreate extends React.Component {
               value={this.state.job}
               editable={true}
               maxLength={100}
-              placeholder=""
-              placeholderTextColor='#37AADC'
+              placeholder="Occupation"
+              placeholderTextColor='#828282'
               underlineColorAndroid="rgba(0,0,0,0)"
               returnKeyType="next"
               returnKeyLabel="次"

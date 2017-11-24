@@ -102,6 +102,7 @@ class BranchCreate extends React.Component {
   registerRequest() {
 
     var branch = {
+      'id': 0,
       'branchName': this.state.branchName,
       'branchNo' : this.state.branchNo,
       'taluk' : this.state.taluk,
@@ -125,7 +126,6 @@ class BranchCreate extends React.Component {
       <View style={styles.container}>
         <ScrollViewKeybordHandler keyboardShouldPersistTaps={'always'}>
           <View style={[styles.registerContainer]}>
-            <Text style={styles.lblFieldTitleStyle} >Branch Name</Text>
             <TextInput
               ref={(objBranchName) => this.refBranchname = objBranchName}
               style={styles.txtInputStyle}
@@ -133,8 +133,8 @@ class BranchCreate extends React.Component {
               value={this.state.branchName}
               editable={true}
               maxLength={100}
-              placeholder=""
-              placeholderTextColor='#63B9FF'
+              placeholder="Branch name"
+              placeholderTextColor='#828282'
               underlineColorAndroid="rgba(0,0,0,0)"
               returnKeyType="next"
               returnKeyLabel="次"
@@ -142,7 +142,6 @@ class BranchCreate extends React.Component {
               blurOnSubmit={false}
               onSubmitEditing={() => this.focusNextField(this.refBranchNo)} />
             <View style={styles.seperator} />
-            <Text style={styles.lblFieldTitleStyle} >Branch No</Text>
             <TextInput
               ref={(objBranchNo) => this.refBranchNo = objBranchNo}
               style={styles.txtInputStyle}
@@ -150,8 +149,8 @@ class BranchCreate extends React.Component {
               value={this.state.branchNo}
               editable={true}
               maxLength={100}
-              placeholder=""
-              placeholderTextColor='#37AADC'
+              placeholder="Branch No"
+              placeholderTextColor='#828282'
               underlineColorAndroid="rgba(0,0,0,0)"
               returnKeyType="next"
               returnKeyLabel="次"
@@ -159,7 +158,6 @@ class BranchCreate extends React.Component {
               blurOnSubmit={false}
               onSubmitEditing={() => this.focusNextField(this.refTaluk)} />
             <View style={styles.seperator} />
-            <Text style={styles.lblFieldTitleStyle} >Taluk</Text>
             <TextInput
               ref={(objTaluk) => this.refTaluk = objTaluk}
               style={styles.txtInputStyle}
@@ -167,8 +165,8 @@ class BranchCreate extends React.Component {
               value={this.state.taluk}
               editable={true}
               maxLength={100}
-              placeholder=""
-              placeholderTextColor='#37AADC'
+              placeholder="Taluk"
+              placeholderTextColor='#828282'
               underlineColorAndroid="rgba(0,0,0,0)"
               returnKeyType="next"
               returnKeyLabel="次"
@@ -176,7 +174,6 @@ class BranchCreate extends React.Component {
               blurOnSubmit={false}
               onSubmitEditing={() => this.focusNextField(this.refDistrict)} />
             <View style={styles.seperator} />
-            <Text style={styles.lblFieldTitleStyle} >District</Text>
             <TextInput
               ref={(objDistrict) => this.refDistrict = objDistrict}
               style={styles.txtInputStyle}
@@ -184,8 +181,8 @@ class BranchCreate extends React.Component {
               value={this.state.district}
               editable={true}
               maxLength={100}
-              placeholder=""
-              placeholderTextColor='#37AADC'
+              placeholder="District"
+              placeholderTextColor='#828282'
               underlineColorAndroid="rgba(0,0,0,0)"
               returnKeyType="next"
               returnKeyLabel="次"
@@ -193,7 +190,6 @@ class BranchCreate extends React.Component {
               blurOnSubmit={false}
               onSubmitEditing={() => this.focusNextField(this.refPanchayath)} />
             <View style={styles.seperator} />
-            <Text style={styles.lblFieldTitleStyle} >Panchayath</Text>
             <TextInput
               ref={(objPanchayath) => this.refPanchayath = objPanchayath}
               style={styles.txtInputStyle}
@@ -201,8 +197,8 @@ class BranchCreate extends React.Component {
               value={this.state.panchayath}
               editable={true}
               maxLength={100}
-              placeholder=""
-              placeholderTextColor='#37AADC'
+              placeholder="Panchayath"
+              placeholderTextColor='#828282'
               underlineColorAndroid="rgba(0,0,0,0)"
               returnKeyType="next"
               returnKeyLabel="次"
@@ -210,7 +206,6 @@ class BranchCreate extends React.Component {
               blurOnSubmit={false}
               onSubmitEditing={() => this.focusNextField(this.refVillage)} />
             <View style={styles.seperator} />
-            <Text style={styles.lblFieldTitleStyle} >Vilage</Text>
             <TextInput
               ref={(objVillage) => this.refVillage = objVillage}
               style={styles.txtInputStyle}
@@ -218,8 +213,8 @@ class BranchCreate extends React.Component {
               value={this.state.village}
               editable={true}
               maxLength={100}
-              placeholder=""
-              placeholderTextColor='#37AADC'
+              placeholder="Village"
+              placeholderTextColor='#828282'
               underlineColorAndroid="rgba(0,0,0,0)"
               returnKeyType="next"
               returnKeyLabel="次"
@@ -227,7 +222,6 @@ class BranchCreate extends React.Component {
               blurOnSubmit={false}
               onSubmitEditing={() => this.focusNextField(this.refPlace)} />
             <View style={styles.seperator} />
-            <Text style={styles.lblFieldTitleStyle} >Place</Text>
             <TextInput
               ref={(objPlace) => this.refPlace = objPlace}
               style={styles.txtInputStyle}
@@ -235,8 +229,8 @@ class BranchCreate extends React.Component {
               value={this.state.place}
               editable={true}
               maxLength={100}
-              placeholder=""
-              placeholderTextColor='#37AADC'
+              placeholder="Place"
+              placeholderTextColor='#828282'
               underlineColorAndroid="rgba(0,0,0,0)"
               returnKeyType="next"
               returnKeyLabel="次"
@@ -244,7 +238,6 @@ class BranchCreate extends React.Component {
               blurOnSubmit={false}
               onSubmitEditing={() => this.focusNextField(this.refPinCode)} />
             <View style={styles.seperator} />
-            <Text style={styles.lblFieldTitleStyle} >Pin code</Text>
             <TextInput
               ref={(objPinCode) => this.refPinCode = objPinCode}
               style={styles.txtInputStyle}
@@ -252,8 +245,8 @@ class BranchCreate extends React.Component {
               value={this.state.pinCode}
               editable={true}
               maxLength={100}
-              placeholder=""
-              placeholderTextColor='#37AADC'
+              placeholder="Pincode"
+              placeholderTextColor='#828282'
               underlineColorAndroid="rgba(0,0,0,0)"
               returnKeyType="next"
               returnKeyLabel="次"

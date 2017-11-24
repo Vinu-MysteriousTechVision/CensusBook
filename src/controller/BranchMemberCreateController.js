@@ -17,9 +17,16 @@ export default class BranchMemberCreateController {
   }
 
   createBranchMember(branchMember) {
+    var nextId = 0;
+    if (this.getLastPrimaryKey() != null) {
+      nextId = this.getLastPrimaryKey() + 1;
+    }
+
     this.dataBase.write(() => {
       this.branchMember = this.dataBase.create('BranchMember',
         {
+          id: nextId,
+          branchId: branchMember.branch_id,
           name: branchMember.name,
           houseName: branchMember.houseName,
           place: branchMember.place,
@@ -37,5 +44,13 @@ export default class BranchMemberCreateController {
 
   getBranchMember() {
     return this.branchMember;
+  }
+
+  getLastPrimaryKey() {
+    const objBrancheMembers =  this.dataBase.objects('BranchMember');
+    if (objBrancheMembers.length > 0) {
+      return objBrancheMembers[objBrancheMembers.length - 1].id;
+    }
+    return 0;
   }
 }

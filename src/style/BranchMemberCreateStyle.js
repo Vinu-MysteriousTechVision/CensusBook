@@ -4,7 +4,7 @@ import { StyleSheet } from 'react-native';
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FCFCFC',
+    backgroundColor: '#234B96',
     justifyContent: 'flex-start',
     padding: 10
   },
@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
     height: 16
   },
   lblFieldTitleStyle: {
-    color: '#37AADC',
+    color: '#00AAD2',
     fontWeight: 'normal',
     fontSize: 12,
     marginLeft: 5
@@ -39,9 +39,9 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     alignItems: 'center',
     backgroundColor: 'transparent',
+    color: '#FCFCFC',
     fontWeight: 'normal',
-    fontSize: 14,
-    color: 'gray'
+    fontSize: 14
   },
   btnRegisterContainer: {
     height: 50,

@@ -15,9 +15,9 @@ export default class BranchMemberListController {
     });
   }
 
-  loadBranceMembers() {
+  loadBranceMembers(branch) {
 
-    const objBrancheMembers =  this.dataBase.objects('BranchMember');
+    const objBrancheMembers =  this.dataBase.objects('BranchMember').filtered('branchId = $0', branch.id);
 
     var tempArray = [];
     for (var i = 0; i < objBrancheMembers.length; i++) {

@@ -17,9 +17,14 @@ export default class BranchCreateController {
   }
 
   createBranch(branch) {
+    var nextId = 0;
+    if (this.getLastPrimaryKey() != null) {
+      nextId = this.getLastPrimaryKey() + 1;
+    }
     this.dataBase.write(() => {
       this.branch = this.dataBase.create('Branch',
         {
+          id: nextId,
           branchName: branch.branchName,
           branchNo : branch.branchNo,
           taluk : branch.taluk,
@@ -35,5 +40,13 @@ export default class BranchCreateController {
 
   getBranch() {
     return this.branch;
+  }
+
+  getLastPrimaryKey() {
+    const objBranches =  this.dataBase.objects('Branch');
+    if (objBranches.length > 0) {
+      return objBranches[objBranches.length - 1].id;
+    }
+    return 0;
   }
 }

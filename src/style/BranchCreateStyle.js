@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
     height: 16
   },
   lblFieldTitleStyle: {
-    color: '#37AADC',
+    color: '#00AAD2',
     fontWeight: 'normal',
     fontSize: 12,
     marginLeft: 5
@@ -38,7 +38,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     alignItems: 'center',
     backgroundColor: 'transparent',
-    color: '#FFFFFF',
+    color: '#FCFCFC',
     fontWeight: 'normal',
     fontSize: 14
   },

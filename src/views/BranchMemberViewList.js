@@ -10,7 +10,6 @@ import {
 } from 'react-native';
 import BranchMember from './BranchMember';
 import colors from '../utils/Color';
-import BranchView from './Branch';
 import styles from '../style/BranchMemberListStyle';
 import BranchMemberListController from '../controller/BranchMemberListController';
 import PropTypes from 'prop-types';
@@ -66,9 +65,11 @@ class BranchMemberViewList extends React.Component {
     NetInfo.isConnected.fetch().done( (isConnected) => { this.setState({ isConnected }); } );
     this.props.navigation.setParams({ onBack: this.tapOnBack.bind(this) });
 
+    const { params = {} } = this.props.navigation.state;
+
     setTimeout(() => {
       try {
-        this.objBranchMemberListController.loadBranceMembers();
+        this.objBranchMemberListController.loadBranceMembers(params.branch);
         this.setState({
           dataSource: this.state.dataSource.cloneWithRows(this.objBranchMemberListController.getBranchMembers()),
           isRefreshing: false
@@ -96,7 +97,8 @@ class BranchMemberViewList extends React.Component {
   }
 
   actionOnAddBranch() {
-    this.props.navigation.navigate('BranchMemberCreate', { registerCallback: this.memberRegisterCallback.bind(this) });
+    const { params = {} } = this.props.navigation.state;
+    this.props.navigation.navigate('BranchMemberCreate', { branch: params.branch, registerCallback: this.memberRegisterCallback.bind(this) });
   }
 
   actionOnViewBranchMember() {
@@ -144,6 +146,7 @@ class BranchMemberViewList extends React.Component {
       <View style={styles.container}>
         {/*<BranchView branch={params.branch} />*/}
         {this.branchHeaderView(params.branch)}
+        <View style={{ height: 10, backgroundColor: '#2D5596' }} />
         <ListView
           style={styles.listViewStyle}
           removeClippedSubviews={false}

@@ -45,7 +45,7 @@ class BranchMember extends Component {
               <View style={styles.viewProfileDataConatiner}>
                 <Text style={styles.txtHeaderStyle}>Vinu</Text>
                 <Text style={styles.txtNormalStyle}>{address}</Text>
-                <View style={styles.viewRowStyle}>
+                <View style={[styles.viewRowStyle, { paddingLeft: 0 }]}>
                   <Text style={styles.txtKeyStyle}>20/01/1990</Text>
                   <Text style={styles.txtValueStyle}>27</Text>
                 </View>
