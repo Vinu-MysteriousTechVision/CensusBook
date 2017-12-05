@@ -1,4 +1,4 @@
-package com.entegraamam;
+package com.censusbook;
 
 import android.app.Application;
 

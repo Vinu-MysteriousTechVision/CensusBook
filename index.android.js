@@ -10,4 +10,4 @@ import {
 } from 'react-native';
 
 import Root from './src/Root';
-AppRegistry.registerComponent('EnteGraamam', () => Root);
+AppRegistry.registerComponent('CensusBook', () => Root);
