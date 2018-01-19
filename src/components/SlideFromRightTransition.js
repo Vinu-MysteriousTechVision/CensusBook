@@ -9,7 +9,7 @@ function forInitial(props) {
   const translate = focused ? 0 : 1000000;
   return {
     opacity,
-    transform: [{ translateX: translate }, { translateY: translate }],
+    transform: [{ translateX: translate }, { translateY: translate }]
   };
 }
 
@@ -36,20 +36,20 @@ function forHorizontal(props) {
       index - 0.99,
       index,
       index + 0.99,
-      index + 1,
+      index + 1
     ],
-    outputRange: [0, 1, 1, 0.3, 0],
+    outputRange: [0, 1, 1, 0.3, 0]
   });
 
   const translateY = 0;
   const translateX = position.interpolate({
     inputRange,
-    outputRange,
+    outputRange
   });
 
   return {
     opacity,
-    transform: [{ translateX }, { translateY }],
+    transform: [{ translateX }, { translateY }]
   };
 }
 
@@ -58,8 +58,8 @@ export default function getSlideFromRightTransitionConfig() {
     transitionSpec: {
       duration: 500,
       easing: Easing.bezier(0.2833, 0.99, 0.31833, 0.99),
-      timing: Animated.timing,
+      timing: Animated.timing
     },
-    screenInterpolator: forHorizontal,
+    screenInterpolator: forHorizontal
   };
 }

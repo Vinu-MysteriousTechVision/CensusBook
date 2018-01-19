@@ -9,7 +9,7 @@ import {
   NetInfo,
   Keyboard
 } from 'react-native';
-import ScrollViewKeybordHandler from '../components/KeyboardAwareScrollView';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import BranchMemberCreateController from '../controller/BranchMemberCreateController';
 import PropTypes from 'prop-types';
 import styles from '../style/BranchMemberCreateStyle';
@@ -40,7 +40,7 @@ class BranchMemberCreate extends React.Component {
     const { params = {} } = navigation.state;
 
     return {
-      title: 'Add Branch Member',
+      title: 'Create Branch Member',
       headerTitleStyle: { color: '#FFFFFF' },
       headerStyle: { backgroundColor: '#28417D' },
       headerBackTitleStyle: { backgroundColor: '#FFFFFF' },
@@ -70,7 +70,7 @@ class BranchMemberCreate extends React.Component {
 
   componentDidMount() {
 
-    NetInfo.isConnected.addEventListener('change', this._handleConnectivityChange );
+    NetInfo.isConnected.addEventListener('connectionChange', this._handleConnectivityChange );
     NetInfo.isConnected.fetch().done( (isConnected) => { this.setState({ isConnected }); } );
     this.props.navigation.setParams({ onBack: this.tapOnBack.bind(this) });
     this.refName.focus();
@@ -84,7 +84,7 @@ class BranchMemberCreate extends React.Component {
   }
 
   componentWillUnmount() {
-    NetInfo.isConnected.removeEventListener( 'change', this._handleConnectivityChange );
+    NetInfo.isConnected.removeEventListener( 'connectionChange', this._handleConnectivityChange );
     this.keyboardDidShowListener.remove();
     this.keyboardDidHideListener.remove();
   }
@@ -105,7 +105,8 @@ class BranchMemberCreate extends React.Component {
       'fatherName': this.state.fatherName,
       'motherName': this.state.motherName,
       'qualification': this.state.qualification,
-      'job': this.state.job
+      'job': this.state.job,
+      'isSynced': false
     };
 
     this.objBranchMemberCreateController.createBranchMember(branchMember);
@@ -114,6 +115,10 @@ class BranchMemberCreate extends React.Component {
       params.registerCallback(this.objBranchMemberCreateController.getBranchMember());
     }
     this.tapOnBack();
+  }
+
+  tapOnSelectCource() {
+    this.props.navigation.navigate('DataList');
   }
 
   focusNextField = (nextField, nextFieldSubstitute = null) => {
@@ -130,10 +135,10 @@ class BranchMemberCreate extends React.Component {
   render() {
     return(
       <View style={styles.container}>
-        <ScrollViewKeybordHandler keyboardShouldPersistTaps={'always'}
+        <KeyboardAwareScrollView
+          keyboardShouldPersistTaps={'always'}
           scrollEventThrottle={16}>
-          <View style={[styles.registerContainer]}>
-            <Text style={styles.lblFieldTitleStyle} >Name</Text>
+          <View style={[styles.registerContainer, { backgroundColor: '#FFFFFF' }]}>
             <TextInput
               ref={(objName) => this.refName = objName}
               style={styles.txtInputStyle}
@@ -149,7 +154,6 @@ class BranchMemberCreate extends React.Component {
               blurOnSubmit={false}
               onSubmitEditing={() => this.focusNextField(this.refHouseName)} />
             <View style={styles.seperator} />
-            <Text style={styles.lblFieldTitleStyle} >Address</Text>
             <TextInput
               ref={(objHouseName) => this.refHouseName = objHouseName}
               style={styles.txtInputStyle}
@@ -164,7 +168,7 @@ class BranchMemberCreate extends React.Component {
               returnKeyLabel="次"
               blurOnSubmit={false}
               onSubmitEditing={() => this.focusNextField(this.refPlace)} />
-            <View style={[styles.seperator, { marginBottom: 0, marginLeft: 10 }]} />
+            <View style={[styles.seperator, { marginBottom: 0, marginLeft: 0 }]} />
             <TextInput
               ref={(objPlace) => this.refPlace = objPlace}
               style={styles.txtInputStyle}
@@ -179,7 +183,7 @@ class BranchMemberCreate extends React.Component {
               returnKeyLabel="次"
               blurOnSubmit={false}
               onSubmitEditing={() => this.focusNextField(this.refPostalName)} />
-            <View style={[styles.seperator, { marginBottom: 0, marginLeft: 10 }]} />
+            <View style={[styles.seperator, { marginBottom: 0, marginLeft: 0 }]} />
             <TextInput
               ref={(objPostalName) => this.refPostalName = objPostalName}
               style={styles.txtInputStyle}
@@ -194,7 +198,7 @@ class BranchMemberCreate extends React.Component {
               returnKeyLabel="次"
               blurOnSubmit={false}
               onSubmitEditing={() => this.focusNextField(this.refPincode)} />
-            <View style={[styles.seperator, { marginBottom: 0, marginLeft: 10 }]} />
+            <View style={[styles.seperator, { marginBottom: 0, marginLeft: 0 }]} />
             <TextInput
               ref={(objPincode) => this.refPincode = objPincode}
               style={styles.txtInputStyle}
@@ -210,7 +214,6 @@ class BranchMemberCreate extends React.Component {
               blurOnSubmit={false}
               onSubmitEditing={() => this.focusNextField(this.refDOB)} />
             <View style={styles.seperator} />
-            <Text style={styles.lblFieldTitleStyle} >Date Of Birth</Text>
             <TextInput
               ref={(objDateOfBirth) => this.refDOB = objDateOfBirth}
               style={styles.txtInputStyle}
@@ -226,7 +229,6 @@ class BranchMemberCreate extends React.Component {
               blurOnSubmit={false}
               onSubmitEditing={() => this.focusNextField(this.refFatherName)} />
             <View style={styles.seperator} />
-            <Text style={styles.lblFieldTitleStyle} >Father Name</Text>
             <TextInput
               ref={(objFatherName) => this.refFatherName = objFatherName}
               style={styles.txtInputStyle}
@@ -242,7 +244,6 @@ class BranchMemberCreate extends React.Component {
               blurOnSubmit={false}
               onSubmitEditing={() => this.focusNextField(this.refMotherName)} />
             <View style={styles.seperator} />
-            <Text style={styles.lblFieldTitleStyle} >Mother Name</Text>
             <TextInput
               ref={(objMotherName) => this.refMotherName = objMotherName}
               style={styles.txtInputStyle}
@@ -258,23 +259,17 @@ class BranchMemberCreate extends React.Component {
               blurOnSubmit={false}
               onSubmitEditing={() => this.focusNextField(this.refQualification)} />
             <View style={styles.seperator} />
-            <Text style={styles.lblFieldTitleStyle} >Qualification</Text>
-            <TextInput
-              ref={(objQualification) => this.refQualification = objQualification}
-              style={styles.txtInputStyle}
-              onChangeText={(qualification) => this.setState({ qualification })}
-              value={this.state.qualification}
-              editable={true}
-              maxLength={100}
-              placeholder="Qualification"
-              placeholderTextColor='#828282'
-              underlineColorAndroid="rgba(0,0,0,0)"
-              returnKeyType="next"
-              returnKeyLabel="次"
-              blurOnSubmit={false}
-              onSubmitEditing={() => this.focusNextField(this.refJob)} />
+            <TouchableHighlight style={[{ backgroundColor: 'transparent', margin: 5 }]} underlayColor="rgba(255,255,255,0.15)" onPress={this.tapOnSelectCource.bind(this)}>
+              <View style={{ flexDirection: 'row' }}>
+                <View style={{ flex: 1, height: 44, justifyContent: 'center' }}>
+                  <Text style={{ color: '#828282', fontWeight: 'normal', fontSize: 14 }}>Select Qualification</Text>
+                </View>
+                <View style={styles.imageContainerSelction}>
+                  <Image source={require('../res/images/right.png')} style={styles.imageRightArrow} />
+                </View>
+              </View>
+            </TouchableHighlight>
             <View style={styles.seperator} />
-            <Text style={styles.lblFieldTitleStyle} >Occupation</Text>
             <TextInput
               ref={(objJob) => this.refJob = objJob}
               style={styles.txtInputStyle}
@@ -289,14 +284,13 @@ class BranchMemberCreate extends React.Component {
               returnKeyLabel="次"
               blurOnSubmit={false} />
             <View style={styles.seperator} />
-
           </View>
           <View style={[styles.btnRegisterContainer]}>
             <TouchableHighlight style={styles.btnRegister} underlayColor="rgba(255,255,255,0.15)" onPress={this.registerRequest.bind(this)}>
               <Text style={styles.txtButtonRegister} numberOfLines={1}>Add</Text>
             </TouchableHighlight>
           </View>
-        </ScrollViewKeybordHandler>
+        </KeyboardAwareScrollView>
       </View>
     );
   }

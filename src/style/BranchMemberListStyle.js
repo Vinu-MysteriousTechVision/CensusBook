@@ -36,9 +36,9 @@ const styles = StyleSheet.create({
     height: 44
   },
   viewContentContainer: {
-    backgroundColor: '#DCDCDC',
-    paddingVertical: 10,
-    paddingHorizontal: 20,
+    backgroundColor: '#FFFFFF',
+    paddingVertical: 5,
+    paddingHorizontal: 5,
     minHeight: 50
   },
   txtContentHeader: {

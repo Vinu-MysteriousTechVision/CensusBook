@@ -12,7 +12,8 @@ const BranchSchema = {
     panchayath: 'string',
     village:    'string',
     place:      'string',
-    pinCode:    'string'
+    pinCode:    'string',
+    isSynced:   'bool'
   }
 };
 
@@ -31,7 +32,8 @@ const BranchMemberSchema = {
     fatherName:     'string',
     motherName:     'string',
     qualification:  'string',
-    job:            'string'
+    job:            'string',
+    isSynced:       'bool'
   }
 };
 

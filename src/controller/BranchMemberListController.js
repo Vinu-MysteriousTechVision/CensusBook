@@ -1,4 +1,5 @@
 const Realm = require('realm');
+import _ from 'underscore';
 import Schema from '../dataBase/Schema';
 
 export default class BranchMemberListController {
@@ -8,16 +9,26 @@ export default class BranchMemberListController {
   }
 
   openDBSchema() {
-    Realm.open({
-      schema: [Schema.BranchMemberSchema]
-    }).then(dbObj => {
-      this.dataBase = dbObj;
-    });
+    try {
+      return new Promise((resolve, reject) => {
+        Realm.open({
+          schema: [Schema.BranchMemberSchema]
+        }).then(dbObj => {
+          this.dataBase = dbObj;
+          resolve('success');
+        });
+      });
+    } catch (e) {
+      /* Empty Error */
+    }
+
   }
 
   loadBranceMembers(branch) {
-
-    const objBrancheMembers =  this.dataBase.objects('BranchMember').filtered('branchId = $0', branch.id);
+    var objBrancheMembers = null;
+    if (!_.isUndefined(branch) && !_.isNull(branch)) {
+      objBrancheMembers =  this.dataBase.objects('BranchMember').filtered('branchId = $0', branch.id);
+    }
 
     var tempArray = [];
     for (var i = 0; i < objBrancheMembers.length; i++) {

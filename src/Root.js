@@ -16,6 +16,8 @@ import BranchList from './views/BranchList';
 import BranchCreate from './views/BranchCreate';
 import BranchMemberCreate from './views/BranchMemberCreate';
 import BranchMemberViewList from './views/BranchMemberViewList';
+import DataList from './views/DataList';
+
 import styles from './style/RootStyle';
 import PropTypes from 'prop-types';
 
@@ -88,7 +90,8 @@ const AuthorizedNavigator  = StackNavigator({
   BranchList: { screen: BranchList },
   BranchCreate: { screen: BranchCreate },
   BranchMemberCreate: { screen: BranchMemberCreate },
-  BranchMemberViewList: { screen: BranchMemberViewList }
+  BranchMemberViewList: { screen: BranchMemberViewList },
+  DataList: { screen: DataList }  
 }, {
   initialRouteName: 'BranchList',
   transitionConfig: getSlideFromRightTransitionConfig

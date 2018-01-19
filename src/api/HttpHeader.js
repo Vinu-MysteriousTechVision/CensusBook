@@ -1,7 +1,7 @@
 'use strict';
 import React from 'react';
 import {
-    AsyncStorage
+  AsyncStorage
 } from 'react-native';
 
 import Constant from '../utils/Constants';

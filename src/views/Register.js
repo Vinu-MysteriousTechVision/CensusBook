@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import styles from '../style/RegisterStyle';
 import PropTypes from 'prop-types';
-import ScrollViewKeybordHandler from '../components/KeyboardAwareScrollView';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 class Register extends React.Component {
   constructor(props) {
@@ -43,7 +43,7 @@ class Register extends React.Component {
 
   componentDidMount() {
 
-    NetInfo.isConnected.addEventListener('change', this._handleConnectivityChange );
+    NetInfo.isConnected.addEventListener('connectionChange', this._handleConnectivityChange );
     NetInfo.isConnected.fetch().done( (isConnected) => { this.setState({ isConnected }); } );
   }
 
@@ -53,7 +53,7 @@ class Register extends React.Component {
   }
 
   componentWillUnmount() {
-    NetInfo.isConnected.removeEventListener( 'change', this._handleConnectivityChange );
+    NetInfo.isConnected.removeEventListener( 'connectionChange', this._handleConnectivityChange );
     this.keyboardDidShowListener.remove();
     this.keyboardDidHideListener.remove();
   }
@@ -77,7 +77,7 @@ class Register extends React.Component {
     var profileIcon = require('../res/images/user_default.png');
     return(
       <View style={styles.container}>
-        <ScrollViewKeybordHandler
+        <KeyboardAwareScrollView
           keyboardShouldPersistTaps={'always'}
           showsVerticalScrollIndicator={false}>
           <View style={styles.regHeaderStyle}>
@@ -179,7 +179,7 @@ class Register extends React.Component {
               <Text style={styles.txtRegButton} numberOfLines={1}>Register</Text>
             </TouchableHighlight>
           </View>
-        </ScrollViewKeybordHandler>
+        </KeyboardAwareScrollView>
         <View style={styles.btnNavBackContainer} >
           <TouchableHighlight style={styles.btnNavBackStyle}
             underlayColor="rgba(255,255,255,0.15)"

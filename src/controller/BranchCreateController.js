@@ -1,4 +1,5 @@
 const Realm = require('realm');
+import _ from 'underscore';
 import Schema from '../dataBase/Schema';
 
 export default class BranchCreateController {
@@ -16,26 +17,63 @@ export default class BranchCreateController {
     });
   }
 
-  createBranch(branch) {
-    var nextId = 0;
-    if (this.getLastPrimaryKey() != null) {
-      nextId = this.getLastPrimaryKey() + 1;
-    }
-    this.dataBase.write(() => {
-      this.branch = this.dataBase.create('Branch',
-        {
-          id: nextId,
-          branchName: branch.branchName,
-          branchNo : branch.branchNo,
-          taluk : branch.taluk,
-          district : branch.district,
-          panchayath: branch.panchayath,
-          village: branch.village,
-          place: branch.place,
-          pinCode: branch.pinCode
+  validateBranch(branch) {
+    try {
+      return new Promise((resolve, reject) => {
+        if (!_.isUndefined(branch) && !_.isNull()) {
+          if (_.isEmpty(branch.branchName.trim())) {
+            reject('Please enter branch name');
+          }
+          if (_.isEmpty(branch.branchNo.trim())) {
+            reject('Please enter branch number');
+          }
+          resolve('success');
+        } else {
+          reject('error');
         }
-      );
-    });
+      });
+    } catch (e) {
+      /* Empty Error */
+    }
+  }
+
+  createBranch(branch) {
+
+    try {
+      return new Promise((resolve, reject) => {
+        this.validateBranch(branch)
+          .then((val) =>{
+            // Get last id
+            var nextId = 0;
+            if (this.getLastPrimaryKey() != null) {
+              nextId = this.getLastPrimaryKey() + 1;
+            }
+            // create new branch object
+            this.dataBase.write(() => {
+              this.branch = this.dataBase.create('Branch',
+                {
+                  id: nextId,
+                  branchName: branch.branchName,
+                  branchNo : branch.branchNo,
+                  taluk : branch.taluk,
+                  district : branch.district,
+                  panchayath: branch.panchayath,
+                  village: branch.village,
+                  place: branch.place,
+                  pinCode: branch.pinCode,
+                  isSynced: branch.isSynced
+                }
+              );
+            });
+            resolve(val);
+          })
+          .catch((err) =>{
+            reject(err);
+          });
+      });
+    } catch (e) {
+      /* Empty Error */
+    }
   }
 
   getBranch() {

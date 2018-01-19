@@ -9,9 +9,9 @@ const styles = StyleSheet.create({
     padding: 10
   },
   seperator: {
-    height: 0.5,
-    marginBottom: 20,
-    backgroundColor: '#002887'
+    height: 10,
+    marginBottom: 0,
+    backgroundColor: '#234B96'
   },
   registerContainer: {
     backgroundColor: 'transparent'
@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     alignItems: 'center',
     backgroundColor: 'transparent',
-    color: '#FCFCFC',
+    color: '#234B96',
     fontWeight: 'normal',
     fontSize: 14
   },
@@ -57,6 +57,15 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
     fontWeight: 'bold',
     fontSize: 20
+  },
+  imageContainerSelction: {
+    position: 'absolute',
+    right: 0,
+    width: 44,
+    height: 44,
+    backgroundColor: 'transparent',
+    justifyContent: 'center',
+    alignItems: 'center'
   }
 });
 

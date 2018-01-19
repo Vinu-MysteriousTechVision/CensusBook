@@ -12,7 +12,7 @@ import {
   Dimensions
 } from 'react-native';
 import { NavigationActions } from 'react-navigation';
-import ScrollViewKeybordHandler from '../components/KeyboardAwareScrollView';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import LoginController from './LoginController';
 import styles from '../style/LoginStyle';
 import PropTypes from 'prop-types';
@@ -78,7 +78,7 @@ export default class Login extends React.Component {
 
   componentDidMount() {
 
-    NetInfo.isConnected.addEventListener('change', this._handleConnectivityChange );
+    NetInfo.isConnected.addEventListener('connectionChange', this._handleConnectivityChange );
     NetInfo.isConnected.fetch().done( (isConnected) => { this.setState({ isConnected }); } );
 
     this.props.navigation.setParams({ onBack: this.tapOnBack.bind(this) });
@@ -92,7 +92,7 @@ export default class Login extends React.Component {
 
   componentWillUnmount() {
 
-    NetInfo.isConnected.removeEventListener( 'change', this._handleConnectivityChange );
+    NetInfo.isConnected.removeEventListener( 'connectionChange', this._handleConnectivityChange );
     this.keyboardDidShowListener.remove();
     this.keyboardDidHideListener.remove();
   }
@@ -118,7 +118,7 @@ export default class Login extends React.Component {
     return (
       <View style={styles.container}>
         <StatusBar translucent={true} backgroundColor="rgba(0, 0, 0, 0)" barStyle="light-content" />
-        <ScrollViewKeybordHandler
+        <KeyboardAwareScrollView
           ref={(obj) => this._scrollViewKeybordHandler = obj}
           scrollEnabled={this.state.scrollActive}
           showsVerticalScrollIndicator={false}
@@ -184,7 +184,7 @@ export default class Login extends React.Component {
               <Image source={require('../res/images/back_white.png')} style={styles.imageNavBackStyle} />
             </TouchableHighlight>
           </View>
-        </ScrollViewKeybordHandler>
+        </KeyboardAwareScrollView>
       </View>
     );
   }

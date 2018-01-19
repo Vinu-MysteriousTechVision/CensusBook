@@ -5,7 +5,8 @@ import {
   RefreshControl,
   ListView,
   Image,
-  View
+  View,
+  Text
 } from 'react-native';
 import BranchView from './Branch';
 import colors from '../utils/Color';
@@ -26,13 +27,25 @@ class BranchList extends Component {
     this.objBranchListController = new BranchListController();
   }
 
-  static navigationOptions = () => {
+  static navigationOptions = ({ navigation }) => {
+    const { params = {} } = navigation.state;
 
     return {
       title: 'Home',
       headerTitleStyle: { color: '#FFFFFF' },
-      headerStyle: { backgroundColor: '#28417D' }
+      headerStyle: { backgroundColor: '#28417D' },
+      headerRight: (
+        <TouchableHighlight style={{ flex:1, justifyContent: 'center', alignItems: 'center', paddingRight: 10, backgroundColor: 'transparent' }}
+          underlayColor="rgba(255,255,255,0.15)"
+          onPress={() => params.onRightButton()}>
+          <Text style={{ backgroundColor: 'transparent', color:'#FFFFFF' }}>Sync</Text>
+        </TouchableHighlight>
+      )
     };
+  }
+
+  tapOnRightBack() {
+    this.objBranchListController.syncBranches();
   }
 
   componentWillMount() {
@@ -43,7 +56,9 @@ class BranchList extends Component {
 
     setTimeout(() => {
       try {
-        this.objBranchListController.loadBrances();
+        this.props.navigation.setParams({ onRightButton: this.tapOnRightBack.bind(this) });
+
+        this.objBranchListController.loadBranches();
         this.setState({
           dataSource: this.state.dataSource.cloneWithRows(this.objBranchListController.getBranches()),
           isRefreshing: false
@@ -84,7 +99,7 @@ class BranchList extends Component {
     });
 
     try {
-      this.objBranchListController.loadBrances();
+      this.objBranchListController.loadBranches();
       this.setState({
         dataSource: this.state.dataSource.cloneWithRows(this.objBranchListController.getBranches()),
         isRefreshing: false

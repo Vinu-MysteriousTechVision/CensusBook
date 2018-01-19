@@ -61,7 +61,7 @@ class BranchMemberViewList extends React.Component {
 
   componentDidMount() {
 
-    NetInfo.isConnected.addEventListener('change', this._handleConnectivityChange );
+    NetInfo.isConnected.addEventListener('connectionChange', this._handleConnectivityChange );
     NetInfo.isConnected.fetch().done( (isConnected) => { this.setState({ isConnected }); } );
     this.props.navigation.setParams({ onBack: this.tapOnBack.bind(this) });
 
@@ -81,7 +81,7 @@ class BranchMemberViewList extends React.Component {
   }
 
   componentWillUnmount() {
-    NetInfo.isConnected.removeEventListener( 'change', this._handleConnectivityChange );
+    NetInfo.isConnected.removeEventListener( 'connectionChange', this._handleConnectivityChange );
   }
 
   memberRegisterCallback(branchMember) {
@@ -109,9 +109,9 @@ class BranchMemberViewList extends React.Component {
     this.setState({
       isRefreshing: true
     });
-
+    const { params = {} } = this.props.navigation.state;
     try {
-      this.objBranchMemberListController.loadBranceMembers();
+      this.objBranchMemberListController.loadBranceMembers(params.branch);
       this.setState({
         dataSource: this.state.dataSource.cloneWithRows(this.objBranchMemberListController.getBranchMembers()),
         isRefreshing: false
@@ -127,14 +127,16 @@ class BranchMemberViewList extends React.Component {
 
   branchHeaderView(branch) {
     return (
-      <View style={styles.viewContentContainer}>
-        <Text style={styles.txtContentHeader}>{branch.branchName}</Text>
-        {(branch.taluk != '') && <Text style={styles.txtContent}>{branch.taluk}</Text>}
-        {(branch.district != '') && <Text style={styles.txtContent}>{branch.district}</Text>}
-        {(branch.panchayath != '') && <Text style={styles.txtContent}>{branch.panchayath}</Text>}
-        {(branch.village != '') && <Text style={styles.txtContent}>{branch.village}</Text>}
-        {(branch.place != '') && <Text style={styles.txtContent}>{branch.place}</Text>}
-        {(branch.pinCode != '') && <Text style={styles.txtContent}>{branch.pinCode}</Text>}
+      <View style={[styles.viewContentContainer, { backgroundColor: '#F5F5F5' }]}>
+        <View style={{ padding: 10, backgroundColor: '#DCDCDC' }}>
+          <Text style={styles.txtContentHeader}>{branch.branchName}</Text>
+          {(branch.taluk != '') && <Text style={styles.txtContent}>{branch.taluk}</Text>}
+          {(branch.district != '') && <Text style={styles.txtContent}>{branch.district}</Text>}
+          {(branch.panchayath != '') && <Text style={styles.txtContent}>{branch.panchayath}</Text>}
+          {(branch.village != '') && <Text style={styles.txtContent}>{branch.village}</Text>}
+          {(branch.place != '') && <Text style={styles.txtContent}>{branch.place}</Text>}
+          {(branch.pinCode != '') && <Text style={styles.txtContent}>{branch.pinCode}</Text>}
+        </View>
       </View>
     );
   }
@@ -146,7 +148,6 @@ class BranchMemberViewList extends React.Component {
       <View style={styles.container}>
         {/*<BranchView branch={params.branch} />*/}
         {this.branchHeaderView(params.branch)}
-        <View style={{ height: 10, backgroundColor: '#2D5596' }} />
         <ListView
           style={styles.listViewStyle}
           removeClippedSubviews={false}

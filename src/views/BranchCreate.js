@@ -8,7 +8,7 @@ import {
   NetInfo,
   Keyboard
 } from 'react-native';
-import ScrollViewKeybordHandler from '../components/KeyboardAwareScrollView';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import styles from '../style/BranchCreateStyle';
 import PropTypes from 'prop-types';
 import BranchCreateController from '../controller/BranchCreateController';
@@ -36,7 +36,7 @@ class BranchCreate extends React.Component {
     const { params = {} } = navigation.state;
 
     return {
-      title: 'Add Branche',
+      title: 'Create Branche',
       headerTitleStyle: { color: '#FFFFFF' },
       headerStyle: { backgroundColor: '#28417D' },
       headerBackTitleStyle: { backgroundColor: '#FFFFFF' },
@@ -74,7 +74,7 @@ class BranchCreate extends React.Component {
   }
 
   componentDidMount() {
-    NetInfo.isConnected.addEventListener('change', this._handleConnectivityChange );
+    NetInfo.isConnected.addEventListener('connectionChange', this._handleConnectivityChange );
     NetInfo.isConnected.fetch().done( (isConnected) => { this.setState({ isConnected }); } );
 
     this.props.navigation.setParams({ onBack: this.tapOnBack.bind(this) });
@@ -83,7 +83,7 @@ class BranchCreate extends React.Component {
 
 
   componentWillUnmount() {
-    NetInfo.isConnected.removeEventListener( 'change', this._handleConnectivityChange );
+    NetInfo.isConnected.removeEventListener( 'connectionChange', this._handleConnectivityChange );
     this.keyboardDidShowListener.remove();
     this.keyboardDidHideListener.remove();
   }
@@ -99,6 +99,10 @@ class BranchCreate extends React.Component {
     }
   };
 
+  showAlert(msg) {
+    alert(msg);
+  }
+
   registerRequest() {
 
     var branch = {
@@ -110,22 +114,29 @@ class BranchCreate extends React.Component {
       'panchayath': this.state.panchayath,
       'village': this.state.village,
       'place': this.state.place,
-      'pinCode': this.state.pinCode
+      'pinCode': this.state.pinCode,
+      'isSynced': false
     };
-    this.objBranchCreateController.createBranch(branch);
-
-    const { params = {} } = this.props.navigation.state;
-    if (params.registerCallback) {
-      params.registerCallback(this.objBranchCreateController.getBranch());
-    }
-    this.tapOnBack();
+    this.objBranchCreateController.createBranch(branch)
+      .then((value) =>{
+        const { params = {} } = this.props.navigation.state;
+        if (params.registerCallback) {
+          params.registerCallback(this.objBranchCreateController.getBranch());
+        }
+        this.showAlert(value);
+        this.tapOnBack();
+      })
+      .catch((error) =>{
+        this.showAlert(error);
+      });
   }
 
   render() {
     return(
       <View style={styles.container}>
-        <ScrollViewKeybordHandler keyboardShouldPersistTaps={'always'}>
-          <View style={[styles.registerContainer]}>
+        <KeyboardAwareScrollView
+          keyboardShouldPersistTaps={'always'}>
+          <View style={[styles.registerContainer, { backgroundColor: '#FFFFFF' }]}>
             <TextInput
               ref={(objBranchName) => this.refBranchname = objBranchName}
               style={styles.txtInputStyle}
@@ -261,7 +272,7 @@ class BranchCreate extends React.Component {
               <Text style={styles.txtButtonRegister} numberOfLines={1}>Add</Text>
             </TouchableHighlight>
           </View>
-        </ScrollViewKeybordHandler>
+        </KeyboardAwareScrollView>
       </View>
     );
   }

@@ -36,7 +36,8 @@ export default class BranchMemberCreateController {
           fatherName: branchMember.fatherName,
           motherName: branchMember.motherName,
           qualification: branchMember.qualification,
-          job: branchMember.job
+          job: branchMember.job,
+          isSynced: branchMember.isSynced
         }
       );
     });

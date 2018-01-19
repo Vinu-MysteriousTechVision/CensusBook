@@ -13,9 +13,9 @@ const resetAction = NavigationActions.reset({
   index: 0,
   key: null,
   actions: [
-    NavigationActions.navigate({ routeName: 'Unauthorized'})
+    NavigationActions.navigate({ routeName: 'Unauthorized' })
   ]
-})
+});
 
 
 class Home extends Component {
@@ -24,13 +24,13 @@ class Home extends Component {
   }
 
   static navigationOptions = ({ navigation }) => {
-    const { params = {} } = navigation.state
+    const { params = {} } = navigation.state;
 
     return {
       title: 'Home',
-      headerTitleStyle: { color: '#FFFFFF'},
-      headerStyle: {backgroundColor: '#062D2D'}
-    }
+      headerTitleStyle: { color: '#FFFFFF' },
+      headerStyle: { backgroundColor: '#062D2D' }
+    };
   }
 
   componentDidMount(){
@@ -51,16 +51,13 @@ class Home extends Component {
         </Text>
         <Button
           onPress={() =>this.props.navigation.dispatch(resetAction)}
-          title="Log out"
-        />
+          title="Log out" />
         <Button
           onPress={() =>this.props.navigation.navigate('Profile')}
-          title="open profile"
-        />
+          title="open profile" />
         <Button
           onPress={() =>this.props.navigation.navigate('BranchList')}
-          title="open Branches"
-        />
+          title="open Branches" />
       </View>
     );
   }
@@ -76,13 +73,13 @@ const styles = StyleSheet.create({
   welcome: {
     fontSize: 20,
     textAlign: 'center',
-    margin: 10,
+    margin: 10
   },
   instructions: {
     textAlign: 'center',
     color: '#333333',
-    marginBottom: 5,
-  },
+    marginBottom: 5
+  }
 });
 
 module.exports = Home;
