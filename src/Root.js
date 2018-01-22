@@ -32,7 +32,7 @@ class Root extends Component {
 
 
   componentDidMount(){
-
+    console.log('abc');
   }
 
   componentWillUnmount(){
@@ -91,7 +91,7 @@ const AuthorizedNavigator  = StackNavigator({
   BranchCreate: { screen: BranchCreate },
   BranchMemberCreate: { screen: BranchMemberCreate },
   BranchMemberViewList: { screen: BranchMemberViewList },
-  DataList: { screen: DataList }  
+  DataList: { screen: DataList }
 }, {
   initialRouteName: 'BranchList',
   transitionConfig: getSlideFromRightTransitionConfig
