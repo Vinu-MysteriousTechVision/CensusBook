@@ -20,6 +20,7 @@ import DataList from './views/DataList';
 
 import styles from './style/RootStyle';
 import PropTypes from 'prop-types';
+import codePush from "react-native-code-push";
 
 class Root extends Component {
   constructor(props) {
