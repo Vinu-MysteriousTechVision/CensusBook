@@ -2,10 +2,12 @@
 
 import React from 'react';
 import {
-    Platform,
-    StatusBar,
-    NativeModules
+  Platform,
+  StatusBar,
+  NativeModules
 } from 'react-native';
+import ImageResizer from 'react-native-image-resizer';
+
 var moment = require('moment');
 
 function getStatusBarHeight() {
@@ -59,6 +61,15 @@ var PlatformOS = {
   ANDROID: 2
 };
 
+async function resizeImage(imageUri) {
+  return await ImageResizer.createResizedImage(imageUri, 1024, 1024, 'JPEG', 100)
+    .then((resizedImageUri) => {
+      return resizedImageUri;
+    }).catch((err) => {
+      console.log("Error: "+err);
+      return null;
+    });
+}
 
 module.exports = {
   getStatusBarHeight,
@@ -66,5 +77,6 @@ module.exports = {
   getUniqueFileName,
   getRandomInt,
   PlatformOS,
-  getPlatform
+  getPlatform,
+  resizeImage
 };
