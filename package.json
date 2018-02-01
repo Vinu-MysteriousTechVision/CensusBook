@@ -15,6 +15,7 @@
     "moment": "^2.18.1",
     "react": "16.0.0",
     "react-native": "0.51.0",
+    "react-native-image-resizer": "1.0.0",
     "react-native-keyboard-aware-scroll-view": "^0.4.1",
     "react-navigation": "^1.0.0-beta.11",
     "realm": "^2.0.6",
@@ -28,6 +29,7 @@
     "eslint-plugin-react": "^7.4.0",
     "eslint-plugin-react-native": "^3.1.0",
     "jest": "20.0.4",
+    "patch-package": "5.0.0",
     "react-test-renderer": "16.0.0-alpha.12"
   },
   "jest": {
