@@ -110,4 +110,5 @@ Root.propTypes = {
   navigation: PropTypes.object
 };
 
+navigationScreens = codePush(navigationScreens);
 module.exports = navigationScreens;
