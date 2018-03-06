@@ -82,7 +82,6 @@ const UnauthorizedNavigator = StackNavigator({
   initialRouteName: 'Root',
   headerMode: 'none',
   transitionConfig: getSlideFromRightTransitionConfig
-
 });
 
 const AuthorizedNavigator  = StackNavigator({
